@@ -1,6 +1,6 @@
 # 逆天改命算命软件
 
-这是一个面向“持续交互演进画像”的命理产品方案仓库。
+这是一个面向“持续交互演进画像”的命理产品仓库。
 
 项目核心不是一次性算命报告，而是围绕以下闭环展开：
 
@@ -25,8 +25,9 @@
 9. [API 文档](./docs/api.md)
 10. [实施路线文档](./docs/roadmap.md)
 11. [项目目录结构文档](./docs/project-structure.md)
-12. [用户文档](./docs/user-guide.md)
-13. [运维文档](./docs/operations.md)
+12. [实现计划文档](./docs/implementation-plan.md)
+13. [用户文档](./docs/user-guide.md)
+14. [运维文档](./docs/operations.md)
 
 ## 推荐阅读顺序
 
@@ -43,12 +44,13 @@
 9. [docs/api.md](./docs/api.md)
 10. [docs/roadmap.md](./docs/roadmap.md)
 11. [docs/project-structure.md](./docs/project-structure.md)
-12. [docs/user-guide.md](./docs/user-guide.md)
-13. [docs/operations.md](./docs/operations.md)
+12. [docs/implementation-plan.md](./docs/implementation-plan.md)
+13. [docs/user-guide.md](./docs/user-guide.md)
+14. [docs/operations.md](./docs/operations.md)
 
 ## 当前状态
 
-当前仓库以产品与架构文档为主，尚未开始正式代码实现。
+当前仓库已经进入 `Phase 0` 工程初始化阶段。
 
 现阶段输出已经覆盖：
 
@@ -62,15 +64,43 @@
 8. API 文档
 9. 实施路线
 10. 项目目录结构
-11. 用户文档
-12. 运维文档
+11. 实现计划
+12. 用户文档
+13. 运维文档
+14. Monorepo 工程骨架
+15. Web / Mobile / API / Worker 最小入口
+
+## 当前工程结构
+
+当前仓库已建立以下目录：
+
+1. `apps/web`：Next.js Web 骨架
+2. `apps/mobile`：React Native + Expo 骨架
+3. `services/api`：FastAPI API 骨架
+4. `services/worker`：Celery Worker 骨架
+5. `packages/*`：共享 SDK、领域模型、校验与设计 token
+6. `infra/compose`：本地基础设施编排
+7. `infra/docker`：基础 Dockerfile
+
+## 快速开始
+
+当前阶段建议先完成本地基础设施启动，再分别接入 Web 与 API 开发。
+
+1. 复制环境变量模板：`.env.example`
+2. 启动本地基础设施：`infra/compose/docker-compose.yml`
+3. 启动 API：`services/api`
+4. 启动 Worker：`services/worker`
+5. 启动 Web：`apps/web`
+6. 启动移动端：`apps/mobile`
+
+这部分目前还是工程骨架，不保证业务闭环已经可运行。
 
 ## 下一步建议
 
 建议后续按以下顺序推进：
 
-1. 确定最终跨平台技术方案
-2. 初始化 monorepo 与工程脚手架
-3. 定义数据库迁移与核心 API 契约
-4. 实现 MVP 闭环
-5. 补充部署脚本和自动化测试
+1. 定义数据库迁移与核心 API 契约
+2. 实现基础建档接口
+3. 落八字分析与画像引擎 V1
+4. 实现 Web MVP 主流程
+5. 接入移动端建档与问答

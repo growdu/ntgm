@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "逆天改命算命软件",
+    "slug": "ntgm",
+    "scheme": "ntgm",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "platforms": ["ios", "android"]
+  }
+}
+
