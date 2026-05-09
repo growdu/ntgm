@@ -50,7 +50,7 @@
 
 ## 当前状态
 
-当前仓库已经进入 `Phase 0` 工程初始化阶段。
+当前仓库已经进入 `Phase 2-3` 过渡阶段，核心后端主链和 Web 演示工作台已经打通最小闭环。
 
 现阶段输出已经覆盖：
 
@@ -69,12 +69,14 @@
 13. 运维文档
 14. Monorepo 工程骨架
 15. Web / Mobile / API / Worker 最小入口
+16. 建档 / 八字占位 / 画像重算 / 匹配 / 建议的最小 API 链路
+17. Web 单页工作台演示入口
 
 ## 当前工程结构
 
 当前仓库已建立以下目录：
 
-1. `apps/web`：Next.js Web 骨架
+1. `apps/web`：Next.js Web 工作台原型与演示主流程
 2. `apps/mobile`：React Native + Expo 骨架
 3. `services/api`：FastAPI API 骨架
 4. `services/worker`：Celery Worker 骨架
@@ -93,14 +95,14 @@
 5. 启动 Web：`apps/web`
 6. 启动移动端：`apps/mobile`
 
-这部分目前还是工程骨架，不保证业务闭环已经可运行。
+当前不是完整产品，但 Web 端已经可以对接现有 API 演示基础建档、画像重算和结果查看。
 
 ## 下一步建议
 
 建议后续按以下顺序推进：
 
-1. 定义数据库迁移与核心 API 契约
-2. 实现基础建档接口
-3. 落八字分析与画像引擎 V1
-4. 实现 Web MVP 主流程
+1. 把 `profiles/recompute` 切换为真实 Worker 异步任务链
+2. 接入图片上传到 MinIO / S3
+3. 补问答、事件、匹配、建议的前端交互页
+4. 落八字分析与画像引擎 V1 的真实规则
 5. 接入移动端建档与问答
