@@ -421,6 +421,28 @@
 
 `GET /advice/current`
 
+### 响应
+
+```json
+{
+  "adviceId": "uuid",
+  "profileVersion": 4,
+  "summary": {
+    "today": [
+      "避免在高波动状态下做重大即时决策",
+      "补充一次近期重大事件记录"
+    ],
+    "focus": "先稳定画像，再强化执行反馈",
+    "matchedFigure": "曹操"
+  }
+}
+```
+
+说明：
+
+1. 当前阶段建议内容基于占位规则生成
+2. 后续阶段会接入更完整建议引擎与执行反馈链路
+
 ## 11.2 获取指定版本建议
 
 `GET /advice?profileVersion=4`

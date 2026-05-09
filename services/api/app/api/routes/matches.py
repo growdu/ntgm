@@ -25,5 +25,4 @@ def get_current_match(
     if profile is None:
         raise HTTPException(status_code=404, detail="Match not ready")
 
-    return match_service.get_current_match(profile=profile)
-
+    return match_service.get_current_match(db, user_id=user.id, profile=profile)

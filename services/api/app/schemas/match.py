@@ -15,4 +15,3 @@ class MatchCurrentResponse(BaseModel):
     profileVersion: int
     topMatches: list[MatchItem]
     explanation: dict[str, Any]
-

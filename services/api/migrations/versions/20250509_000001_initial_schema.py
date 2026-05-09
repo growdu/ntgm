@@ -48,6 +48,33 @@ def upgrade() -> None:
     op.create_index("ix_intake_records_intake_type", "intake_records", ["intake_type"])
 
     op.create_table(
+        "match_results",
+        sa.Column("id", postgresql.UUID(as_uuid=True), primary_key=True, nullable=False),
+        sa.Column("user_id", postgresql.UUID(as_uuid=True), sa.ForeignKey("users.id"), nullable=False),
+        sa.Column("profile_version", sa.Integer(), nullable=False),
+        sa.Column("rank_no", sa.Integer(), nullable=False),
+        sa.Column("figure_name", sa.String(length=128), nullable=False),
+        sa.Column("similarity_score", sa.Numeric(5, 4), nullable=False),
+        sa.Column("similarity_breakdown", postgresql.JSONB(astext_type=sa.Text()), nullable=False, server_default=sa.text("'{}'::jsonb")),
+        sa.Column("difference_breakdown", postgresql.JSONB(astext_type=sa.Text()), nullable=False, server_default=sa.text("'{}'::jsonb")),
+        sa.Column("explanation", postgresql.JSONB(astext_type=sa.Text()), nullable=False, server_default=sa.text("'{}'::jsonb")),
+        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()),
+        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()),
+    )
+    op.create_index("ix_match_results_user_profile", "match_results", ["user_id", "profile_version"])
+
+    op.create_table(
+        "advice_plans",
+        sa.Column("id", postgresql.UUID(as_uuid=True), primary_key=True, nullable=False),
+        sa.Column("user_id", postgresql.UUID(as_uuid=True), sa.ForeignKey("users.id"), nullable=False),
+        sa.Column("profile_version", sa.Integer(), nullable=False),
+        sa.Column("summary", postgresql.JSONB(astext_type=sa.Text()), nullable=False, server_default=sa.text("'{}'::jsonb")),
+        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()),
+        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()),
+    )
+    op.create_index("ix_advice_plans_user_profile", "advice_plans", ["user_id", "profile_version"])
+
+    op.create_table(
         "jobs",
         sa.Column("id", postgresql.UUID(as_uuid=True), primary_key=True, nullable=False),
         sa.Column("user_id", postgresql.UUID(as_uuid=True), sa.ForeignKey("users.id"), nullable=True),
@@ -127,6 +154,12 @@ def downgrade() -> None:
 
     op.drop_index("ix_jobs_user_id", table_name="jobs")
     op.drop_table("jobs")
+
+    op.drop_index("ix_advice_plans_user_profile", table_name="advice_plans")
+    op.drop_table("advice_plans")
+
+    op.drop_index("ix_match_results_user_profile", table_name="match_results")
+    op.drop_table("match_results")
 
     op.drop_index("ix_intake_records_intake_type", table_name="intake_records")
     op.drop_index("ix_intake_records_user_id", table_name="intake_records")

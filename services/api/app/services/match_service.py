@@ -1,3 +1,4 @@
+from app.repositories.match_repository import MatchRepository
 from app.schemas.match import MatchCurrentResponse, MatchItem
 
 
@@ -24,7 +25,10 @@ FIGURE_PROFILES = [
 
 
 class MatchService:
-    def get_current_match(self, *, profile) -> MatchCurrentResponse:
+    def __init__(self, repository: MatchRepository | None = None) -> None:
+        self.repository = repository or MatchRepository()
+
+    def calculate_current_match(self, *, profile) -> MatchCurrentResponse:
         base_traits = {
             "riskPreference": profile.personality_traits.get("riskPreference", 0.5),
             "careerDrive": profile.fortune_traits.get("careerDrive", 0.5),
@@ -59,4 +63,44 @@ class MatchService:
                 "method": "weighted-placeholder-match",
             },
         )
+
+    def persist_match(self, db, *, user_id, profile, match_response: MatchCurrentResponse):
+        items = [
+            {
+                "rank_no": item.rank,
+                "figure_name": item.figureName,
+                "similarity_score": item.similarityScore,
+                "similarity_breakdown": {"highlights": item.highlights},
+                "difference_breakdown": {"differences": item.differences},
+                "explanation": match_response.explanation,
+            }
+            for item in match_response.topMatches
+        ]
+        return self.repository.replace_results(
+            db,
+            user_id=user_id,
+            profile_version=profile.version_no,
+            items=items,
+        )
+
+    def get_current_match(self, db, *, user_id, profile):
+        rows = self.repository.get_current_results(
+            db, user_id=user_id, profile_version=profile.version_no
+        )
+        if rows:
+            return MatchCurrentResponse(
+                profileVersion=profile.version_no,
+                topMatches=[
+                    MatchItem(
+                        rank=row.rank_no,
+                        figureName=row.figure_name,
+                        similarityScore=float(row.similarity_score),
+                        highlights=row.similarity_breakdown.get("highlights", []),
+                        differences=row.difference_breakdown.get("differences", []),
+                    )
+                    for row in rows
+                ],
+                explanation=rows[0].explanation if rows else {},
+            )
+        return self.calculate_current_match(profile=profile)
 

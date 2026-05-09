@@ -4,7 +4,9 @@ from sqlalchemy.orm import Session
 from app.db import get_db
 from app.schemas.job import JobCreateResponse
 from app.schemas.profile import ProfileRecomputeRequest, ProfileSummaryResponse
+from app.services.advice_service import AdviceService
 from app.services.job_service import JobService
+from app.services.match_service import MatchService
 from app.services.profile_service import ProfileService
 from app.services.user_service import UserService
 
@@ -45,6 +47,9 @@ def recompute_profile(
     db: Session = Depends(get_db),
     user_service: UserService = Depends(UserService),
     job_service: JobService = Depends(JobService),
+    profile_service: ProfileService = Depends(ProfileService),
+    match_service: MatchService = Depends(MatchService),
+    advice_service: AdviceService = Depends(AdviceService),
 ) -> JobCreateResponse:
     user = user_service.get_current_user(db)
     if user is None:
@@ -58,12 +63,21 @@ def recompute_profile(
     )
     profile, source_snapshot = profile_service.generate_profile(db, user=user)
     user_service.set_current_profile_version(db, user=user, version_no=profile.version_no)
+    match_response = match_service.calculate_current_match(profile=profile)
+    match_service.persist_match(db, user_id=user.id, profile=profile, match_response=match_response)
+    advice = advice_service.generate_and_store(
+        db,
+        user_id=user.id,
+        profile=profile,
+        match_response=match_response,
+    )
     job_service.complete_job(
         db,
         job=job,
         result={
             "profileVersion": profile.version_no,
             "sourceSnapshot": source_snapshot,
+            "adviceId": str(advice.id),
         },
     )
     return JobCreateResponse(jobId=job.id, jobType=job.job_type, status=job.status)

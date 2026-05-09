@@ -1,0 +1,36 @@
+from uuid import UUID
+
+from sqlalchemy import delete, select
+from sqlalchemy.orm import Session
+
+from app.models.advice_plan import AdvicePlan
+
+
+class AdviceRepository:
+    def replace_current(
+        self,
+        db: Session,
+        *,
+        user_id: UUID,
+        profile_version: int,
+        summary: dict,
+    ) -> AdvicePlan:
+        db.execute(
+            delete(AdvicePlan).where(
+                AdvicePlan.user_id == user_id,
+                AdvicePlan.profile_version == profile_version,
+            )
+        )
+        advice = AdvicePlan(user_id=user_id, profile_version=profile_version, summary=summary)
+        db.add(advice)
+        db.commit()
+        db.refresh(advice)
+        return advice
+
+    def get_current(self, db: Session, *, user_id: UUID, profile_version: int) -> AdvicePlan | None:
+        statement = select(AdvicePlan).where(
+            AdvicePlan.user_id == user_id,
+            AdvicePlan.profile_version == profile_version,
+        )
+        return db.scalar(statement)
+
