@@ -1,4 +1,5 @@
 from typing import Any
+from uuid import UUID
 
 from pydantic import BaseModel, Field
 
@@ -28,4 +29,5 @@ class QuestionnaireAnswerRequest(BaseModel):
 class QuestionnaireAnswerResponse(BaseModel):
     accepted: bool = True
     recomputeTriggered: bool = True
-
+    jobId: UUID
+    profileVersion: int

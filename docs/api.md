@@ -273,25 +273,22 @@
 
 ```json
 {
-  "success": true,
-  "data": {
-    "questions": [
-      {
-        "questionId": "career-risk-preference",
-        "questionText": "当你面对一个高收益但高不确定性的机会时，你通常会？",
-        "traitTargets": [
-          "riskPreference",
-          "longTermOrientation"
-        ],
-        "options": [
-          "快速抓住",
-          "观察一段时间后再决定",
-          "只有非常确定才行动",
-          "视情况而定"
-        ]
-      }
-    ]
-  }
+  "questions": [
+    {
+      "questionId": "career-risk-preference",
+      "questionText": "当你面对一个高收益但高不确定性的机会时，你通常会？",
+      "traitTargets": [
+        "riskPreference",
+        "longTermOrientation"
+      ],
+      "options": [
+        "快速抓住",
+        "观察一段时间后再决定",
+        "只有非常确定才行动",
+        "视情况而定"
+      ]
+    }
+  ]
 }
 ```
 
@@ -318,7 +315,9 @@
 ```json
 {
   "accepted": true,
-  "recomputeTriggered": true
+  "recomputeTriggered": true,
+  "jobId": "uuid",
+  "profileVersion": 3
 }
 ```
 

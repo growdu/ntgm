@@ -4,10 +4,8 @@ from sqlalchemy.orm import Session
 from app.db import get_db
 from app.schemas.job import JobCreateResponse
 from app.schemas.profile import ProfileRecomputeRequest, ProfileSummaryResponse
-from app.services.advice_service import AdviceService
-from app.services.job_service import JobService
-from app.services.match_service import MatchService
 from app.services.profile_service import ProfileService
+from app.services.profile_workflow_service import ProfileWorkflowService
 from app.services.user_service import UserService
 
 router = APIRouter(prefix="/profiles", tags=["profiles"])
@@ -46,38 +44,11 @@ def recompute_profile(
     payload: ProfileRecomputeRequest,
     db: Session = Depends(get_db),
     user_service: UserService = Depends(UserService),
-    job_service: JobService = Depends(JobService),
-    profile_service: ProfileService = Depends(ProfileService),
-    match_service: MatchService = Depends(MatchService),
-    advice_service: AdviceService = Depends(AdviceService),
+    workflow_service: ProfileWorkflowService = Depends(ProfileWorkflowService),
 ) -> JobCreateResponse:
     user = user_service.get_current_user(db)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
 
-    job = job_service.create_job(
-        db,
-        user_id=user.id,
-        job_type="recompute_profile",
-        payload={"reason": payload.reason, "userId": str(user.id)},
-    )
-    profile, source_snapshot = profile_service.generate_profile(db, user=user)
-    user_service.set_current_profile_version(db, user=user, version_no=profile.version_no)
-    match_response = match_service.calculate_current_match(profile=profile)
-    match_service.persist_match(db, user_id=user.id, profile=profile, match_response=match_response)
-    advice = advice_service.generate_and_store(
-        db,
-        user_id=user.id,
-        profile=profile,
-        match_response=match_response,
-    )
-    job_service.complete_job(
-        db,
-        job=job,
-        result={
-            "profileVersion": profile.version_no,
-            "sourceSnapshot": source_snapshot,
-            "adviceId": str(advice.id),
-        },
-    )
+    job, _, _, _ = workflow_service.recompute(db, user=user, reason=payload.reason)
     return JobCreateResponse(jobId=job.id, jobType=job.job_type, status=job.status)

@@ -90,6 +90,31 @@ export type JobCreateResponse = {
   status: string;
 };
 
+export type QuestionnaireQuestion = {
+  questionId: string;
+  questionText: string;
+  traitTargets: string[];
+  options: string[];
+};
+
+export type QuestionnaireNextResponse = {
+  questions: QuestionnaireQuestion[];
+};
+
+export type QuestionnaireAnswerItem = {
+  questionId: string;
+  value: string;
+  reason?: string | null;
+  metadata?: Record<string, unknown>;
+};
+
+export type QuestionnaireAnswerResponse = {
+  accepted: boolean;
+  recomputeTriggered: boolean;
+  jobId: string;
+  profileVersion: number;
+};
+
 export class ApiError extends Error {
   status: number;
 
@@ -167,5 +192,19 @@ export async function recomputeProfile(
   return request<JobCreateResponse>(apiBaseUrl, "/profiles/recompute", {
     method: "POST",
     body: { reason }
+  });
+}
+
+export async function fetchNextQuestions(apiBaseUrl: string): Promise<QuestionnaireNextResponse> {
+  return request<QuestionnaireNextResponse>(apiBaseUrl, "/questionnaire/next");
+}
+
+export async function submitQuestionnaireAnswers(
+  apiBaseUrl: string,
+  answers: QuestionnaireAnswerItem[]
+): Promise<QuestionnaireAnswerResponse> {
+  return request<QuestionnaireAnswerResponse>(apiBaseUrl, "/questionnaire/answers", {
+    method: "POST",
+    body: { answers }
   });
 }

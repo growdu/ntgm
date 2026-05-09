@@ -9,14 +9,17 @@ import {
   fetchCurrentUser,
   fetchHealth,
   fetchIntakeRecords,
+  fetchNextQuestions,
   recomputeProfile,
   submitBasicIntake,
+  submitQuestionnaireAnswers,
   type AdviceCurrentResponse,
   type BaziCurrentResponse,
   type HealthResponse,
   type IntakeRecordItem,
   type MatchCurrentResponse,
   type ProfileSummaryResponse,
+  type QuestionnaireQuestion,
   type UserMeResponse
 } from "@ntgm/sdk";
 import { startTransition, useEffect, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
@@ -145,6 +148,8 @@ export function IntakeWorkbench() {
     advice: null
   });
   const [form, setForm] = useState(INITIAL_FORM);
+  const [questions, setQuestions] = useState<QuestionnaireQuestion[]>([]);
+  const [questionnaireAnswers, setQuestionnaireAnswers] = useState<Record<string, string>>({});
   const [statusText, setStatusText] = useState("等待首次建档。");
   const [errorText, setErrorText] = useState<string | null>(null);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -153,7 +158,11 @@ export function IntakeWorkbench() {
   async function loadDashboard() {
     setErrorText(null);
 
-    const health = await fetchHealth(API_BASE_URL);
+    const [health, questionnaire] = await Promise.all([
+      fetchHealth(API_BASE_URL),
+      fetchNextQuestions(API_BASE_URL)
+    ]);
+    setQuestions(questionnaire.questions);
     const user = await optionalRequest(() => fetchCurrentUser(API_BASE_URL));
 
     if (user === null) {
@@ -261,6 +270,42 @@ export function IntakeWorkbench() {
       setStatusText(`画像重算完成，任务状态：${job.status}`);
     } catch (error) {
       setErrorText(error instanceof Error ? error.message : "重算失败");
+    } finally {
+      setIsBusy(false);
+    }
+  }
+
+  async function handleSubmitQuestionnaire(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setErrorText(null);
+
+    const answers = questions
+      .map((question) => ({
+        questionId: question.questionId,
+        value: questionnaireAnswers[question.questionId]
+      }))
+      .filter((item) => item.value)
+      .map((item) => ({
+        questionId: item.questionId,
+        value: item.value,
+        metadata: {
+          source: "web_workbench"
+        }
+      }));
+
+    if (answers.length === 0) {
+      setErrorText("请至少回答一个问题。");
+      return;
+    }
+
+    setIsBusy(true);
+
+    try {
+      const result = await submitQuestionnaireAnswers(API_BASE_URL, answers);
+      await loadDashboard();
+      setStatusText(`问答已提交，画像更新到版本 ${result.profileVersion}`);
+    } catch (error) {
+      setErrorText(error instanceof Error ? error.message : "问答提交失败");
     } finally {
       setIsBusy(false);
     }
@@ -421,6 +466,76 @@ export function IntakeWorkbench() {
                 />
               ) : (
                 <EmptyState text="当前还没有用户档案，先提交基础建档。" />
+              )}
+            </SectionCard>
+
+            <SectionCard title="持续问答校准" eyebrow="QUESTIONNAIRE">
+              {questions.length > 0 ? (
+                <form onSubmit={handleSubmitQuestionnaire} style={{ display: "grid", gap: 18 }}>
+                  {questions.map((question) => (
+                    <div
+                      key={question.questionId}
+                      style={{
+                        borderRadius: 18,
+                        padding: 16,
+                        background: "rgba(255, 255, 255, 0.04)",
+                        border: "1px solid rgba(255, 255, 255, 0.06)"
+                      }}
+                    >
+                      <div style={{ fontSize: 16, lineHeight: 1.7, marginBottom: 10 }}>
+                        {question.questionText}
+                      </div>
+                      <div style={{ color: "#9ca3af", fontSize: 12, marginBottom: 12 }}>
+                        目标维度：{question.traitTargets.join(" / ")}
+                      </div>
+                      <div style={{ display: "grid", gap: 10 }}>
+                        {question.options.map((option) => {
+                          const checked = questionnaireAnswers[question.questionId] === option;
+                          return (
+                            <label
+                              key={option}
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 10,
+                                borderRadius: 14,
+                                padding: "12px 14px",
+                                border: checked
+                                  ? "1px solid rgba(214, 170, 97, 0.6)"
+                                  : "1px solid rgba(255, 255, 255, 0.08)",
+                                background: checked
+                                  ? "rgba(128, 91, 37, 0.22)"
+                                  : "rgba(255, 255, 255, 0.02)",
+                                cursor: "pointer"
+                              }}
+                            >
+                              <input
+                                type="radio"
+                                name={question.questionId}
+                                value={option}
+                                checked={checked}
+                                onChange={() =>
+                                  setQuestionnaireAnswers((current) => ({
+                                    ...current,
+                                    [question.questionId]: option
+                                  }))
+                                }
+                              />
+                              <span>{option}</span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                  <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                    <button type="submit" style={primaryButtonStyle} disabled={isBusy || !dashboard.user}>
+                      {isBusy ? "提交中..." : "提交问答并重算"}
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <EmptyState text="问答题库还未加载。" />
               )}
             </SectionCard>
 
