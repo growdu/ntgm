@@ -251,11 +251,8 @@
 
 ```json
 {
-  "success": true,
-  "data": {
-    "accepted": true,
-    "recomputeTriggered": true
-  }
+  "accepted": true,
+  "recomputeTriggered": true
 }
 ```
 
