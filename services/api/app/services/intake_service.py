@@ -35,3 +35,5 @@ class IntakeService:
     def list_life_events(self, db: Session, *, user_id):
         return self.repository.list_life_events(db, user_id=user_id)
 
+    def list_records(self, db: Session, *, user_id):
+        return self.repository.list_records(db, user_id=user_id)

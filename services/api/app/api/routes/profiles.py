@@ -56,5 +56,14 @@ def recompute_profile(
         job_type="recompute_profile",
         payload={"reason": payload.reason, "userId": str(user.id)},
     )
+    profile, source_snapshot = profile_service.generate_profile(db, user=user)
+    user_service.set_current_profile_version(db, user=user, version_no=profile.version_no)
+    job_service.complete_job(
+        db,
+        job=job,
+        result={
+            "profileVersion": profile.version_no,
+            "sourceSnapshot": source_snapshot,
+        },
+    )
     return JobCreateResponse(jobId=job.id, jobType=job.job_type, status=job.status)
-

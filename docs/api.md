@@ -356,14 +356,14 @@
 {
   "jobId": "uuid",
   "jobType": "recompute_profile",
-  "status": "queued"
+  "status": "completed"
 }
 ```
 
 说明：
 
-1. 当前阶段该接口会先创建 `job`
-2. 真实画像计算任务将在后续阶段接入 Worker 与画像引擎
+1. 当前阶段该接口会创建 `job` 并同步生成最小画像结果
+2. 后续阶段再切换为真实 Worker 异步链路
 
 ---
 
@@ -377,27 +377,37 @@
 
 ```json
 {
-  "success": true,
-  "data": {
-    "profileVersion": 4,
-    "topMatches": [
-      {
-        "rank": 1,
-        "figureName": "曹操",
-        "similarityScore": 0.82,
-        "highlights": [
-          "高控制欲",
-          "现实主义决策",
-          "高权力驱动"
-        ],
-        "differences": [
-          "情绪稳定性高于该人物"
-        ]
-      }
-    ]
+  "profileVersion": 4,
+  "topMatches": [
+    {
+      "rank": 1,
+      "figureName": "曹操",
+      "similarityScore": 0.82,
+      "highlights": [
+        "高控制欲",
+        "现实主义决策",
+        "高权力驱动"
+      ],
+      "differences": [
+        "情绪稳定性高于该人物"
+      ]
+    }
+  ],
+  "explanation": {
+    "baseTraits": {
+      "riskPreference": 0.78,
+      "careerDrive": 0.76,
+      "controlDrive": 0.71
+    },
+    "method": "weighted-placeholder-match"
   }
 }
 ```
+
+说明：
+
+1. 当前阶段匹配基于占位历史人物特征库
+2. 后续将替换为更完整的人物画像库与匹配规则
 
 ## 10.2 获取指定版本匹配结果
 

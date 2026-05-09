@@ -25,3 +25,6 @@ class UserService:
         if user is None:
             raise ValueError("User not found")
         return user
+
+    def set_current_profile_version(self, db: Session, *, user, version_no: int):
+        return self.repository.set_current_profile_version(db, user=user, version_no=version_no)

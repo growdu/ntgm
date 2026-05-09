@@ -16,3 +16,34 @@ class ProfileRepository:
         )
         return db.scalar(statement)
 
+    def create_version(
+        self,
+        db: Session,
+        *,
+        user_id: UUID,
+        version_no: int,
+        summary: dict,
+        personality_traits: dict,
+        ability_traits: dict,
+        relationship_traits: dict,
+        fortune_traits: dict,
+        confidence_map: dict,
+        source_snapshot: dict,
+        engine_version: str = "v0",
+    ) -> ProfileVersion:
+        profile = ProfileVersion(
+            user_id=user_id,
+            version_no=version_no,
+            summary=summary,
+            personality_traits=personality_traits,
+            ability_traits=ability_traits,
+            relationship_traits=relationship_traits,
+            fortune_traits=fortune_traits,
+            confidence_map=confidence_map,
+            source_snapshot=source_snapshot,
+            engine_version=engine_version,
+        )
+        db.add(profile)
+        db.commit()
+        db.refresh(profile)
+        return profile

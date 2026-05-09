@@ -65,3 +65,10 @@ class IntakeRepository:
         statement = select(LifeEvent).where(LifeEvent.user_id == user_id).order_by(desc(LifeEvent.event_time))
         return db.scalars(statement).all()
 
+    def list_records(self, db: Session, *, user_id: UUID) -> Sequence[IntakeRecord]:
+        statement = (
+            select(IntakeRecord)
+            .where(IntakeRecord.user_id == user_id)
+            .order_by(desc(IntakeRecord.submitted_at))
+        )
+        return db.scalars(statement).all()

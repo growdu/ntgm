@@ -38,3 +38,8 @@ class UserRepository:
         db.refresh(user)
         return user
 
+    def set_current_profile_version(self, db: Session, *, user: User, version_no: int) -> User:
+        user.current_profile_version = version_no
+        db.commit()
+        db.refresh(user)
+        return user

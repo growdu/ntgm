@@ -17,3 +17,5 @@ class JobService:
     def get_job(self, db: Session, *, job_id: UUID):
         return self.repository.get_by_id(db, job_id=job_id)
 
+    def complete_job(self, db: Session, *, job, result: dict):
+        return self.repository.update_status(db, job=job, status="completed", result=result)

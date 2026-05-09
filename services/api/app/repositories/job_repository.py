@@ -29,3 +29,18 @@ class JobRepository:
         statement = select(Job).where(Job.user_id == user_id).order_by(desc(Job.created_at))
         return list(db.scalars(statement).all())
 
+    def update_status(
+        self,
+        db: Session,
+        *,
+        job: Job,
+        status: str,
+        result: dict | None = None,
+        error_message: str | None = None,
+    ) -> Job:
+        job.status = status
+        job.result = result
+        job.error_message = error_message
+        db.commit()
+        db.refresh(job)
+        return job

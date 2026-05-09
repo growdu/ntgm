@@ -35,11 +35,15 @@ def submit_answers(
         raise HTTPException(status_code=404, detail="User not found")
 
     questionnaire_service.save_answers(db, user_id=user.id, payload=payload)
-    job_service.create_job(
+    job = job_service.create_job(
         db,
         user_id=user.id,
         job_type="recompute_profile",
         payload={"reason": "questionnaire_answers", "userId": str(user.id)},
     )
+    job_service.complete_job(
+        db,
+        job=job,
+        result={"acceptedAnswers": len(payload.answers)},
+    )
     return QuestionnaireAnswerResponse()
-
