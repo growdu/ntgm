@@ -78,6 +78,19 @@ export type MatchCurrentResponse = {
   explanation: Record<string, unknown>;
 };
 
+export type ProfileVersionItem = {
+  profileId: string;
+  profileVersion: number;
+  summary: Record<string, unknown>;
+  confidenceMap: Record<string, unknown>;
+  engineVersion: string;
+  createdAt: string;
+};
+
+export type ProfileVersionListResponse = {
+  items: ProfileVersionItem[];
+};
+
 export type AdviceCurrentResponse = {
   adviceId: string;
   profileVersion: number;
@@ -138,6 +151,55 @@ export type LifeEventItem = {
   title: string;
   description: string | null;
   impactScore: number | null;
+};
+
+export type ProfileChangeLogItem = {
+  changeId: string;
+  fromVersion: number;
+  toVersion: number;
+  changedDimensions: {
+    raised?: string[];
+    lowered?: string[];
+    topDiffs?: Array<{
+      dimension: string;
+      previousValue: number;
+      currentValue: number;
+      delta: number;
+      direction: string;
+    }>;
+    uncertainDimensions?: string[];
+  };
+  reasonSummary: {
+    headline?: string;
+    trigger?: string;
+    newEvidence?: string[];
+    evidenceDelta?: Record<string, number>;
+    sourceSnapshot?: Record<string, unknown>;
+  };
+  createdAt: string;
+};
+
+export type ArchiveChangesResponse = {
+  items: ProfileChangeLogItem[];
+};
+
+export type ArchiveTimelineItem = {
+  itemType: string;
+  occurredAt: string;
+  title: string;
+  summary: string;
+  profileVersion: number | null;
+  metadata: Record<string, unknown>;
+};
+
+export type ArchiveTimelineResponse = {
+  items: ArchiveTimelineItem[];
+};
+
+export type ArchiveTimelineQuery = {
+  limit?: number;
+  types?: string[];
+  profileVersion?: number | null;
 };
 
 export class ApiError extends Error {
@@ -202,6 +264,17 @@ export async function fetchCurrentProfile(apiBaseUrl: string): Promise<ProfileSu
   return request<ProfileSummaryResponse>(apiBaseUrl, "/profiles/current");
 }
 
+export async function fetchProfileVersions(apiBaseUrl: string): Promise<ProfileVersionListResponse> {
+  return request<ProfileVersionListResponse>(apiBaseUrl, "/profiles/versions");
+}
+
+export async function fetchProfileVersion(
+  apiBaseUrl: string,
+  versionNo: number
+): Promise<ProfileSummaryResponse> {
+  return request<ProfileSummaryResponse>(apiBaseUrl, `/profiles/versions/${versionNo}`);
+}
+
 export async function fetchCurrentMatch(apiBaseUrl: string): Promise<MatchCurrentResponse> {
   return request<MatchCurrentResponse>(apiBaseUrl, "/matches/current");
 }
@@ -246,4 +319,28 @@ export async function createLifeEvent(
 
 export async function fetchLifeEvents(apiBaseUrl: string): Promise<LifeEventItem[]> {
   return request<LifeEventItem[]>(apiBaseUrl, "/events");
+}
+
+export async function fetchArchiveChanges(apiBaseUrl: string): Promise<ArchiveChangesResponse> {
+  return request<ArchiveChangesResponse>(apiBaseUrl, "/archive/changes");
+}
+
+export async function fetchArchiveTimeline(
+  apiBaseUrl: string,
+  query?: ArchiveTimelineQuery
+): Promise<ArchiveTimelineResponse> {
+  const params = new URLSearchParams();
+
+  if (query?.limit !== undefined) {
+    params.set("limit", String(query.limit));
+  }
+  if (query?.types && query.types.length > 0) {
+    params.set("types", query.types.join(","));
+  }
+  if (query?.profileVersion !== undefined && query.profileVersion !== null) {
+    params.set("profileVersion", String(query.profileVersion));
+  }
+
+  const suffix = params.size > 0 ? `?${params.toString()}` : "";
+  return request<ArchiveTimelineResponse>(apiBaseUrl, `/archive/timeline${suffix}`);
 }

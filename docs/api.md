@@ -398,9 +398,38 @@
 
 `GET /profiles/versions`
 
+### 响应
+
+```json
+{
+  "items": [
+    {
+      "profileId": "uuid",
+      "profileVersion": 3,
+      "summary": {
+        "score": 74,
+        "keywords": ["持续校准", "高事业驱动"]
+      },
+      "confidenceMap": {
+        "personality": 0.71,
+        "ability": 0.66,
+        "relationship": 0.57
+      },
+      "engineVersion": "v0",
+      "createdAt": "2026-05-11T10:00:00Z"
+    }
+  ]
+}
+```
+
 ## 9.3 获取指定画像版本详情
 
 `GET /profiles/versions/{version}`
+
+说明：
+
+1. 当前返回结构与 `GET /profiles/current` 一致
+2. Web 工作台会用该接口做时间线版本联动预览
 
 ## 9.4 手动触发画像重算
 
@@ -549,9 +578,92 @@
 
 `GET /archive/timeline`
 
+### 查询参数
+
+1. `limit`：返回节点数量，默认 `20`
+2. `types`：按节点类型过滤，逗号分隔
+3. `profileVersion`：仅返回关联某个画像版本的节点
+
+当前支持的 `types`：
+
+1. `profile_version`
+2. `profile_change`
+3. `life_event`
+4. `match_result`
+5. `advice_plan`
+
+### 示例
+
+`GET /archive/timeline?types=profile_change,match_result&profileVersion=3`
+
+### 响应
+
+```json
+{
+  "items": [
+    {
+      "itemType": "profile_change",
+      "occurredAt": "2026-05-11T10:05:00Z",
+      "title": "画像变化 V2 -> V3",
+      "summary": "riskPreference 明显上升，画像升级到 V3；主要受问答补充驱动。",
+      "profileVersion": 3,
+      "metadata": {
+        "fromVersion": 2,
+        "toVersion": 3,
+        "changedDimensions": {
+          "raised": ["riskPreference"],
+          "lowered": [],
+          "topDiffs": [],
+          "uncertainDimensions": ["relationship"]
+        }
+      }
+    }
+  ]
+}
+```
+
 ## 12.2 获取版本变化记录
 
 `GET /archive/changes`
+
+### 响应
+
+```json
+{
+  "items": [
+    {
+      "changeId": "uuid",
+      "fromVersion": 2,
+      "toVersion": 3,
+      "changedDimensions": {
+        "raised": ["riskPreference", "careerDrive"],
+        "lowered": [],
+        "topDiffs": [
+          {
+            "dimension": "riskPreference",
+            "previousValue": 0.52,
+            "currentValue": 0.67,
+            "delta": 0.15,
+            "direction": "up"
+          }
+        ],
+        "uncertainDimensions": ["relationship"]
+      },
+      "reasonSummary": {
+        "headline": "riskPreference 明显上升，画像升级到 V3；主要受问答补充驱动。",
+        "trigger": "questionnaire_answers",
+        "newEvidence": ["问答补充"]
+      },
+      "createdAt": "2026-05-11T10:05:00Z"
+    }
+  ]
+}
+```
+
+说明：
+
+1. 当前变化记录在每次 `profiles/recompute`、问答提交、事件录入触发重算时同步生成
+2. 变化摘要会包含上升维度、下降维度、低置信度维度和新证据来源
 
 ## 12.3 导出 PDF
 

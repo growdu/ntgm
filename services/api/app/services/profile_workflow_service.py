@@ -1,6 +1,7 @@
 from app.services.advice_service import AdviceService
 from app.services.job_service import JobService
 from app.services.match_service import MatchService
+from app.services.profile_change_service import ProfileChangeService
 from app.services.profile_service import ProfileService
 from app.services.user_service import UserService
 
@@ -10,12 +11,14 @@ class ProfileWorkflowService:
         self,
         job_service: JobService | None = None,
         profile_service: ProfileService | None = None,
+        profile_change_service: ProfileChangeService | None = None,
         match_service: MatchService | None = None,
         advice_service: AdviceService | None = None,
         user_service: UserService | None = None,
     ) -> None:
         self.job_service = job_service or JobService()
         self.profile_service = profile_service or ProfileService()
+        self.profile_change_service = profile_change_service or ProfileChangeService()
         self.match_service = match_service or MatchService()
         self.advice_service = advice_service or AdviceService()
         self.user_service = user_service or UserService()
@@ -27,7 +30,16 @@ class ProfileWorkflowService:
             job_type="recompute_profile",
             payload={"reason": reason, "userId": str(user.id)},
         )
+        previous_profile = self.profile_service.get_current_profile(db, user_id=user.id)
         profile, source_snapshot = self.profile_service.generate_profile(db, user=user)
+        self.profile_change_service.record_change(
+            db,
+            user_id=user.id,
+            previous_profile=previous_profile,
+            current_profile=profile,
+            reason=reason,
+            source_snapshot=source_snapshot,
+        )
         self.user_service.set_current_profile_version(db, user=user, version_no=profile.version_no)
         match_response = self.match_service.calculate_current_match(profile=profile)
         self.match_service.persist_match(

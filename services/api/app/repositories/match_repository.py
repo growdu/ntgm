@@ -50,3 +50,11 @@ class MatchRepository:
         )
         return list(db.scalars(statement).all())
 
+    def list_primary_matches(self, db: Session, *, user_id: UUID, limit: int = 10) -> list[MatchResult]:
+        statement = (
+            select(MatchResult)
+            .where(MatchResult.user_id == user_id, MatchResult.rank_no == 1)
+            .order_by(desc(MatchResult.profile_version), desc(MatchResult.created_at))
+            .limit(limit)
+        )
+        return list(db.scalars(statement).all())

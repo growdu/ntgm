@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any
 from uuid import UUID
 
@@ -20,3 +21,15 @@ class ProfileSummaryResponse(BaseModel):
     confidenceMap: dict[str, Any]
     engineVersion: str
 
+
+class ProfileVersionItem(BaseModel):
+    profileId: UUID
+    profileVersion: int
+    summary: dict[str, Any]
+    confidenceMap: dict[str, Any]
+    engineVersion: str
+    createdAt: datetime
+
+
+class ProfileVersionListResponse(BaseModel):
+    items: list[ProfileVersionItem]

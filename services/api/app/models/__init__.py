@@ -6,6 +6,7 @@ from app.models.intake_record import IntakeRecord
 from app.models.job import Job
 from app.models.life_event import LifeEvent
 from app.models.match_result import MatchResult
+from app.models.profile_change_log import ProfileChangeLog
 from app.models.profile_version import ProfileVersion
 from app.models.user import User
 
@@ -18,6 +19,7 @@ __all__ = [
     "Job",
     "LifeEvent",
     "MatchResult",
+    "ProfileChangeLog",
     "ProfileVersion",
     "User",
 ]

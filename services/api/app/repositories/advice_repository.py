@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import delete, select
+from sqlalchemy import delete, desc, select
 from sqlalchemy.orm import Session
 
 from app.models.advice_plan import AdvicePlan
@@ -34,3 +34,11 @@ class AdviceRepository:
         )
         return db.scalar(statement)
 
+    def list_recent(self, db: Session, *, user_id: UUID, limit: int = 10) -> list[AdvicePlan]:
+        statement = (
+            select(AdvicePlan)
+            .where(AdvicePlan.user_id == user_id)
+            .order_by(desc(AdvicePlan.profile_version), desc(AdvicePlan.created_at))
+            .limit(limit)
+        )
+        return list(db.scalars(statement))

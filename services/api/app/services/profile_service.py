@@ -19,6 +19,12 @@ class ProfileService:
     def get_current_profile(self, db: Session, *, user_id):
         return self.repository.get_current(db, user_id=user_id)
 
+    def list_versions(self, db: Session, *, user_id, limit: int = 10):
+        return self.repository.list_versions(db, user_id=user_id, limit=limit)
+
+    def get_profile_by_version(self, db: Session, *, user_id, version_no: int):
+        return self.repository.get_by_version(db, user_id=user_id, version_no=version_no)
+
     def generate_profile(self, db: Session, *, user) -> tuple[object, dict]:
         current = self.repository.get_current(db, user_id=user.id)
         next_version = 1 if current is None else current.version_no + 1

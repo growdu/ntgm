@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.routes.advice import router as advice_router
+from app.api.routes.archive import router as archive_router
 from app.api.routes.assets import router as assets_router
 from app.api.routes.bazi import router as bazi_router
 from app.api.routes.events import router as events_router
@@ -15,6 +16,7 @@ from app.api.routes.users import router as users_router
 router = APIRouter()
 router.include_router(health_router)
 router.include_router(advice_router)
+router.include_router(archive_router)
 router.include_router(assets_router)
 router.include_router(bazi_router)
 router.include_router(intake_router)

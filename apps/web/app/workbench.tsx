@@ -3,25 +3,32 @@
 import {
   ApiError,
   createLifeEvent,
+  fetchArchiveChanges,
+  fetchArchiveTimeline,
   fetchCurrentAdvice,
   fetchCurrentBazi,
   fetchCurrentMatch,
   fetchCurrentProfile,
+  fetchProfileVersion,
   fetchCurrentUser,
   fetchHealth,
   fetchIntakeRecords,
   fetchLifeEvents,
   fetchNextQuestions,
+  fetchProfileVersions,
   recomputeProfile,
   submitBasicIntake,
   submitQuestionnaireAnswers,
   type AdviceCurrentResponse,
+  type ArchiveTimelineItem,
   type BaziCurrentResponse,
   type HealthResponse,
   type IntakeRecordItem,
   type LifeEventItem,
   type MatchCurrentResponse,
+  type ProfileChangeLogItem,
   type ProfileSummaryResponse,
+  type ProfileVersionItem,
   type QuestionnaireQuestion,
   type UserMeResponse
 } from "@ntgm/sdk";
@@ -45,6 +52,14 @@ const INITIAL_EVENT_FORM = {
   impactScore: "70"
 };
 
+const TIMELINE_FILTERS = [
+  { value: "profile_version", label: "画像版本" },
+  { value: "profile_change", label: "版本变化" },
+  { value: "life_event", label: "人生事件" },
+  { value: "match_result", label: "人物匹配" },
+  { value: "advice_plan", label: "建议更新" }
+] as const;
+
 type DashboardState = {
   health: HealthResponse | null;
   user: UserMeResponse | null;
@@ -52,6 +67,9 @@ type DashboardState = {
   events: LifeEventItem[];
   bazi: BaziCurrentResponse | null;
   profile: ProfileSummaryResponse | null;
+  profileVersions: ProfileVersionItem[];
+  changes: ProfileChangeLogItem[];
+  timeline: ArchiveTimelineItem[];
   match: MatchCurrentResponse | null;
   advice: AdviceCurrentResponse | null;
 };
@@ -157,6 +175,9 @@ export function IntakeWorkbench() {
     events: [],
     bazi: null,
     profile: null,
+    profileVersions: [],
+    changes: [],
+    timeline: [],
     match: null,
     advice: null
   });
@@ -168,6 +189,25 @@ export function IntakeWorkbench() {
   const [errorText, setErrorText] = useState<string | null>(null);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isBusy, setIsBusy] = useState(false);
+  const [selectedTimelineTypes, setSelectedTimelineTypes] = useState<string[]>([]);
+  const [timelineProfileFilter, setTimelineProfileFilter] = useState<number | null>(null);
+  const [expandedTimelineItemKey, setExpandedTimelineItemKey] = useState<string | null>(null);
+  const [selectedProfilePreview, setSelectedProfilePreview] = useState<ProfileSummaryResponse | null>(null);
+  const [selectedProfilePreviewVersion, setSelectedProfilePreviewVersion] = useState<number | null>(null);
+
+  async function loadArchiveTimeline(options?: {
+    types?: string[];
+    profileVersion?: number | null;
+  }): Promise<ArchiveTimelineItem[]> {
+    const timeline = await optionalRequest(() =>
+      fetchArchiveTimeline(API_BASE_URL, {
+        limit: 20,
+        types: options?.types ?? selectedTimelineTypes,
+        profileVersion: options?.profileVersion ?? timelineProfileFilter
+      })
+    );
+    return timeline?.items ?? [];
+  }
 
   async function loadDashboard() {
     setErrorText(null);
@@ -187,17 +227,23 @@ export function IntakeWorkbench() {
         events: [],
         bazi: null,
         profile: null,
+        profileVersions: [],
+        changes: [],
+        timeline: [],
         match: null,
         advice: null
       });
       return;
     }
 
-    const [records, events, bazi, profile, match, advice] = await Promise.all([
+    const [records, events, bazi, profile, profileVersions, changes, timeline, match, advice] = await Promise.all([
       fetchIntakeRecords(API_BASE_URL),
       fetchLifeEvents(API_BASE_URL),
       optionalRequest(() => fetchCurrentBazi(API_BASE_URL)),
       optionalRequest(() => fetchCurrentProfile(API_BASE_URL)),
+      optionalRequest(() => fetchProfileVersions(API_BASE_URL)),
+      optionalRequest(() => fetchArchiveChanges(API_BASE_URL)),
+      loadArchiveTimeline(),
       optionalRequest(() => fetchCurrentMatch(API_BASE_URL)),
       optionalRequest(() => fetchCurrentAdvice(API_BASE_URL))
     ]);
@@ -209,6 +255,9 @@ export function IntakeWorkbench() {
       events,
       bazi,
       profile,
+      profileVersions: profileVersions?.items ?? [],
+      changes: changes?.items ?? [],
+      timeline,
       match,
       advice
     });
@@ -238,6 +287,36 @@ export function IntakeWorkbench() {
     };
   }, []);
 
+  useEffect(() => {
+    if (isInitialLoading) {
+      return;
+    }
+
+    let cancelled = false;
+
+    async function refreshTimelineOnly() {
+      try {
+        const items = await loadArchiveTimeline();
+        if (!cancelled) {
+          setDashboard((current) => ({
+            ...current,
+            timeline: items
+          }));
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setErrorText(error instanceof Error ? error.message : "时间线加载失败");
+        }
+      }
+    }
+
+    void refreshTimelineOnly();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedTimelineTypes, timelineProfileFilter, isInitialLoading]);
+
   async function refreshDashboard(message?: string) {
     startTransition(() => {
       setStatusText(message ?? "正在刷新画像数据...");
@@ -249,6 +328,25 @@ export function IntakeWorkbench() {
     } catch (error) {
       setErrorText(error instanceof Error ? error.message : "刷新失败");
     }
+  }
+
+  async function handleTimelineProfileJump(versionNo: number) {
+    setErrorText(null);
+
+    try {
+      const profile = await fetchProfileVersion(API_BASE_URL, versionNo);
+      setSelectedProfilePreview(profile);
+      setSelectedProfilePreviewVersion(versionNo);
+      setStatusText(`已联动到画像版本 V${versionNo}。`);
+    } catch (error) {
+      setErrorText(error instanceof Error ? error.message : "画像版本加载失败");
+    }
+  }
+
+  function toggleTimelineType(type: string) {
+    setSelectedTimelineTypes((current) =>
+      current.includes(type) ? current.filter((item) => item !== type) : [...current, type]
+    );
   }
 
   async function handleSubmitIntake(event: FormEvent<HTMLFormElement>) {
@@ -376,8 +474,24 @@ export function IntakeWorkbench() {
     {
       label: "八字评分",
       value: dashboard.bazi?.score ?? "未生成"
+    },
+    {
+      label: "变化记录数",
+      value: dashboard.changes.length
+    },
+    {
+      label: "时间线节点",
+      value: dashboard.timeline.length
     }
   ];
+
+  const latestChange = dashboard.changes[0] ?? null;
+  const timelineFilterSummary =
+    selectedTimelineTypes.length > 0
+      ? TIMELINE_FILTERS.filter((item) => selectedTimelineTypes.includes(item.value))
+          .map((item) => item.label)
+          .join(" / ")
+      : "全部类型";
 
   return (
     <main
@@ -719,6 +833,38 @@ export function IntakeWorkbench() {
                   <InfoBlock title="能力特征" value={dashboard.profile.abilityTraits} />
                   <InfoBlock title="关系特征" value={dashboard.profile.relationshipTraits} />
                   <InfoBlock title="运势特征" value={dashboard.profile.fortuneTraits} />
+                  {latestChange ? (
+                    <div
+                      style={{
+                        borderRadius: 18,
+                        padding: 16,
+                        background: "rgba(214, 170, 97, 0.08)",
+                        border: "1px solid rgba(214, 170, 97, 0.18)"
+                      }}
+                    >
+                      <div style={{ color: "#c9a96a", fontSize: 12, marginBottom: 8 }}>最近一次变化</div>
+                      <div style={{ fontSize: 16, lineHeight: 1.8, marginBottom: 12 }}>
+                        {latestChange.reasonSummary.headline ?? "当前暂无变化摘要。"}
+                      </div>
+                      <KeyValueList
+                        items={[
+                          {
+                            label: "版本跃迁",
+                            value: `V${latestChange.fromVersion} -> V${latestChange.toVersion}`
+                          },
+                          {
+                            label: "新增证据",
+                            value: (latestChange.reasonSummary.newEvidence ?? []).join(" / ") || "无"
+                          },
+                          {
+                            label: "低置信度维度",
+                            value:
+                              (latestChange.changedDimensions.uncertainDimensions ?? []).join(" / ") || "无"
+                          }
+                        ]}
+                      />
+                    </div>
+                  ) : null}
                 </div>
               ) : (
                 <EmptyState text="画像还未生成。提交建档后点击“重算画像”即可产出第一版用户画像。" />
@@ -795,6 +941,146 @@ export function IntakeWorkbench() {
               )}
             </SectionCard>
 
+            <SectionCard title="成长档案时间线" eyebrow="ARCHIVE TIMELINE">
+              <div style={{ display: "grid", gap: 12, marginBottom: 18 }}>
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                  {TIMELINE_FILTERS.map((filter) => {
+                    const active = selectedTimelineTypes.includes(filter.value);
+                    return (
+                      <button
+                        key={filter.value}
+                        type="button"
+                        onClick={() => toggleTimelineType(filter.value)}
+                        style={active ? activeFilterButtonStyle : filterButtonStyle}
+                      >
+                        {filter.label}
+                      </button>
+                    );
+                  })}
+                </div>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "minmax(0, 1fr) auto",
+                    gap: 12,
+                    alignItems: "center"
+                  }}
+                >
+                  <select
+                    value={timelineProfileFilter ?? ""}
+                    onChange={(event) =>
+                      setTimelineProfileFilter(event.target.value ? Number(event.target.value) : null)
+                    }
+                    style={inputStyle}
+                  >
+                    <option value="">全部画像版本</option>
+                    {dashboard.profileVersions.map((item) => (
+                      <option key={item.profileId} value={item.profileVersion}>
+                        V{item.profileVersion}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    style={secondaryButtonStyle}
+                    onClick={() => {
+                      setSelectedTimelineTypes([]);
+                      setTimelineProfileFilter(null);
+                    }}
+                  >
+                    清空筛选
+                  </button>
+                </div>
+                <div style={{ color: "#9ca3af", fontSize: 13 }}>
+                  当前筛选：{timelineFilterSummary}
+                  {timelineProfileFilter ? ` / 版本 V${timelineProfileFilter}` : ""}
+                </div>
+              </div>
+              {dashboard.timeline.length > 0 ? (
+                <div style={{ display: "grid", gap: 12 }}>
+                  {dashboard.timeline.map((item, index) => {
+                    const itemKey = `${item.itemType}-${item.occurredAt}-${index}`;
+                    const isExpanded = expandedTimelineItemKey === itemKey;
+
+                    return (
+                      <div
+                        key={itemKey}
+                        style={{
+                          borderRadius: 18,
+                          padding: 16,
+                          background: "rgba(255, 255, 255, 0.04)",
+                          border: "1px solid rgba(255, 255, 255, 0.06)"
+                        }}
+                      >
+                        <div style={{ display: "flex", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+                          <strong>{item.title}</strong>
+                          <span style={{ color: "#9ca3af", fontSize: 12 }}>{formatDateTime(item.occurredAt)}</span>
+                        </div>
+                        <div style={{ color: "#d4d4d8", lineHeight: 1.7 }}>{item.summary}</div>
+                        <div style={{ color: "#9ca3af", lineHeight: 1.7, marginTop: 8 }}>
+                          节点类型：{item.itemType}
+                        </div>
+                        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 12 }}>
+                          <button
+                            type="button"
+                            style={secondaryButtonStyle}
+                            onClick={() =>
+                              setExpandedTimelineItemKey((current) => (current === itemKey ? null : itemKey))
+                            }
+                          >
+                            {isExpanded ? "收起详情" : "展开详情"}
+                          </button>
+                          {item.profileVersion ? (
+                            <button
+                              type="button"
+                              style={primaryButtonStyle}
+                              onClick={() => void handleTimelineProfileJump(item.profileVersion)}
+                            >
+                              查看 V{item.profileVersion}
+                            </button>
+                          ) : null}
+                        </div>
+                        {isExpanded ? (
+                          <div style={{ marginTop: 12 }}>
+                            <InfoBlock title="节点元数据" value={item.metadata} />
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <EmptyState text="画像、匹配、建议和事件开始沉淀后，这里会形成统一成长时间线。" />
+              )}
+            </SectionCard>
+
+            <SectionCard title="时间线联动画像版本" eyebrow="PROFILE PREVIEW">
+              {selectedProfilePreview ? (
+                <div style={{ display: "grid", gap: 16 }}>
+                  <KeyValueList
+                    items={[
+                      { label: "联动版本", value: selectedProfilePreviewVersion ?? 0 },
+                      { label: "引擎版本", value: selectedProfilePreview.engineVersion },
+                      {
+                        label: "画像总分",
+                        value:
+                          typeof selectedProfilePreview.summary.score === "number"
+                            ? selectedProfilePreview.summary.score
+                            : "暂无"
+                      }
+                    ]}
+                  />
+                  <InfoBlock title="画像摘要" value={selectedProfilePreview.summary} />
+                  <InfoBlock title="性格特征" value={selectedProfilePreview.personalityTraits} />
+                  <InfoBlock title="能力特征" value={selectedProfilePreview.abilityTraits} />
+                  <InfoBlock title="关系特征" value={selectedProfilePreview.relationshipTraits} />
+                  <InfoBlock title="运势特征" value={selectedProfilePreview.fortuneTraits} />
+                </div>
+              ) : (
+                <EmptyState text="从时间线节点点击“查看 Vx”后，这里会加载对应版本的画像详情。" />
+              )}
+            </SectionCard>
+
             <SectionCard title="人生事件时间线" eyebrow="TIMELINE">
               {dashboard.events.length > 0 ? (
                 <div style={{ display: "grid", gap: 12 }}>
@@ -821,6 +1107,75 @@ export function IntakeWorkbench() {
                 </div>
               ) : (
                 <EmptyState text="还没有人生事件，录入重大转折后会出现在这里。" />
+              )}
+            </SectionCard>
+
+            <SectionCard title="版本变化记录" eyebrow="CHANGE LOGS">
+              {dashboard.changes.length > 0 ? (
+                <div style={{ display: "grid", gap: 12 }}>
+                  {dashboard.changes.map((item) => (
+                    <div
+                      key={item.changeId}
+                      style={{
+                        borderRadius: 18,
+                        padding: 16,
+                        background: "rgba(255, 255, 255, 0.04)",
+                        border: "1px solid rgba(255, 255, 255, 0.06)"
+                      }}
+                    >
+                      <div style={{ display: "flex", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+                        <strong>
+                          V{item.fromVersion} -> V{item.toVersion}
+                        </strong>
+                        <span style={{ color: "#9ca3af", fontSize: 12 }}>{formatDateTime(item.createdAt)}</span>
+                      </div>
+                      <div style={{ color: "#d4d4d8", lineHeight: 1.7, marginBottom: 8 }}>
+                        {item.reasonSummary.headline ?? "本次变化暂无摘要。"}
+                      </div>
+                      <div style={{ color: "#9ca3af", lineHeight: 1.7 }}>
+                        上升：{(item.changedDimensions.raised ?? []).join("、") || "无"}
+                      </div>
+                      <div style={{ color: "#9ca3af", lineHeight: 1.7 }}>
+                        下降：{(item.changedDimensions.lowered ?? []).join("、") || "无"}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <EmptyState text="画像开始演进后，这里会记录每次版本变化的原因。" />
+              )}
+            </SectionCard>
+
+            <SectionCard title="画像版本历史" eyebrow="VERSIONS">
+              {dashboard.profileVersions.length > 0 ? (
+                <div style={{ display: "grid", gap: 12 }}>
+                  {dashboard.profileVersions.map((item) => (
+                    <div
+                      key={item.profileId}
+                      style={{
+                        borderRadius: 18,
+                        padding: 16,
+                        background: "rgba(255, 255, 255, 0.04)",
+                        border: "1px solid rgba(255, 255, 255, 0.06)"
+                      }}
+                    >
+                      <div style={{ display: "flex", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+                        <strong>V{item.profileVersion}</strong>
+                        <span style={{ color: "#9ca3af", fontSize: 12 }}>{formatDateTime(item.createdAt)}</span>
+                      </div>
+                      <div style={{ color: "#d4d4d8", lineHeight: 1.7 }}>
+                        关键词：
+                        {Array.isArray(item.summary.keywords) ? item.summary.keywords.join("、") : "暂无"}
+                      </div>
+                      <div style={{ color: "#9ca3af", lineHeight: 1.7, marginTop: 6 }}>
+                        总分：{typeof item.summary.score === "number" ? item.summary.score : "暂无"} / 引擎：
+                        {item.engineVersion}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <EmptyState text="还没有画像版本历史。" />
               )}
             </SectionCard>
           </div>
@@ -889,6 +1244,18 @@ const secondaryButtonStyle: CSSProperties = {
   color: "#f3ead7",
   fontWeight: 600,
   cursor: "pointer"
+};
+
+const filterButtonStyle: CSSProperties = {
+  ...secondaryButtonStyle,
+  padding: "10px 16px",
+  fontSize: 13
+};
+
+const activeFilterButtonStyle: CSSProperties = {
+  ...primaryButtonStyle,
+  padding: "10px 16px",
+  fontSize: 13
 };
 
 const preStyle: CSSProperties = {

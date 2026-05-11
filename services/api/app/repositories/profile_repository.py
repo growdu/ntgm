@@ -47,3 +47,19 @@ class ProfileRepository:
         db.commit()
         db.refresh(profile)
         return profile
+
+    def list_versions(self, db: Session, *, user_id: UUID, limit: int = 10) -> list[ProfileVersion]:
+        statement = (
+            select(ProfileVersion)
+            .where(ProfileVersion.user_id == user_id)
+            .order_by(desc(ProfileVersion.version_no))
+            .limit(limit)
+        )
+        return list(db.scalars(statement))
+
+    def get_by_version(self, db: Session, *, user_id: UUID, version_no: int) -> ProfileVersion | None:
+        statement = select(ProfileVersion).where(
+            ProfileVersion.user_id == user_id,
+            ProfileVersion.version_no == version_no,
+        )
+        return db.scalar(statement)
