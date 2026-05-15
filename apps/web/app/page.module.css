@@ -1,0 +1,364 @@
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 64px 0;
+  margin-bottom: 48px;
+}
+
+.heroContent {
+  max-width: 600px;
+}
+
+.heroTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroSubtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  line-height: 1.8;
+}
+
+.heroActions {
+  display: flex;
+  gap: 16px;
+}
+
+.heroDecoration {
+  position: relative;
+}
+
+.yinYang {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    var(--bg-card) 0deg,
+    var(--accent-gold) 180deg,
+    var(--bg-card) 360deg
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: rotate 20s linear infinite;
+  box-shadow:
+    0 0 40px rgba(182, 136, 61, 0.3),
+    inset 0 0 40px rgba(182, 136, 61, 0.2);
+}
+
+.yinYang span {
+  font-size: 3rem;
+  color: var(--accent-gold);
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Cards Section */
+.cardsSection {
+  margin-bottom: 64px;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--border-gold);
+  box-shadow: 0 8px 32px rgba(182, 136, 61, 0.15);
+}
+
+.cardLink {
+  display: block;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+  color: var(--accent-gold);
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.cardLink:hover {
+  color: var(--accent-gold-light);
+}
+
+/* Profile Card */
+.profileCard .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profileScore {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.scoreLabel {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.statBars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Match Card */
+.matchMain {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.matchFigure {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.figureAvatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-gold-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+}
+
+.figureInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.figureName {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.figureMeta {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.similarityPoints {
+  margin-bottom: 16px;
+}
+
+.similarityLabel {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.pointsList {
+  list-style: none;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.pointsList li {
+  padding: 4px 0;
+  padding-left: 16px;
+  position: relative;
+}
+
+.pointsList li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  color: var(--accent-gold);
+}
+
+/* Advice Card */
+.adviceContent {
+  margin-bottom: 20px;
+}
+
+.adviceText {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.adviceReason {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.reasonLabel {
+  color: var(--accent-gold);
+}
+
+.adviceActions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Evolution Section */
+.evolutionSection {
+  margin-bottom: 64px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sectionLink {
+  color: var(--accent-gold);
+  font-size: 0.9rem;
+}
+
+.evolutionTimeline {
+  position: relative;
+  padding-left: 60px;
+}
+
+.evolutionItem {
+  position: relative;
+  margin-bottom: 32px;
+}
+
+.evolutionDot {
+  position: absolute;
+  left: -44px;
+  top: 0;
+}
+
+.evolutionLine {
+  position: absolute;
+  left: -20px;
+  top: 40px;
+  width: 2px;
+  height: calc(100% + 8px);
+  background: linear-gradient(180deg, var(--accent-gold) 0%, transparent 100%);
+}
+
+.evolutionContent {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px 20px;
+  transition: all 0.3s ease;
+}
+
+.evolutionContent:hover {
+  border-color: var(--border-gold);
+}
+
+.evolutionMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.evolutionDate {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.evolutionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+}
+
+.evolutionDesc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Empty State */
+.emptyState {
+  padding: 24px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1024px) {
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .heroActions {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .cardsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroTitle {
+    font-size: 1.8rem;
+  }
+}
