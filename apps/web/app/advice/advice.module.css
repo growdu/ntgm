@@ -1,0 +1,402 @@
+.page {
+  min-height: calc(100vh - 64px - 80px);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Header */
+.header {
+  margin-bottom: 32px;
+  padding: 24px 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.headerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.loadingIndicator {
+  margin-left: 8px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* Content */
+.content {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 32px;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+/* Today Card */
+.todayCard .card-header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.adviceList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.adviceItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  gap: 20px;
+}
+
+.adviceContent {
+  flex: 1;
+}
+
+.adviceType {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.typeBadge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.typeBadge.avoid {
+  background: rgba(201, 64, 64, 0.15);
+  color: var(--accent-red);
+}
+
+.typeBadge.action {
+  background: rgba(61, 122, 110, 0.15);
+  color: var(--accent-jade-light);
+}
+
+.typeBadge.record {
+  background: rgba(182, 136, 61, 0.15);
+  color: var(--accent-gold);
+}
+
+.adviceTitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.adviceText {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.adviceReason {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.reasonLabel {
+  color: var(--accent-gold);
+}
+
+.adviceActions {
+  flex-shrink: 0;
+}
+
+.markDoneBtn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--accent-gold);
+  background: transparent;
+  color: var(--accent-gold);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.markDoneBtn:hover {
+  background: rgba(182, 136, 61, 0.15);
+}
+
+.completedBadge {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(61, 122, 110, 0.15);
+  color: var(--accent-jade-light);
+  font-size: 0.85rem;
+}
+
+/* Weekly Card */
+.weeklyCard .card-header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.weeklyList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.weeklyItem {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+}
+
+.dayBadge {
+  flex-shrink: 0;
+}
+
+.dayNumber {
+  display: block;
+  padding: 4px 10px;
+  background: rgba(182, 136, 61, 0.15);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.dayContent {
+  flex: 1;
+}
+
+.dayTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.dayDesc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar .card {
+  padding: 20px;
+}
+
+/* Lucky Card */
+.luckyList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.luckyItem {
+  display: flex;
+  gap: 16px;
+  padding: 12px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+}
+
+.luckyDate {
+  width: 48px;
+  text-align: center;
+  padding: 8px;
+  background: rgba(201, 64, 64, 0.1);
+  border-radius: 8px;
+}
+
+.dateDay {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent-red);
+}
+
+.dateMonth {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.luckyInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.luckyActivity {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.luckyNote {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* Feedback Card */
+.feedbackTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  margin-bottom: 12px;
+}
+
+.feedbackText {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.feedbackActions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.feedbackBtn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.feedbackBtn:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.feedbackBtn.selected {
+  background: rgba(182, 136, 61, 0.15);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.feedbackInput {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  resize: none;
+  margin-bottom: 16px;
+}
+
+.feedbackInput:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+}
+
+.feedbackInput::placeholder {
+  color: var(--text-muted);
+}
+
+/* Info Card */
+.infoTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  margin-bottom: 12px;
+}
+
+.infoText {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .weeklyList {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  padding: 12px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--accent-gold);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  animation: fadeIn 0.3s ease;
+  box-shadow: 0 4px 16px rgba(182, 136, 61, 0.3);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
