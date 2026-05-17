@@ -9,8 +9,8 @@ from app.schemas.profile import (
     ProfileVersionItem,
     ProfileVersionListResponse,
 )
+from app.services.job_service import JobService
 from app.services.profile_service import ProfileService
-from app.services.profile_workflow_service import ProfileWorkflowService
 from app.services.user_service import UserService
 
 router = APIRouter(prefix="/profiles", tags=["profiles"])
@@ -105,11 +105,22 @@ def recompute_profile(
     payload: ProfileRecomputeRequest,
     db: Session = Depends(get_db),
     user_service: UserService = Depends(UserService),
-    workflow_service: ProfileWorkflowService = Depends(ProfileWorkflowService),
+    job_service: JobService = Depends(JobService),
 ) -> JobCreateResponse:
     user = user_service.get_current_user(db)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
 
-    job, _, _, _ = workflow_service.recompute(db, user=user, reason=payload.reason)
+    # Create job
+    job = job_service.create_job(
+        db,
+        user_id=user.id,
+        job_type="recompute_profile",
+        payload={"reason": payload.reason, "userId": str(user.id)},
+    )
+
+    # Dispatch async task
+    from app.tasks import dispatch_profile_recompute
+    dispatch_profile_recompute(str(user.id), payload.reason)
+
     return JobCreateResponse(jobId=job.id, jobType=job.job_type, status=job.status)

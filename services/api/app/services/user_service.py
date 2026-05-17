@@ -28,3 +28,6 @@ class UserService:
 
     def set_current_profile_version(self, db: Session, *, user, version_no: int):
         return self.repository.set_current_profile_version(db, user=user, version_no=version_no)
+
+    def get_user_by_id(self, db: Session, *, user_id):
+        return self.repository.get_by_id(db, user_id=user_id)

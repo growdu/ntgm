@@ -6,5 +6,13 @@ celery_app = Celery(
     backend="redis://localhost:6379/1",
 )
 celery_app.conf.task_default_queue = "default"
-celery_app.autodiscover_tasks(["app.tasks"])
 
+# Import tasks to register them
+from app.tasks import (
+    health,
+    profile_tasks,
+    bazi_tasks,
+    face_tasks,
+)
+
+__all__ = ["celery_app"]

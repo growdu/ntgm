@@ -27,6 +27,21 @@ services:
     volumes:
       - minio-data:/data
 
+  worker:
+    build:
+      context: ../../
+      dockerfile: infra/docker/worker.Dockerfile
+    command: celery -A app.celery_app worker --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql://ntgm:ntgm@postgres:5432/ntgm
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ../../services/api:/app
+      - ../../services/worker:/app
+
 volumes:
   postgres-data:
   minio-data:

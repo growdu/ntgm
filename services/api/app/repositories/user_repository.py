@@ -38,6 +38,12 @@ class UserRepository:
         db.refresh(user)
         return user
 
+    def get_by_id(self, db: Session, user_id) -> User | None:
+        from uuid import UUID
+        if isinstance(user_id, str):
+            user_id = UUID(user_id)
+        return db.get(User, user_id)
+
     def set_current_profile_version(self, db: Session, *, user: User, version_no: int) -> User:
         user.current_profile_version = version_no
         db.commit()
