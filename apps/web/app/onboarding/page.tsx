@@ -43,6 +43,7 @@ export default function OnboardingPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAnalysing, setIsAnalysing] = useState(false);
   const faceInputRef = useRef<HTMLInputElement>(null);
   const palmInputRef = useRef<HTMLInputElement>(null);
 
@@ -79,17 +80,20 @@ export default function OnboardingPage() {
 
     if (currentStep === 1) {
       setIsSubmitting(true);
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000);
       try {
         await submitBasicIntake(API_BASE_URL, {
           name: formData.name,
           gender: formData.gender === "M" ? "male" : "female",
           birthDatetime: `${formData.birthDate}T${formData.birthTime || "12:00"}:00`,
           birthPlace: formData.birthPlace,
-        });
-      } catch (error) {
+        }, controller.signal);
+      } catch {
         // API error — show toast but allow user to proceed
         showToast("保存失败，但可以继续下一步", "error");
       }
+      clearTimeout(timeout);
       setIsSubmitting(false);
     }
 
@@ -98,13 +102,22 @@ export default function OnboardingPage() {
     }
   };
 
-  const handlePrev = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
+  const handleAnalysingComplete = () => {
+    setIsAnalysing(false);
+    if (currentStep < 5) {
+      setCurrentStep(currentStep + 1);
     }
   };
 
-  const handleSubmit = () => {
+  const handleNext = async () => {
+    // Step 3: show "正在生成" feedback then advance
+    if (currentStep === 3) {
+      setIsAnalysing(true);
+      setTimeout(handleAnalysingComplete, 2000);
+      return;
+    }
+
+    if (!validateStep()) return;
     showToast("建档信息已保存！");
     setTimeout(() => {
       if (currentStep < 5) {
@@ -512,8 +525,12 @@ export default function OnboardingPage() {
                       </button>
                     )}
                     {currentStep === 3 && (
-                      <button className="btn btn-primary" onClick={handleNext}>
-                        生成画像
+                      <button
+                        className="btn btn-primary"
+                        onClick={handleNext}
+                        disabled={isAnalysing}
+                      >
+                        {isAnalysing ? "生成中..." : "生成画像"}
                       </button>
                     )}
                     {currentStep === 4 && (

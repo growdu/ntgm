@@ -99,9 +99,9 @@ export default function QuestionnairePage() {
     }
 
     const answer: Answer = {
-      questionId: currentQuestion.questionId,
-      selectedOption,
-      reasoning: reasoning[currentQuestion.questionId] || "",
+      questionId: currentQuestion.questionId ?? "",
+      selectedOption: selectedOption ?? "",
+      reasoning: reasoning[currentQuestion.questionId ?? ""] || "",
       timestamp: new Date().toISOString(),
     };
 
@@ -137,6 +137,25 @@ export default function QuestionnairePage() {
           <div className={styles.container}>
             <div className={styles.completedState}>
               <p className={styles.completedDesc}>加载中...</p>
+            </div>
+          </div>
+        </div>
+      </AppShell>
+    );
+  }
+
+  // Guard: if no questions available, show empty state
+  if (!loading && questions.length === 0) {
+    return (
+      <AppShell>
+        <div className={styles.page}>
+          <div className={styles.container}>
+            <div className={styles.completedState}>
+              <div className={styles.completedIcon}>&#9789;</div>
+              <h2 className={styles.completedTitle}>暂无待回答问题</h2>
+              <p className={styles.completedDesc}>
+                系统尚未生成新的校准问题。请先完成基础建档。
+              </p>
             </div>
           </div>
         </div>
@@ -196,13 +215,13 @@ export default function QuestionnairePage() {
                 <div className={styles.questionHeader}>
                   <span className={styles.impactBadge}>
                     <span className={styles.impactIcon}>&#128202;</span>
-                    {currentQuestion.traitTargets.join(", ")}
+                    {currentQuestion.traitTargets?.join(", ") ?? ""}
                   </span>
                 </div>
                 <h2 className={styles.questionText}>{currentQuestion.questionText}</h2>
 
                 <div className={styles.options}>
-                  {currentQuestion.options.map((option) => (
+                  {(currentQuestion.options ?? []).map((option) => (
                     <label
                       key={option}
                       className={`${styles.optionItem} ${selectedOption === option ? styles.selected : ""}`}
@@ -227,10 +246,10 @@ export default function QuestionnairePage() {
                     补充说明（可选）
                   </label>
                   <textarea
-                    value={reasoning[currentQuestion.questionId] || ""}
+                    value={reasoning[currentQuestion.questionId ?? ""] || ""}
                     onChange={(e) => setReasoning((prev) => ({
                       ...prev,
-                      [currentQuestion.questionId]: e.target.value,
+                      [currentQuestion.questionId ?? ""]: e.target.value,
                     }))}
                     placeholder="可以补充一些背景信息，帮助系统更准确地理解你的选择..."
                     className={styles.reasoningInput}
@@ -265,7 +284,7 @@ export default function QuestionnairePage() {
                   当前回答后，系统可能会：
                 </h3>
                 <ul className={styles.previewList}>
-                  {currentQuestion.traitTargets.map((trait, index) => (
+                  {(currentQuestion.traitTargets ?? []).map((trait, index) => (
                     <li key={index} className={styles.previewItem}>
                       <span className={styles.previewDot} />
                       调整 {trait} 相关评估
