@@ -1,10 +1,23 @@
 "use client";
 
-import { fetchCurrentAdvice, submitAdviceFeedback } from "@ntgm/sdk";
+import { fetchCurrentAdvice } from "@ntgm/sdk";
 import type { AdviceCurrentResponse } from "@ntgm/sdk";
 import { useEffect, useState } from "react";
 import { AppShell } from "../components/Navigation";
+import { Toast } from "../components/Toast";
 import styles from "./advice.module.css";
+
+const STORAGE_KEY_ADVICE = "ntgm_advice_completed";
+const STORAGE_KEY_FEEDBACK = "ntgm_advice_feedback";
+
+interface AdviceItem {
+  id: string;
+  type: "avoid" | "action" | "record";
+  title: string;
+  content: string;
+  reason: string;
+  status: "pending" | "completed";
+}
 
 // Fallback mock data for display purposes when SDK returns empty summary
 const MOCK_TODAY_ADVICE = [
@@ -77,10 +90,22 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8
 export default function AdvicePage() {
   const [advice, setAdvice] = useState<AdviceCurrentResponse | null>(null);
   const [loading, setLoading] = useState(true);
-  const [adviceList, setAdviceList] = useState<AdviceItem[]>(MOCK_TODAY_ADVICE);
+  const [adviceList, setAdviceList] = useState<AdviceItem[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_ADVICE);
+      return saved ? JSON.parse(saved) : MOCK_TODAY_ADVICE;
+    } catch {
+      return MOCK_TODAY_ADVICE;
+    }
+  });
   const [selectedFeedback, setSelectedFeedback] = useState<string | null>(null);
   const [feedbackText, setFeedbackText] = useState("");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Persist advice completion status
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_ADVICE, JSON.stringify(adviceList));
+  }, [adviceList]);
 
   useEffect(() => {
     fetchCurrentAdvice(API_BASE_URL)
@@ -105,10 +130,6 @@ export default function AdvicePage() {
   };
 
   const handleMarkDone = (id: string) => {
-    submitAdviceFeedback(API_BASE_URL, {
-      feedbackType: "mark_done",
-      adviceItemId: id,
-    }).catch(() => {});
     setAdviceList((prev) =>
       prev.map((item) =>
         item.id === id ? { ...item, status: "completed" } : item
@@ -117,15 +138,22 @@ export default function AdvicePage() {
     showToast("已标记为完成！");
   };
 
-  const handleFeedbackSubmit = async () => {
+  const handleFeedbackSubmit = () => {
     if (!selectedFeedback) {
       showToast("请选择反馈效果");
       return;
     }
-    await submitAdviceFeedback(API_BASE_URL, {
-      feedbackType: selectedFeedback,
-      feedbackText: feedbackText || undefined,
-    }).catch(() => {});
+    // Persist feedback to localStorage
+    try {
+      const feedback = {
+        type: selectedFeedback,
+        text: feedbackText,
+        timestamp: new Date().toISOString(),
+      };
+      const existing = JSON.parse(localStorage.getItem(STORAGE_KEY_FEEDBACK) || "[]");
+      existing.push(feedback);
+      localStorage.setItem(STORAGE_KEY_FEEDBACK, JSON.stringify(existing));
+    } catch { /* ignore storage errors */ }
     showToast("反馈已提交，感谢你的反馈！");
     setSelectedFeedback(null);
     setFeedbackText("");
@@ -149,11 +177,7 @@ export default function AdvicePage() {
 
   return (
     <AppShell>
-      {toastMessage && (
-        <div className={styles.toast} role="alert">
-          {toastMessage}
-        </div>
-      )}
+      {toastMessage && <Toast message={toastMessage} type="success" />}
       <div className={styles.page}>
         <div className={styles.container}>
           {/* Header */}
