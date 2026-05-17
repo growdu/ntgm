@@ -64,8 +64,8 @@ class FaceAnalyzeTask(Task):
                 "confidence": 0.75,
             }
 
-            # TODO: 更新 asset 的特征数据
-            # asset_repository.update_features(db, asset_id=image_asset_id, features=features)
+            # 更新 asset 的特征数据
+            asset_repository.update_features(db, asset=asset, features=features)
 
             logger.info(f"[FaceAnalyze] Completed for user {user_id}")
 

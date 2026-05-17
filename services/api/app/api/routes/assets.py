@@ -8,7 +8,9 @@ from app.schemas.asset import (
     UploadTokenRequest,
     UploadTokenResponse,
 )
+from app.schemas.job import JobCreateResponse
 from app.services.asset_service import AssetService
+from app.services.job_service import JobService
 from app.services.user_service import UserService
 
 router = APIRouter(tags=["assets"])
@@ -29,12 +31,27 @@ def confirm_upload(
     db: Session = Depends(get_db),
     user_service: UserService = Depends(UserService),
     asset_service: AssetService = Depends(AssetService),
+    job_service: JobService = Depends(JobService),
 ) -> IntakeImageResponse:
     user = user_service.get_current_user(db)
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
 
     asset = asset_service.register_uploaded_asset(db, user_id=user.id, payload=payload)
+
+    # Create job for face analysis
     job_type = "analyze_face" if payload.assetType == "face" else "analyze_palm"
+    job = job_service.create_job(
+        db,
+        user_id=user.id,
+        job_type=job_type,
+        payload={"userId": str(user.id), "imageAssetId": str(asset.id)},
+    )
+
+    # Dispatch async task
+    if payload.assetType == "face":
+        from app.tasks import dispatch_face_analyze
+        dispatch_face_analyze(str(user.id), str(asset.id))
+
     return IntakeImageResponse(assetId=asset.id, jobType=job_type)
 

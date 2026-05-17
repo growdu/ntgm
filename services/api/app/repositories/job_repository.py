@@ -44,3 +44,15 @@ class JobRepository:
         db.commit()
         db.refresh(job)
         return job
+
+    def get_latest_by_user_and_type(
+        self, db: Session, *, user_id: UUID, job_type: str
+    ) -> Job | None:
+        """Find the most recent job for a user with given type"""
+        statement = (
+            select(Job)
+            .where(Job.user_id == user_id, Job.job_type == job_type)
+            .order_by(desc(Job.created_at))
+            .limit(1)
+        )
+        return db.scalar(statement)

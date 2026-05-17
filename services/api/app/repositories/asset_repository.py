@@ -33,3 +33,12 @@ class AssetRepository:
     def get_by_storage_key(self, db: Session, *, storage_key: str) -> ImageAsset | None:
         return db.scalar(select(ImageAsset).where(ImageAsset.storage_key == storage_key))
 
+    def get_by_id(self, db: Session, *, asset_id: UUID) -> ImageAsset | None:
+        return db.get(ImageAsset, asset_id)
+
+    def update_features(self, db: Session, *, asset: ImageAsset, features: dict) -> ImageAsset:
+        asset.metadata_json = {**(asset.metadata_json or {}), "face_features": features}
+        db.commit()
+        db.refresh(asset)
+        return asset
+

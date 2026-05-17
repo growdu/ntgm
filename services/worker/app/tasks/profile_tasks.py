@@ -54,16 +54,19 @@ class ProfileRecomputeTask(Task):
             match_service = MatchService()
             advice_service = AdviceService()
 
-            # 查找 job
-            job = None
-            # TODO: 根据 user_id 和类型查找最近创建的 job
-
             # 获取用户
             user = user_service.get_user_by_id(db, user_id=UUID(user_id))
             if user is None:
                 raise ValueError(f"User not found: {user_id}")
 
             logger.info(f"[ProfileRecompute] Starting for user {user_id}, reason: {reason}")
+
+            # 查找对应的 Job 并标记为 running
+            job = job_repository.get_latest_by_user_and_type(
+                db, user_id=user.id, job_type="recompute_profile"
+            )
+            if job:
+                job_repository.update_status(db, job=job, status="running")
 
             # 执行重算
             previous_profile = profile_service.get_current_profile(db, user_id=user.id)
@@ -99,20 +102,36 @@ class ProfileRecomputeTask(Task):
                 match_response=match_response,
             )
 
+            result_data = {
+                "profileVersion": profile.version_no,
+                "sourceSnapshot": source_snapshot,
+                "adviceId": str(advice.id),
+            }
+
+            # 更新 Job 状态为 completed
+            if job:
+                job_repository.update_status(db, job=job, status="completed", result=result_data)
+
             logger.info(
                 f"[ProfileRecompute] Completed for user {user_id}, "
                 f"profile_version={profile.version_no}, advice_id={advice.id}"
             )
 
-            return {
-                "status": "completed",
-                "profile_version": profile.version_no,
-                "source_snapshot": source_snapshot,
-                "advice_id": str(advice.id),
-            }
+            return result_data
 
         except Exception as e:
             logger.error(f"[ProfileRecompute] Failed for user {user_id}: {e}")
+            # 更新 Job 状态为 failed
+            try:
+                job = job_repository.get_latest_by_user_and_type(
+                    db, user_id=UUID(user_id), job_type="recompute_profile"
+                )
+                if job:
+                    job_repository.update_status(
+                        db, job=job, status="failed", error_message=str(e)
+                    )
+            except Exception:
+                pass
             raise
         finally:
             db.close()
