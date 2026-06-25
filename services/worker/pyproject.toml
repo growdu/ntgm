@@ -8,3 +8,7 @@ dependencies = [
   "redis>=5.0.0"
 ]
 
+# Use Tsinghua mirror for faster downloads in China region
+[[tool.uv.index]]
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true

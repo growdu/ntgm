@@ -629,4 +629,54 @@ class AdviceService:
         )
         if advice is None:
             return {"success": False, "message": "Advice not found"}
+
+        # Automatically create a follow-up reminder based on feedback type
+        self._create_followup_reminder(db, user_id, advice_item_id, feedback_type)
+
         return {"success": True, "message": "Feedback recorded"}
+
+    def _create_followup_reminder(
+        self, db, user_id, advice_item_id: str | None, feedback_type: str
+    ):
+        """
+        Create a follow-up reminder after user provides advice feedback.
+        - completed  -> review outcome in 7 days
+        - in_progress -> follow up in 3 days
+        - rejected/skipped -> try alternative in 5 days
+        """
+        from datetime import timedelta
+        from app.repositories.reminder_repository import ReminderRepository
+
+        days_map = {
+            "completed": 7,
+            "in_progress": 3,
+            "started": 3,
+            "rejected": 5,
+            "skipped": 5,
+            "failed": 5,
+        }
+        days = days_map.get(feedback_type, 3)
+        trigger_at = datetime.now() + timedelta(days=days)
+
+        title_map = {
+            "completed": "复盘建议执行效果",
+            "in_progress": "建议执行进度跟进",
+            "started": "建议执行进度跟进",
+            "rejected": "尝试新的改命建议",
+            "skipped": "尝试新的改命建议",
+            "failed": "重新评估改命建议",
+        }
+        title = title_map.get(feedback_type, "改命建议跟进")
+        body = f"您关于「{advice_item_id or "当前建议"}」的反馈已记录，请查看执行效果。"
+
+        repo = ReminderRepository()
+        repo.create(
+            db,
+            user_id=user_id,
+            title=title,
+            body=body,
+            trigger_at=trigger_at,
+            channel="push",
+            meta={"advice_item_id": advice_item_id, "feedback_type": feedback_type},
+        )
+        db.commit()

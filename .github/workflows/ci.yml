@@ -60,7 +60,8 @@ jobs:
         with:
           python-version: "3.11"
       - uses: astral-sh/setup-uv@v4
-      - run: uv sync --frozen
+        with:
+          enable-cache: true
+      - run: uv sync --frozen --index-url https://pypi.tuna.tsinghua.edu.cn/simple
       - run: uv run python -c "from app.main import app; print('ok')"
       - run: uv run pytest -q
-        continue-on-error: true

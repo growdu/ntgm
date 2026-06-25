@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { AuthProvider, useAuth } from "../lib/auth";
 import { pushClient } from "../lib/push-client";
 import { onboardingClient } from "../lib/onboarding-client";
+import { ntgmApi } from "../lib/ntgm-api";
 import { colors } from "../lib/theme";
 
 function AuthGate({ children }: { children: React.ReactNode }) {
@@ -22,6 +23,7 @@ function AuthGate({ children }: { children: React.ReactNode }) {
       // 真实场景下 auth.tsx 应暴露 token 给 client。
       pushClient.enable(baseUrl, null);
       onboardingClient.enable(baseUrl, null);
+      ntgmApi.enable(baseUrl, null);
     }
   }, []);
 
