@@ -48,7 +48,11 @@ const MOCK_TODAY_ADVICE = [
 ];
 
 const MOCK_WEEKLY_PLAN = [
-  { day: 1, title: "自我评估", description: "完成个人SWOT分析，明确优势与短板" },
+  {
+    day: 1,
+    title: "自我评估",
+    description: "完成个人SWOT分析，明确优势与短板",
+  },
   { day: 2, title: "关系梳理", description: "整理重要人脉关系，建立联系清单" },
   { day: 3, title: "目标拆解", description: "将年度目标分解为季度里程碑" },
   { day: 4, title: "技能储备", description: "学习一项与你目标相关的新技能" },
@@ -57,19 +61,23 @@ const MOCK_WEEKLY_PLAN = [
 
 const MOCK_LUCKY_DAYS = [
   { date: "2026-05-20", activity: "签订合同", note: "金星顺行，利于合约签署" },
-  { date: "2026-05-23", activity: "社交应酬", note: "木星拱相位，人脉资源整合好时机" },
+  {
+    date: "2026-05-23",
+    activity: "社交应酬",
+    note: "木星拱相位，人脉资源整合好时机",
+  },
   { date: "2026-05-28", activity: "学习进修", note: "水星合相，适合知识输入" },
 ];
 
-// Type for advice item
-interface AdviceItem {
-  id: string;
-  type: "avoid" | "action" | "record";
-  title: string;
-  content: string;
-  reason: string;
-  status: "pending" | "completed";
-}
+// Type for advice item (defined above)
+// interface AdviceItem {
+//   id: string;
+//   type: "avoid" | "action" | "record";
+//   title: string;
+//   content: string;
+//   reason: string;
+//   status: "pending" | "completed";
+// }
 
 // Type for weekly plan day
 interface WeeklyPlanDay {
@@ -85,7 +93,8 @@ interface LuckyDay {
   note: string;
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
 
 export default function AdvicePage() {
   const [advice, setAdvice] = useState<AdviceCurrentResponse | null>(null);
@@ -150,27 +159,40 @@ export default function AdvicePage() {
         text: feedbackText,
         timestamp: new Date().toISOString(),
       };
-      const existing = JSON.parse(localStorage.getItem(STORAGE_KEY_FEEDBACK) || "[]");
+      const existing = JSON.parse(
+        localStorage.getItem(STORAGE_KEY_FEEDBACK) || "[]"
+      );
       existing.push(feedback);
       localStorage.setItem(STORAGE_KEY_FEEDBACK, JSON.stringify(existing));
-    } catch { /* ignore storage errors */ }
+    } catch {
+      /* ignore storage errors */
+    }
     showToast("反馈已提交，感谢你的反馈！");
     setSelectedFeedback(null);
     setFeedbackText("");
   };
 
   // Extract data from summary or use fallbacks
-  const todayAdvice = advice?.summary && Array.isArray((advice.summary as Record<string, unknown>).todayAdvice)
-    ? (advice.summary as Record<string, unknown>).todayAdvice as unknown as AdviceItem[]
-    : MOCK_TODAY_ADVICE;
+  const todayAdvice =
+    advice?.summary &&
+    Array.isArray((advice.summary as Record<string, unknown>).todayAdvice)
+      ? ((advice.summary as Record<string, unknown>)
+          .todayAdvice as unknown as AdviceItem[])
+      : MOCK_TODAY_ADVICE;
 
-  const weeklyPlan = advice?.summary && Array.isArray((advice.summary as Record<string, unknown>).weeklyPlan)
-    ? (advice.summary as Record<string, unknown>).weeklyPlan as unknown as WeeklyPlanDay[]
-    : MOCK_WEEKLY_PLAN;
+  const weeklyPlan =
+    advice?.summary &&
+    Array.isArray((advice.summary as Record<string, unknown>).weeklyPlan)
+      ? ((advice.summary as Record<string, unknown>)
+          .weeklyPlan as unknown as WeeklyPlanDay[])
+      : MOCK_WEEKLY_PLAN;
 
-  const luckyDays = advice?.summary && Array.isArray((advice.summary as Record<string, unknown>).luckyDays)
-    ? (advice.summary as Record<string, unknown>).luckyDays as unknown as LuckyDay[]
-    : MOCK_LUCKY_DAYS;
+  const luckyDays =
+    advice?.summary &&
+    Array.isArray((advice.summary as Record<string, unknown>).luckyDays)
+      ? ((advice.summary as Record<string, unknown>)
+          .luckyDays as unknown as LuckyDay[])
+      : MOCK_LUCKY_DAYS;
 
   // Get profile version for header display
   const profileVersion = advice?.profileVersion ?? 4;
@@ -188,7 +210,9 @@ export default function AdvicePage() {
                 <h1 className={styles.title}>你的改命建议</h1>
                 <p className={styles.subtitle}>
                   基于 V{profileVersion} 画像生成的个性化建议
-                  {loading && <span className={styles.loadingIndicator}>加载中...</span>}
+                  {loading && (
+                    <span className={styles.loadingIndicator}>加载中...</span>
+                  )}
                 </p>
               </div>
             </div>
@@ -219,9 +243,13 @@ export default function AdvicePage() {
                             {adviceItem.type === "action" && "宜"}
                             {adviceItem.type === "record" && "记"}
                           </span>
-                          <span className={styles.adviceTitle}>{adviceItem.title}</span>
+                          <span className={styles.adviceTitle}>
+                            {adviceItem.title}
+                          </span>
                         </div>
-                        <p className={styles.adviceText}>{adviceItem.content}</p>
+                        <p className={styles.adviceText}>
+                          {adviceItem.content}
+                        </p>
                         <p className={styles.adviceReason}>
                           <span className={styles.reasonLabel}>原因：</span>
                           {adviceItem.reason}
@@ -237,7 +265,9 @@ export default function AdvicePage() {
                             标记已执行
                           </button>
                         ) : (
-                          <span className={styles.completedBadge}>✓ 已完成</span>
+                          <span className={styles.completedBadge}>
+                            ✓ 已完成
+                          </span>
                         )}
                       </div>
                     </div>
@@ -287,7 +317,9 @@ export default function AdvicePage() {
                           </span>
                         </div>
                         <div className={styles.luckyInfo}>
-                          <span className={styles.luckyActivity}>{day.activity}</span>
+                          <span className={styles.luckyActivity}>
+                            {day.activity}
+                          </span>
                           <span className={styles.luckyNote}>{day.note}</span>
                         </div>
                       </div>

@@ -8,6 +8,9 @@ from app.models.life_event import LifeEvent
 from app.models.match_result import MatchResult
 from app.models.profile_change_log import ProfileChangeLog
 from app.models.profile_version import ProfileVersion
+from app.models.push_dispatch_job import PushDispatchJob
+from app.models.push_token import PushToken
+from app.models.reminder import Reminder
 from app.models.user import User
 
 __all__ = [
@@ -21,5 +24,8 @@ __all__ = [
     "MatchResult",
     "ProfileChangeLog",
     "ProfileVersion",
+    "PushDispatchJob",
+    "PushToken",
+    "Reminder",
     "User",
 ]

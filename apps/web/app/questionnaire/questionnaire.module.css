@@ -61,7 +61,11 @@
 
 /* Question Card */
 .questionCard {
-  background: linear-gradient(135deg, rgba(182, 136, 61, 0.08) 0%, var(--bg-card) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(182, 136, 61, 0.08) 0%,
+    var(--bg-card) 100%
+  );
 }
 
 .questionHeader {
@@ -319,8 +323,14 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
-  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 /* Completed state */

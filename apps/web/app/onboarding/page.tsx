@@ -7,7 +7,8 @@ import { Toast } from "../components/Toast";
 import { submitBasicIntake } from "@ntgm/sdk";
 import styles from "./onboarding.module.css";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
 
 const steps = [
   { id: 1, label: "基础信息" },
@@ -41,13 +42,19 @@ export default function OnboardingPage() {
     palmPhoto: null,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isAnalysing, setIsAnalysing] = useState(false);
   const faceInputRef = useRef<HTMLInputElement>(null);
   const palmInputRef = useRef<HTMLInputElement>(null);
 
-  const showToast = (message: string, type: "success" | "error" = "success") => {
+  const showToast = (
+    message: string,
+    type: "success" | "error" = "success"
+  ) => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3000);
   };
@@ -116,19 +123,21 @@ export default function OnboardingPage() {
     }
   };
 
-  const handlePhotoUpload = (type: "face" | "palm") => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        setFormData((prev) => ({
-          ...prev,
-          [type === "face" ? "facePhoto" : "palmPhoto"]: ev.target?.result as string,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const handlePhotoUpload =
+    (type: "face" | "palm") => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          setFormData((prev) => ({
+            ...prev,
+            [type === "face" ? "facePhoto" : "palmPhoto"]: ev.target
+              ?.result as string,
+          }));
+        };
+        reader.readAsDataURL(file);
+      }
+    };
 
   const impactedItems = [
     "八字命盘计算",
@@ -161,7 +170,9 @@ export default function OnboardingPage() {
                   className={`${styles.input} ${errors.name ? styles.inputError : ""}`}
                   aria-label="姓名"
                 />
-                {errors.name && <span className={styles.errorText}>{errors.name}</span>}
+                {errors.name && (
+                  <span className={styles.errorText}>{errors.name}</span>
+                )}
               </div>
 
               <div className={styles.formGroup}>
@@ -177,7 +188,9 @@ export default function OnboardingPage() {
                   <option value="M">男</option>
                   <option value="F">女</option>
                 </select>
-                {errors.gender && <span className={styles.errorText}>{errors.gender}</span>}
+                {errors.gender && (
+                  <span className={styles.errorText}>{errors.gender}</span>
+                )}
               </div>
 
               <div className={styles.formRow}>
@@ -191,7 +204,9 @@ export default function OnboardingPage() {
                     className={`${styles.input} ${errors.birthDate ? styles.inputError : ""}`}
                     aria-label="出生日期"
                   />
-                  {errors.birthDate && <span className={styles.errorText}>{errors.birthDate}</span>}
+                  {errors.birthDate && (
+                    <span className={styles.errorText}>{errors.birthDate}</span>
+                  )}
                 </div>
 
                 <div className={styles.formGroup}>
@@ -288,7 +303,11 @@ export default function OnboardingPage() {
                   onClick={() => faceInputRef.current?.click()}
                 >
                   {formData.facePhoto ? (
-                    <img src={formData.facePhoto} alt="面部" className={styles.photoPreview} />
+                    <img
+                      src={formData.facePhoto}
+                      alt="面部"
+                      className={styles.photoPreview}
+                    />
                   ) : (
                     <div className={styles.photoPlaceholder}>
                       <span className={styles.photoIcon}>📷</span>
@@ -317,7 +336,11 @@ export default function OnboardingPage() {
                   onClick={() => palmInputRef.current?.click()}
                 >
                   {formData.palmPhoto ? (
-                    <img src={formData.palmPhoto} alt="手掌" className={styles.photoPreview} />
+                    <img
+                      src={formData.palmPhoto}
+                      alt="手掌"
+                      className={styles.photoPreview}
+                    />
                   ) : (
                     <div className={styles.photoPlaceholder}>
                       <span className={styles.photoIcon}>✋</span>
@@ -371,7 +394,9 @@ export default function OnboardingPage() {
                   <span>八字命盘计算中...</span>
                 </div>
                 <div className={styles.analyzingStep}>
-                  <span className={`${styles.stepPending} ${styles.active}`}>●</span>
+                  <span className={`${styles.stepPending} ${styles.active}`}>
+                    ●
+                  </span>
                   <span>画像初步生成</span>
                 </div>
               </div>
@@ -540,12 +565,16 @@ export default function OnboardingPage() {
                 <div className={styles.progressInfo}>
                   <div className={styles.progressStat}>
                     <span className={styles.progressValue}>{currentStep}</span>
-                    <span className={styles.progressLabel}>/ {steps.length} 步</span>
+                    <span className={styles.progressLabel}>
+                      / {steps.length} 步
+                    </span>
                   </div>
                   <div className="progress-bar">
                     <div
                       className="progress-bar-fill"
-                      style={{ width: `${(currentStep / steps.length) * 100}%` }}
+                      style={{
+                        width: `${(currentStep / steps.length) * 100}%`,
+                      }}
                     />
                   </div>
                 </div>
@@ -555,7 +584,9 @@ export default function OnboardingPage() {
                 <>
                   <div className={styles.sidebarCard}>
                     <h3 className={styles.sidebarTitle}>预计耗时</h3>
-                    <p className={styles.sidebarText}>约 5 分钟完成基本信息录入</p>
+                    <p className={styles.sidebarText}>
+                      约 5 分钟完成基本信息录入
+                    </p>
                   </div>
 
                   <div className={styles.sidebarCard}>

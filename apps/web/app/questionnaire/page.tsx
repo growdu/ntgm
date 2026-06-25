@@ -6,7 +6,8 @@ import { fetchNextQuestions, submitQuestionnaireAnswers } from "@ntgm/sdk";
 import type { QuestionnaireQuestion, QuestionnaireAnswerItem } from "@ntgm/sdk";
 import styles from "./questionnaire.module.css";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
 const STORAGE_KEY = "ntgm_questionnaire_progress";
 
 interface Answer {
@@ -25,7 +26,9 @@ export default function QuestionnairePage() {
   const [answers, setAnswers] = useState<Record<string, Answer>>({});
   const [submitted, setSubmitted] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [confidenceMap, setConfidenceMap] = useState<Record<string, number>>({});
+  const [confidenceMap, setConfidenceMap] = useState<Record<string, number>>(
+    {}
+  );
 
   const total = questions.length;
   const currentQuestion = questions[currentIndex];
@@ -114,7 +117,9 @@ export default function QuestionnairePage() {
     } else {
       // Submit all answers
       try {
-        const answerItems: QuestionnaireAnswerItem[] = Object.entries(newAnswers).map(([_, a]) => ({
+        const answerItems: QuestionnaireAnswerItem[] = Object.entries(
+          newAnswers
+        ).map(([_, a]) => ({
           questionId: a.questionId,
           value: a.selectedOption,
           reason: a.reasoning || null,
@@ -202,7 +207,9 @@ export default function QuestionnairePage() {
               <div className={styles.progressBarWrap}>
                 <div
                   className="progress-bar-fill"
-                  style={{ width: `${total > 0 ? ((currentIndex + 1) / total) * 100 : 0}%` }}
+                  style={{
+                    width: `${total > 0 ? ((currentIndex + 1) / total) * 100 : 0}%`,
+                  }}
                 />
               </div>
             </div>
@@ -218,7 +225,9 @@ export default function QuestionnairePage() {
                     {currentQuestion.traitTargets?.join(", ") ?? ""}
                   </span>
                 </div>
-                <h2 className={styles.questionText}>{currentQuestion.questionText}</h2>
+                <h2 className={styles.questionText}>
+                  {currentQuestion.questionText}
+                </h2>
 
                 <div className={styles.options}>
                   {(currentQuestion.options ?? []).map((option) => (
@@ -247,10 +256,12 @@ export default function QuestionnairePage() {
                   </label>
                   <textarea
                     value={reasoning[currentQuestion.questionId ?? ""] || ""}
-                    onChange={(e) => setReasoning((prev) => ({
-                      ...prev,
-                      [currentQuestion.questionId ?? ""]: e.target.value,
-                    }))}
+                    onChange={(e) =>
+                      setReasoning((prev) => ({
+                        ...prev,
+                        [currentQuestion.questionId ?? ""]: e.target.value,
+                      }))
+                    }
                     placeholder="可以补充一些背景信息，帮助系统更准确地理解你的选择..."
                     className={styles.reasoningInput}
                     rows={3}
@@ -267,10 +278,7 @@ export default function QuestionnairePage() {
                 >
                   上一题
                 </button>
-                <button
-                  className="btn btn-primary"
-                  onClick={handleNext}
-                >
+                <button className="btn btn-primary" onClick={handleNext}>
                   {currentIndex < total - 1 ? "提交并继续" : "完成问答"}
                 </button>
               </div>

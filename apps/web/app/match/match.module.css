@@ -48,7 +48,11 @@
 
 /* Main Card */
 .mainCard {
-  background: linear-gradient(135deg, rgba(182, 136, 61, 0.15) 0%, rgba(182, 136, 61, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(182, 136, 61, 0.15) 0%,
+    rgba(182, 136, 61, 0.05) 100%
+  );
   border-color: var(--accent-gold);
 }
 
@@ -71,7 +75,11 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-gold-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--accent-red) 0%,
+    var(--accent-gold-dark) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;

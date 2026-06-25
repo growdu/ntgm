@@ -7,6 +7,9 @@
     "dev:web": "pnpm --dir apps/web dev",
     "dev:mobile": "pnpm --dir apps/mobile start",
     "typecheck:web": "pnpm --dir apps/web typecheck"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.4",
+    "prettier": "^3.8.4"
   }
 }
-

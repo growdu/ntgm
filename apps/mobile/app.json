@@ -5,7 +5,54 @@
     "scheme": "ntgm",
     "version": "0.1.0",
     "orientation": "portrait",
-    "platforms": ["ios", "android"]
+    "platforms": ["ios", "android"],
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#0d1016",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "app.ntgm.mobile",
+      "infoPlist": {
+        "NSCameraUsageDescription": "逆天改命需要相机权限以拍摄面部和手掌照片用于画像分析。",
+        "NSPhotoLibraryUsageDescription": "逆天改命需要相册权限以上传您已有的面部和手掌照片。",
+        "NSPhotoLibraryAddUsageDescription": "逆天改命需要相册写入权限以保存生成的解读海报。",
+        "NSMicrophoneUsageDescription": "暂未使用麦克风，预留权限。",
+        "UIBackgroundModes": ["remote-notification"]
+      }
+    },
+    "android": {
+      "package": "app.ntgm.mobile",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.VIBRATE"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "逆天改命需要相册权限以上传您的面部和手掌照片。",
+          "cameraPermission": "逆天改命需要相机权限以拍摄面部和手掌照片。"
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#c0a66a"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "00000000-0000-0000-0000-000000000000"
+      }
+    }
   }
 }
-

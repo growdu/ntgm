@@ -6,7 +6,8 @@ import { fetchCurrentMatch } from "@ntgm/sdk";
 import type { MatchCurrentResponse } from "@ntgm/sdk";
 import styles from "./match.module.css";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
 
 export default function MatchPage() {
   const [match, setMatch] = useState<MatchCurrentResponse | null>(null);
@@ -21,7 +22,8 @@ export default function MatchPage() {
   }, []);
 
   const topMatches = match?.topMatches ?? [];
-  const currentMatch = topMatches.find((m) => m.rank === selectedRank) ?? topMatches[0];
+  const currentMatch =
+    topMatches.find((m) => m.rank === selectedRank) ?? topMatches[0];
 
   if (loading) {
     return (
@@ -77,9 +79,12 @@ export default function MatchPage() {
                     <span>{currentMatch?.figureName?.[0] ?? "?"}</span>
                   </div>
                   <div className={styles.figureInfo}>
-                    <h2 className={styles.figureName}>{currentMatch?.figureName ?? "未知"}</h2>
+                    <h2 className={styles.figureName}>
+                      {currentMatch?.figureName ?? "未知"}
+                    </h2>
                     <span className={styles.figureMeta}>
-                      相似度 {Math.round((currentMatch?.similarityScore ?? 0) * 100)}%
+                      相似度{" "}
+                      {Math.round((currentMatch?.similarityScore ?? 0) * 100)}%
                     </span>
                   </div>
                   <div className={styles.similarityScore}>
@@ -137,7 +142,9 @@ export default function MatchPage() {
                         <span className={styles.rankNumber}>{m.rank}</span>
                       </div>
                       <div className={styles.candidateInfo}>
-                        <span className={styles.candidateName}>{m.figureName}</span>
+                        <span className={styles.candidateName}>
+                          {m.figureName}
+                        </span>
                       </div>
                       <div className={styles.candidateScore}>
                         <span className={styles.scoreValue}>
@@ -161,9 +168,7 @@ export default function MatchPage() {
 
               <div className={styles.infoCard}>
                 <h3 className={styles.infoTitle}>为什么重要？</h3>
-                <p className={styles.infoText}>
-                  了解「你像谁」可以帮助你：
-                </p>
+                <p className={styles.infoText}>了解「你像谁」可以帮助你：</p>
                 <ul className={styles.benefitList}>
                   <li>更清晰地理解自己的行为模式</li>
                   <li>从历史人物的成功与失败中学习</li>

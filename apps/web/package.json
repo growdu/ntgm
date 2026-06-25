@@ -6,19 +6,35 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint app lib --ext .ts,.tsx",
+    "format": "prettier --write \"app/**/*.{ts,tsx,js,jsx,json,css,md}\" \"lib/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"app/**/*.{ts,tsx,js,jsx,json,css,md}\" \"lib/**/*.{ts,tsx,js,jsx,json,css,md}\""
   },
   "dependencies": {
+    "dompurify": "^3.4.11",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
+    "marked": "^18.0.5",
     "next": "^15.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
+    "@eslint/eslintrc": "^3.3.5",
+    "@types/dompurify": "^3.2.0",
+    "@types/node": "^22.19.18",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "typescript": "^5.6.0"
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.9",
+    "typescript": "^5.6.0",
+    "typescript-eslint": "^8.61.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "react": "19.2.0",
+      "react-dom": "19.2.0"
+    }
   }
 }

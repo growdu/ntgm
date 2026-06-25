@@ -7,11 +7,14 @@ import type { BaziCurrentResponse, ProfileSummaryResponse } from "@ntgm/sdk";
 import { useEffect, useState } from "react";
 import styles from "./analysis.module.css";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
 
 export default function AnalysisPage() {
   const [bazi, setBazi] = useState<BaziCurrentResponse | null>(null);
-  const [profileV1, setProfileV1] = useState<ProfileSummaryResponse | null>(null);
+  const [profileV1, setProfileV1] = useState<ProfileSummaryResponse | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -33,11 +36,17 @@ export default function AnalysisPage() {
   }, []);
 
   // Extract five elements from featureData
-  const fiveElements = bazi?.featureData?.fiveElements as Record<string, number> | undefined;
+  const fiveElements = bazi?.featureData?.fiveElements as
+    | Record<string, number>
+    | undefined;
 
   // Extract keywords from summary
   const summary = profileV1?.summary as Record<string, unknown> | undefined;
-  const keywords = (summary?.keywords as string[]) ?? ["行动力强", "理性控制", "事业驱动"];
+  const keywords = (summary?.keywords as string[]) ?? [
+    "行动力强",
+    "理性控制",
+    "事业驱动",
+  ];
 
   // Extract uncertainty from featureData
   const uncertainty = (bazi?.featureData?.uncertainty as string[]) ?? [
@@ -46,15 +55,21 @@ export default function AnalysisPage() {
   ];
 
   // Extract interpretation from interpretationData
-  const interpretationData = bazi?.interpretationData as Record<string, unknown> | undefined;
-  const interpretation = (interpretationData?.interpretation as string) ??
+  const interpretationData = bazi?.interpretationData as
+    | Record<string, unknown>
+    | undefined;
+  const interpretation =
+    (interpretationData?.interpretation as string) ??
     "系统正在分析命盘数据，请稍候...";
 
   // Calculate overall score from confidenceMap
-  const confidenceMap = profileV1?.confidenceMap as Record<string, number> | undefined;
-  const overallScore = confidenceMap?.overallScore !== undefined
-    ? Math.round(confidenceMap.overallScore * 100)
-    : 61;
+  const confidenceMap = profileV1?.confidenceMap as
+    | Record<string, number>
+    | undefined;
+  const overallScore =
+    confidenceMap?.overallScore !== undefined
+      ? Math.round(confidenceMap.overallScore * 100)
+      : 61;
 
   if (loading) {
     return (
@@ -74,7 +89,9 @@ export default function AnalysisPage() {
           <div className={styles.header}>
             <div className={styles.headerContent}>
               <div className={styles.versionInfo}>
-                <span className="version-tag">V{profileV1?.profileVersion ?? 1}</span>
+                <span className="version-tag">
+                  V{profileV1?.profileVersion ?? 1}
+                </span>
                 <span className={styles.versionLabel}>版本</span>
               </div>
               <h1 className={styles.title}>你的第一版命理画像</h1>
@@ -84,7 +101,9 @@ export default function AnalysisPage() {
             </div>
             <div className={styles.headerNote}>
               <span className={styles.noteIcon}>💡</span>
-              <span>这是起点，不是终局。系统会随着你的信息补充持续修正结论。</span>
+              <span>
+                这是起点，不是终局。系统会随着你的信息补充持续修正结论。
+              </span>
             </div>
           </div>
 
@@ -99,19 +118,27 @@ export default function AnalysisPage() {
                 <div className={styles.baziGrid}>
                   <div className={styles.baziItem}>
                     <span className={styles.baziLabel}>年柱</span>
-                    <span className={styles.baziValue}>{bazi?.chart.yearGz ?? "待校准"}</span>
+                    <span className={styles.baziValue}>
+                      {bazi?.chart.yearGz ?? "待校准"}
+                    </span>
                   </div>
                   <div className={styles.baziItem}>
                     <span className={styles.baziLabel}>月柱</span>
-                    <span className={styles.baziValue}>{bazi?.chart.monthGz ?? "待校准"}</span>
+                    <span className={styles.baziValue}>
+                      {bazi?.chart.monthGz ?? "待校准"}
+                    </span>
                   </div>
                   <div className={styles.baziItem}>
                     <span className={styles.baziLabel}>日柱</span>
-                    <span className={styles.baziValue}>{bazi?.chart.dayGz ?? "待校准"}</span>
+                    <span className={styles.baziValue}>
+                      {bazi?.chart.dayGz ?? "待校准"}
+                    </span>
                   </div>
                   <div className={styles.baziItem}>
                     <span className={styles.baziLabel}>时柱</span>
-                    <span className={styles.baziValue}>{bazi?.chart.hourGz ?? "待校准"}</span>
+                    <span className={styles.baziValue}>
+                      {bazi?.chart.hourGz ?? "待校准"}
+                    </span>
                   </div>
                 </div>
                 <div className={styles.fiveElements}>
@@ -193,19 +220,31 @@ export default function AnalysisPage() {
                 <h3 className={styles.sidebarTitle}>证据来源</h3>
                 <ul className={styles.sourceList}>
                   <li className={styles.sourceItem}>
-                    <span className={styles.sourceDot} style={{ background: "var(--accent-gold)" }} />
+                    <span
+                      className={styles.sourceDot}
+                      style={{ background: "var(--accent-gold)" }}
+                    />
                     八字分析
                   </li>
                   <li className={styles.sourceItem}>
-                    <span className={styles.sourceDot} style={{ background: "var(--text-muted)" }} />
+                    <span
+                      className={styles.sourceDot}
+                      style={{ background: "var(--text-muted)" }}
+                    />
                     面相分析（未完成）
                   </li>
                   <li className={styles.sourceItem}>
-                    <span className={styles.sourceDot} style={{ background: "var(--text-muted)" }} />
+                    <span
+                      className={styles.sourceDot}
+                      style={{ background: "var(--text-muted)" }}
+                    />
                     手相分析（未完成）
                   </li>
                   <li className={styles.sourceItem}>
-                    <span className={styles.sourceDot} style={{ background: "var(--text-muted)" }} />
+                    <span
+                      className={styles.sourceDot}
+                      style={{ background: "var(--text-muted)" }}
+                    />
                     问答记录（未开始）
                   </li>
                 </ul>
@@ -229,7 +268,8 @@ export default function AnalysisPage() {
               <div className={styles.sidebarCard}>
                 <h3 className={styles.sidebarTitle}>置信度说明</h3>
                 <p className={styles.sidebarText}>
-                  当前置信度 {overallScore}%，系统认为画像基础框架已建立，但细节仍需校准。
+                  当前置信度 {overallScore}
+                  %，系统认为画像基础框架已建立，但细节仍需校准。
                 </p>
               </div>
             </div>

@@ -22,7 +22,11 @@
   font-weight: 700;
   line-height: 1.3;
   margin-bottom: 16px;
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-gold) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--text-primary) 0%,
+    var(--accent-gold) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -165,7 +169,11 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-gold-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--accent-red) 0%,
+    var(--accent-gold-dark) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -361,4 +369,489 @@
   .heroTitle {
     font-size: 1.8rem;
   }
+}
+
+/* 营销页专用 — 复用 globals.css 中的通用 class 后，这些只是局部微调 */
+.marketingHero {
+  padding: 96px 0 64px;
+  text-align: center;
+}
+
+.section {
+  padding: 80px 0;
+}
+
+.sectionAlt {
+  padding: 80px 0;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.sectionEyebrow {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: var(--accent-gold);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.sectionSubtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.valueGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.valueCard {
+  padding: 32px 24px;
+  text-align: left;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  transition: all 0.3s;
+}
+
+.valueCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-gold);
+  box-shadow: 0 12px 32px rgba(182, 136, 61, 0.15);
+}
+
+.valueIcon {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(182, 136, 61, 0.18),
+    rgba(61, 122, 110, 0.18)
+  );
+  border: 1px solid var(--border-color);
+}
+
+.valueTitle {
+  font-size: 1.15rem;
+  color: var(--accent-gold);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.valueDesc {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.flowSteps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.flowStep {
+  text-align: center;
+  padding: 24px 16px;
+}
+
+.flowStepNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    var(--accent-gold) 0%,
+    var(--accent-gold-dark) 100%
+  );
+  color: var(--bg-primary);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+  box-shadow: 0 0 24px rgba(182, 136, 61, 0.3);
+}
+
+.flowStepTitle {
+  color: var(--text-primary);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.flowStepDesc {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.testimonialGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.testimonial {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.testimonialQuote {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.testimonialAuthor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.testimonialAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    var(--accent-gold) 0%,
+    var(--accent-jade) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bg-primary);
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+}
+
+/* ========== 新增 marketing 模块样式 ========== */
+
+.statsSection {
+  padding: 32px 0 64px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 24px;
+  text-align: center;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statNumber {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: linear-gradient(
+    135deg,
+    var(--accent-gold),
+    var(--accent-gold-light)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.statLabel {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* 视频 demo */
+.videoWrap {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.videoFrame {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+}
+
+.videoInner {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(192, 166, 106, 0.08) 0%,
+      transparent 70%
+    ),
+    linear-gradient(180deg, #0d1016 0%, #121825 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-family: inherit;
+  padding: 24px;
+}
+
+.playTriangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 28px 0 28px 48px;
+  border-color: transparent transparent transparent var(--accent-gold);
+  filter: drop-shadow(0 0 16px rgba(192, 166, 106, 0.5));
+  transition: transform 0.2s;
+}
+
+.playButton:hover .playTriangle {
+  transform: scale(1.1);
+}
+
+.playHint {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.videoPlaying {
+  position: absolute;
+  inset: 0;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.videoScene {
+  width: 100%;
+}
+
+.sceneTrack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sceneItem {
+  font-family: "Fira Code", monospace;
+  font-size: 0.92rem;
+  color: var(--text-subtle);
+  padding: 8px 16px;
+  border-left: 3px solid var(--border-color);
+  transition: all 0.3s;
+}
+
+.sceneActive {
+  color: var(--accent-gold);
+  border-left-color: var(--accent-gold);
+  background: rgba(192, 166, 106, 0.06);
+}
+
+.videoBar {
+  height: 4px;
+  background: var(--bg-secondary);
+}
+
+.videoProgress {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--accent-gold-dark),
+    var(--accent-gold)
+  );
+  transition: width 0.1s linear;
+}
+
+.videoMeta {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 16px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-family: "Fira Code", monospace;
+}
+
+/* Onboarding 详情卡片 */
+.onboardingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.onboardingCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 24px 20px;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.onboardingCard:hover {
+  border-color: var(--border-gold);
+  transform: translateY(-2px);
+}
+
+.onboardingStep {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.onboardingStepNum {
+  font-family: "Fira Code", monospace;
+  font-size: 0.72rem;
+  color: var(--accent-gold);
+  letter-spacing: 1px;
+  background: rgba(192, 166, 106, 0.12);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.onboardingStepIcon {
+  font-size: 1.4rem;
+  color: var(--accent-gold);
+}
+
+.onboardingTitle {
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.onboardingPoints {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.onboardingPoints li {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.6;
+}
+
+.onboardingPoints li::before {
+  content: "·";
+  position: absolute;
+  left: 4px;
+  color: var(--accent-gold);
+  font-weight: 700;
+}
+
+/* FAQ */
+.faqList {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faqItem {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.faqItem:hover {
+  border-color: var(--border-gold);
+}
+
+.faqTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.faqIcon {
+  color: var(--accent-gold);
+  font-size: 1.2rem;
+  font-weight: 300;
+  width: 20px;
+  text-align: center;
+}
+
+.faqAnswer {
+  padding: 0 20px 16px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+/* Final CTA */
+.finalCta {
+  text-align: center;
+  padding: 48px 24px;
+  background: linear-gradient(
+    135deg,
+    rgba(192, 166, 106, 0.12),
+    rgba(61, 122, 110, 0.12)
+  );
+  border: 1px solid var(--border-gold);
+  border-radius: 16px;
 }

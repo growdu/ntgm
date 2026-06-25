@@ -4,11 +4,24 @@ import { useEffect, useState, useRef } from "react";
 import { jsPDF } from "jspdf";
 import { AppShell } from "../components/Navigation";
 import { Toast } from "../components/Toast";
-import { fetchArchiveChanges, fetchArchiveTimeline, fetchProfileVersions, fetchCurrentProfile, fetchCurrentMatch } from "@ntgm/sdk";
-import type { ProfileChangeLogItem, ArchiveTimelineItem, ProfileVersionItem, ProfileSummaryResponse, MatchCurrentResponse } from "@ntgm/sdk";
+import {
+  fetchArchiveChanges,
+  fetchArchiveTimeline,
+  fetchProfileVersions,
+  fetchCurrentProfile,
+  fetchCurrentMatch,
+} from "@ntgm/sdk";
+import type {
+  ProfileChangeLogItem,
+  ArchiveTimelineItem,
+  ProfileVersionItem,
+  ProfileSummaryResponse,
+  MatchCurrentResponse,
+} from "@ntgm/sdk";
 import styles from "./archive.module.css";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
 
 export default function ArchivePage() {
   const [changes, setChanges] = useState<ProfileChangeLogItem[]>([]);
@@ -18,10 +31,16 @@ export default function ArchivePage() {
   const [match, setMatch] = useState<MatchCurrentResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState<string | null>(null);
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
   const profileRef = useRef<HTMLDivElement>(null);
 
-  const showToast = (message: string, type: "success" | "error" = "success") => {
+  const showToast = (
+    message: string,
+    type: "success" | "error" = "success"
+  ) => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3000);
   };
@@ -68,7 +87,11 @@ export default function ArchivePage() {
         // Match info
         const topMatch = match?.topMatches?.[0];
         if (topMatch) {
-          doc.text(`最像: ${topMatch.figureName} (${Math.round(topMatch.similarityScore * 100)}%相似)`, 20, 65);
+          doc.text(
+            `最像: ${topMatch.figureName} (${Math.round(topMatch.similarityScore * 100)}%相似)`,
+            20,
+            65
+          );
         }
 
         // Version timeline
@@ -82,7 +105,11 @@ export default function ArchivePage() {
         doc.setFontSize(10);
         timeline.slice(0, 10).forEach((item) => {
           const date = new Date(item.occurredAt).toLocaleDateString("zh-CN");
-          doc.text(`[V${item.profileVersion ?? "?"}] ${date} - ${item.title}`, 20, y);
+          doc.text(
+            `[V${item.profileVersion ?? "?"}] ${date} - ${item.title}`,
+            20,
+            y
+          );
           y += 8;
           if (y > 270) return;
         });
@@ -98,7 +125,11 @@ export default function ArchivePage() {
         doc.setFontSize(10);
         changes.forEach((change) => {
           const headline = change.reasonSummary.headline ?? "更新";
-          doc.text(`V${change.fromVersion} → V${change.toVersion}: ${headline}`, 20, y);
+          doc.text(
+            `V${change.fromVersion} → V${change.toVersion}: ${headline}`,
+            20,
+            y
+          );
           y += 8;
           if (y > 270) return;
         });
@@ -157,7 +188,11 @@ export default function ArchivePage() {
           ctx.fillText(`最像: ${topMatch.figureName}`, 400, 340);
           ctx.font = "18px serif";
           ctx.fillStyle = "#a8998a";
-          ctx.fillText(`${Math.round(topMatch.similarityScore * 100)}% 相似度`, 400, 370);
+          ctx.fillText(
+            `${Math.round(topMatch.similarityScore * 100)}% 相似度`,
+            400,
+            370
+          );
         }
 
         // Stats
@@ -180,7 +215,11 @@ export default function ArchivePage() {
         // Footer
         ctx.fillStyle = "#6b5d52";
         ctx.font = "12px serif";
-        ctx.fillText(`生成时间: ${new Date().toLocaleDateString("zh-CN")}`, 400, 950);
+        ctx.fillText(
+          `生成时间: ${new Date().toLocaleDateString("zh-CN")}`,
+          400,
+          950
+        );
 
         // Download poster
         const link = document.createElement("a");
@@ -211,9 +250,10 @@ export default function ArchivePage() {
     );
   }
 
-  const currentVersion = versions.length > 0
-    ? Math.max(...versions.map((v) => v.profileVersion))
-    : 0;
+  const currentVersion =
+    versions.length > 0
+      ? Math.max(...versions.map((v) => v.profileVersion))
+      : 0;
 
   return (
     <AppShell>
@@ -238,16 +278,25 @@ export default function ArchivePage() {
                 </div>
                 <div className={styles.timeline}>
                   {timeline.map((item, index) => (
-                    <div key={`${item.itemType}-${index}`} className={styles.timelineItem}>
+                    <div
+                      key={`${item.itemType}-${index}`}
+                      className={styles.timelineItem}
+                    >
                       <div className={styles.timelineDot}>
-                        <span className="version-tag">V{item.profileVersion ?? "?"}</span>
+                        <span className="version-tag">
+                          V{item.profileVersion ?? "?"}
+                        </span>
                       </div>
                       <div className={styles.timelineContent}>
                         <div className={styles.timelineMeta}>
                           <span className={styles.timelineDate}>
-                            {new Date(item.occurredAt).toLocaleDateString("zh-CN")}
+                            {new Date(item.occurredAt).toLocaleDateString(
+                              "zh-CN"
+                            )}
                           </span>
-                          <span className={styles.timelineTitle}>{item.title}</span>
+                          <span className={styles.timelineTitle}>
+                            {item.title}
+                          </span>
                         </div>
                         <p className={styles.timelineDesc}>{item.summary}</p>
                       </div>
@@ -270,7 +319,9 @@ export default function ArchivePage() {
                       <div className={styles.figureAvatar}>
                         <span>{change.toVersion}</span>
                       </div>
-                      <span className={styles.figureName}>V{change.fromVersion} → V{change.toVersion}</span>
+                      <span className={styles.figureName}>
+                        V{change.fromVersion} → V{change.toVersion}
+                      </span>
                       <span className={styles.figureVersion}>
                         {change.reasonSummary.headline ?? "更新"}
                       </span>
@@ -282,7 +333,8 @@ export default function ArchivePage() {
                 </div>
                 <p className={styles.figureNote}>
                   {changes.length > 0
-                    ? changes[changes.length - 1].reasonSummary.trigger ?? "系统持续追踪你的变化轨迹"
+                    ? (changes[changes.length - 1].reasonSummary.trigger ??
+                      "系统持续追踪你的变化轨迹")
                     : "暂无变化记录"}
                 </p>
               </div>
@@ -296,9 +348,14 @@ export default function ArchivePage() {
                   {versions
                     .sort((a, b) => b.profileVersion - a.profileVersion)
                     .map((version) => (
-                      <div key={version.profileId} className={styles.versionItem}>
+                      <div
+                        key={version.profileId}
+                        className={styles.versionItem}
+                      >
                         <div className={styles.versionHeader}>
-                          <span className="version-tag">{version.profileVersion}</span>
+                          <span className="version-tag">
+                            {version.profileVersion}
+                          </span>
                           <span className={styles.versionLabel}>版本</span>
                           {version.profileVersion === currentVersion && (
                             <span className="tag tag-success">当前</span>
@@ -315,7 +372,9 @@ export default function ArchivePage() {
                           </div>
                           <div className={styles.versionStat}>
                             <span className={styles.statLabel}>引擎版本</span>
-                            <span className={styles.statValue}>{version.engineVersion}</span>
+                            <span className={styles.statValue}>
+                              {version.engineVersion}
+                            </span>
                           </div>
                         </div>
                         {version.profileVersion === currentVersion && (

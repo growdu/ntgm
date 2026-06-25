@@ -384,3 +384,205 @@ export async function fetchArchiveTimeline(
   const suffix = params.size > 0 ? `?${params.toString()}` : "";
   return request<ArchiveTimelineResponse>(apiBaseUrl, `/archive/timeline${suffix}`);
 }
+
+// ============================================
+// Auth & Account types
+// ============================================
+
+export type Plan = "free" | "pro" | "master";
+
+export type AccountUser = {
+  userId: string;
+  email: string;
+  displayName: string;
+  plan: Plan;
+  createdAt: string;
+};
+
+export type SignupRequest = {
+  email: string;
+  password: string;
+  displayName: string;
+};
+
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
+
+export type AuthResponse = {
+  user: AccountUser;
+  token: string;
+};
+
+export type AuthError = {
+  code: string;
+  message: string;
+};
+
+// ============================================
+// Pricing & Payment types
+// ============================================
+
+export type PricingPlan = {
+  id: Plan;
+  name: string;
+  description: string;
+  priceCents: number;
+  currency: "CNY";
+  features: string[];
+  excludedFeatures?: string[];
+  highlight?: boolean;
+  badge?: string;
+};
+
+export type CheckoutRequest = {
+  planId: Plan;
+  paymentMethod: "wechat" | "alipay" | "card";
+};
+
+export type CheckoutResponse = {
+  checkoutId: string;
+  redirectUrl: string;
+  expiresAt: string;
+};
+
+export type OrderRecord = {
+  orderId: string;
+  planId: Plan;
+  amountCents: number;
+  status: "pending" | "paid" | "failed" | "refunded";
+  createdAt: string;
+  paidAt: string | null;
+};
+
+// ============================================
+// Creation (创作) types
+// ============================================
+
+export type Work = {
+  workId: string;
+  authorId: string;
+  authorName: string;
+  title: string;
+  body: string;
+  tags: string[];
+  visibility: "public" | "private";
+  likes: number;
+  views: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CreateWorkRequest = {
+  title: string;
+  body: string;
+  tags?: string[];
+  visibility?: "public" | "private";
+};
+
+export type CreateWorkResponse = {
+  work: Work;
+};
+
+export type ListWorksResponse = {
+  works: Work[];
+  total: number;
+};
+
+// ============================================
+// 拍照上传 (mobile)
+// ============================================
+
+export type AssetType = "face" | "palm";
+
+export type UploadedAsset = {
+  assetId: string;
+  userId: string;
+  assetType: AssetType;
+  localUri: string; // file://... 或 data:image/...
+  mimeType: string;
+  size: number;
+  uploadedAt: string;
+};
+
+export type UploadAssetRequest = {
+  assetType: AssetType;
+  localUri: string;
+  mimeType: string;
+  size: number;
+};
+
+export type UploadAssetResponse = {
+  asset: UploadedAsset;
+  remoteUrl: string | null; // null = mock，未真正上传
+};
+
+// ============================================
+// 推送通知 (mobile)
+// ============================================
+
+export type PushPermissionStatus = "granted" | "denied" | "undetermined";
+
+export type PushTokenRecord = {
+  token: string;
+  deviceName: string;
+  platform: "ios" | "android" | "unknown";
+  registeredAt: string;
+};
+
+export type NotificationPref = {
+  pushEnabled: boolean;
+  dailyReminder: boolean;
+  weeklyDigest: boolean;
+  marketingNews: boolean;
+};
+
+export type ReminderItem = {
+  id: string;
+  title: string;
+  body: string;
+  triggerAt: string; // ISO
+  read: boolean;
+};
+
+// ============================================
+// Onboarding（mobile 独立建档）
+// ============================================
+
+export type Gender = "male" | "female" | "other" | "prefer_not_to_say";
+
+// 注意：BasicIntakeRequest / BasicIntakeResponse 已在文件顶部定义，
+// 这里只补 mobile 端 onboarding 用的辅助类型。
+
+export type OnboardingStep =
+  | "welcome"
+  | "basic"
+  | "photo"
+  | "review"
+  | "submitting"
+  | "done";
+
+export type OnboardingDraft = {
+  name: string;
+  gender: Gender | "";
+  birthDate: string; // YYYY-MM-DD
+  birthTime: string; // HH:MM
+  birthTimeUncertain: boolean;
+  birthPlace: string;
+  faceAssetIds: string[]; // local refs
+  palmAssetIds: string[];
+};
+
+export type OnboardingProgress = {
+  step: OnboardingStep;
+  stepIndex: number;
+  totalSteps: number;
+};
+
+export type OnboardingStatus = {
+  completed: boolean;
+  hasName: boolean;
+  hasBirth: boolean;
+  currentProfileVersion: number;
+};
