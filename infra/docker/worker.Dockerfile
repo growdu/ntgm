@@ -2,20 +2,24 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Copy API app (shares services, repos, models with worker)
-COPY services/api/app /app/api_app
+# Install uv
+RUN pip install uv
 
-# Copy Worker app (tasks, celery config)
+# Copy both API app and Worker app
+COPY services/api/pyproject.toml /app/api_pyproject.toml
+COPY services/api/app /app/api_app
 COPY services/worker/app /app/worker_app
 
-# Install dependencies
-COPY services/api/pyproject.toml /app/pyproject.toml
-RUN pip install --no-cache-dir \
-    fastapi uvicorn[standard] pydantic-settings sqlalchemy psycopg[binary] redis \
-    celery[redis] alembic
+# Install API deps (needed for push_service etc.) + celery for the worker itself
+RUN uv sync --frozen --python python3.12 \
+    --index-url https://pypi.tuna.tsinghua.edu.cn/simple \
+    --no-dev \
+    -p /app/api_pyproject.toml \
+    2>/dev/null || \
+    pip install --no-cache-dir \
+    fastapi uvicorn[standard] pydantic-settings sqlalchemy \
+    psycopg[binary] redis celery[redis] httpx
 
-# Set PYTHONPATH so worker can import from api_app
 ENV PYTHONPATH=/app/api_app:/app/worker_app
 
-# Worker entry point - tasks are in worker_app.celery_app
 CMD ["celery", "-A", "worker_app.celery_app", "worker", "--loglevel=INFO"]
