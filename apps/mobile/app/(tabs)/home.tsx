@@ -137,9 +137,11 @@ export default function HomeScreen() {
           </Pressable>
         ) : (
           <View style={{ gap: spacing.sm }}>
-            <QuickAction label="查看画像" sub="基础 + 进阶维度" />
-            <QuickAction label="历史人物匹配" sub="你的 5000 年坐标系" />
-            <QuickAction label="改命建议" sub="短期 / 中期 / 长期" />
+            <QuickAction label="查看画像" sub="基础 + 进阶维度" onPress={() => router.push("/profile-view")} />
+            <QuickAction label="历史人物匹配" sub="你的 5000 年坐标系" onPress={() => router.push("/match")} />
+            <QuickAction label="改命建议" sub="短期 / 中期 / 长期" onPress={() => router.push("/advice")} />
+            <QuickAction label="持续问答" sub="校准画像，提升置信度" onPress={() => router.push("/questionnaire")} />
+            <QuickAction label="成长档案" sub="命运演进，全部留痕" onPress={() => router.push("/archive")} />
           </View>
         )}
       </View>
@@ -241,16 +243,18 @@ function PlanBadge({ plan }: { plan: "free" | "pro" | "master" }) {
   );
 }
 
-function QuickAction({ label, sub }: { label: string; sub: string }) {
+function QuickAction({ label, sub, onPress }: { label: string; sub: string; onPress?: () => void }) {
   return (
     <Pressable
+      onPress={onPress}
+      disabled={!onPress}
       style={({ pressed }) => ({
         backgroundColor: colors.background,
         borderRadius: 8,
         padding: spacing.md,
         borderWidth: 1,
         borderColor: colors.border,
-        opacity: pressed ? 0.7 : 1,
+        opacity: pressed || !onPress ? 0.5 : 1,
       })}
     >
       <Text style={{ color: colors.text, fontWeight: "500" }}>{label}</Text>
