@@ -50,7 +50,7 @@
 
 ## 当前状态
 
-当前仓库已经进入 `Phase 2-3` 过渡阶段，核心后端主链和 Web 演示工作台已经打通最小闭环。
+`Phase 5` 已完成。核心后端主链、Web 演示工作台、移动端（Expo）均已打通，8 服务 Docker Compose 就绪。
 
 现阶段输出已经覆盖：
 
@@ -83,15 +83,15 @@
 3. `services/api`：FastAPI API 骨架
 4. `services/worker`：Celery Worker 骨架
 5. `packages/*`：共享 SDK、领域模型、校验与设计 token
-6. `infra/compose`：本地基础设施编排
-7. `infra/docker`：基础 Dockerfile
+6. `infra/docker`：Docker 镜像定义（api/web/worker Dockerfile）+ 8 服务完整编排
+7. `infra/compose`：遗留基础编排（已弃用，请使用 `infra/docker/docker-compose.yml`）
 
 ## 快速开始
 
 当前阶段建议先完成本地基础设施启动，再分别接入 Web 与 API 开发。
 
 1. 复制环境变量模板：`.env.example`
-2. 启动本地基础设施：`infra/compose/docker-compose.yml`
+2. 启动全套 8 服务：`cd infra/docker && docker compose up -d`
 3. 启动 API：`services/api`
 4. 启动 Worker：`services/worker`
 5. 启动 Web：`apps/web`
@@ -108,10 +108,9 @@
 
 ## 下一步建议
 
-建议后续按以下顺序推进：
+以下为可选的增强方向（Phase 5 已完成，所有核心功能已就绪）：
 
-1. 把 `profiles/recompute` 切换为真实 Worker 异步任务链
-2. 接入图片上传到 MinIO / S3
-3. 把时间线节点详情从原始 JSON 提升为结构化展示
-4. 落八字分析与画像引擎 V1 的真实规则
-5. 接入移动端建档与问答
+1. Face Tasks — 接入 MediaPipe/OpenCV 实现真实人脸特征提取（`services/worker/app/tasks/face_tasks.py`）
+2. 八字引擎增强 — 接入真实天文算法替代占位实现
+3. 画像引擎 V2 — 引入机器学习模型替代规则引擎
+4. 移动端高级功能 — 推送通知后台接收、手势交互

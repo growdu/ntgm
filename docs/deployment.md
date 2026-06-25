@@ -446,7 +446,7 @@ Nginx / Gateway
 
 ## 17. 已完成补充（2026-06）
 
-1. Docker Compose 完整示例 — 见 `infra/compose/docker-compose.yml`
+1. Docker Compose 完整示例 — 见 `infra/docker/docker-compose.yml`（8 服务：postgres, redis, minio, minio-init, api, worker, beat, frontend）
 2. CI/CD 配置说明 — 见 `.github/workflows/ci.yml`
 3. 健康检查接口定义 — `GET /api/v1/health`（基础）+ `GET /api/v1/ready`（含 DB/Redis/MinIO 实际探测）
 4. Sentry 监控接入 — `main.py` 中 `_init_sentry()`，配置 `SENTRY_DSN` 环境变量即生效
@@ -460,31 +460,34 @@ git clone https://github.com/<org>/ntgm.git
 cd ntgm
 
 # 启动全套本地开发环境（postgres + redis + minio + api + worker + web）
-docker compose -f infra/compose/docker-compose.yml up -d
+docker compose -f infra/docker/docker-compose.yml up -d
 
 # 查看服务状态
-docker compose -f infra/compose/docker-compose.yml ps
+docker compose -f infra/docker/docker-compose.yml ps
 
 # 查看 API 日志
-docker compose -f infra/compose/docker-compose.yml logs -f api
+docker compose -f infra/docker/docker-compose.yml logs -f api
 
 # 查看 Worker 日志
-docker compose -f infra/compose/docker-compose.yml logs -f worker
+docker compose -f infra/docker/docker-compose.yml logs -f worker
+
+# 查看 Beat 日志（提醒调度器）
+docker compose -f infra/docker/docker-compose.yml logs -f beat
 
 # 运行数据库迁移（首次启动后）
-docker compose -f infra/compose/docker-compose.yml exec api \\
-  python -c "from app.db import engine; from alembic import command; from alembic.config import Config; \\
+docker compose -f infra/docker/docker-compose.yml exec api \
+  python -c "from app.db import engine; from alembic import command; from alembic.config import Config; \
   cfg = Config('alembic.ini'); command.upgrade(cfg, 'head')"
 
 # 触发初始数据（创建测试用户等）
-docker compose -f infra/compose/docker-compose.yml exec api \\
+docker compose -f infra/docker/docker-compose.yml exec api \
   python scripts/seed_dev_data.py
 
 # 停止所有服务
-docker compose -f infra/compose/docker-compose.yml down
+docker compose -f infra/docker/docker-compose.yml down
 
 # 清理数据（慎用）
-docker compose -f infra/compose/docker-compose.yml down -v
+docker compose -f infra/docker/docker-compose.yml down -v
 ```
 
 ## 19. 生产发布检查清单
