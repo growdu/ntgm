@@ -15,10 +15,10 @@ router = APIRouter(prefix="/users", tags=["users"])
 def intake_basic(
     payload: BasicIntakeRequest,
     db: Session = Depends(get_db),
-    service: UserService = Depends(UserService),
-    intake_service: IntakeService = Depends(IntakeService),
-    bazi_service: BaziService = Depends(BaziService),
-    workflow_service: ProfileWorkflowService = Depends(ProfileWorkflowService),
+    service = UserService(),
+    intake_service = IntakeService(),
+    bazi_service = BaziService(),
+    workflow_service = ProfileWorkflowService(),
 ) -> BasicIntakeResponse:
     user = service.intake_basic(db, payload)
     intake_service.record_basic_intake(db, user_id=user.id, payload=payload)
@@ -36,7 +36,7 @@ def intake_basic(
 @router.get("/me", response_model=UserMeResponse)
 def get_me(
     db: Session = Depends(get_db),
-    service: UserService = Depends(UserService),
+    service = UserService(),
 ) -> UserMeResponse:
     user = service.get_current_user(db)
     if user is None:

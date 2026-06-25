@@ -14,8 +14,8 @@ def list_intake_records(
     intakeType: str | None = Query(default=None, description="Filter by intake type"),
     limit: int = Query(default=50, ge=1, le=200),
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    intake_service: IntakeService = Depends(IntakeService),
+    user_service = UserService(),
+    intake_service = IntakeService(),
 ) -> list[IntakeRecordItem]:
     user = user_service.get_current_user(db)
     if user is None:

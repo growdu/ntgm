@@ -14,7 +14,7 @@ router = APIRouter(prefix="/jobs", tags=["jobs"])
 def get_job(
     job_id: UUID,
     db: Session = Depends(get_db),
-    service: JobService = Depends(JobService),
+    service = JobService(),
 ) -> JobStatusResponse:
     job = service.get_job(db, job_id=job_id)
     if job is None:

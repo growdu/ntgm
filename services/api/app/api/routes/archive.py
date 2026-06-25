@@ -21,8 +21,8 @@ def get_archive_timeline(
     types: str | None = Query(default=None, description="Comma-separated timeline item types"),
     profileVersion: int | None = Query(default=None, ge=1),
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    archive_service: ArchiveService = Depends(ArchiveService),
+    user_service = UserService(),
+    archive_service = ArchiveService(),
 ) -> ArchiveTimelineResponse:
     user = user_service.get_current_user(db)
     if user is None:
@@ -55,8 +55,8 @@ def get_archive_timeline(
 def list_profile_changes(
     limit: int = Query(default=10, ge=1, le=50),
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    change_service: ProfileChangeService = Depends(ProfileChangeService),
+    user_service = UserService(),
+    change_service = ProfileChangeService(),
 ) -> ArchiveChangesResponse:
     user = user_service.get_current_user(db)
     if user is None:

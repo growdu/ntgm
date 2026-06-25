@@ -15,9 +15,9 @@ router = APIRouter(prefix="/advice", tags=["advice"])
 @router.get("/current", response_model=AdviceCurrentResponse)
 def get_current_advice(
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    profile_service: ProfileService = Depends(ProfileService),
-    advice_service: AdviceService = Depends(AdviceService),
+    user_service = UserService(),
+    profile_service = ProfileService(),
+    advice_service = AdviceService(),
 ) -> AdviceCurrentResponse:
     user = user_service.get_current_user(db)
     if user is None:
@@ -41,10 +41,10 @@ def get_current_advice(
 @router.post("/regenerate", response_model=AdviceCurrentResponse)
 def regenerate_advice(
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    profile_service: ProfileService = Depends(ProfileService),
-    match_service: MatchService = Depends(MatchService),
-    advice_service: AdviceService = Depends(AdviceService),
+    user_service = UserService(),
+    profile_service = ProfileService(),
+    match_service = MatchService(),
+    advice_service = AdviceService(),
 ) -> AdviceCurrentResponse:
     """重新生成建议（基于最新画像）"""
     user = user_service.get_current_user(db)
@@ -80,9 +80,9 @@ class FeedbackRequest(BaseModel):
 def submit_feedback(
     payload: FeedbackRequest,
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    profile_service: ProfileService = Depends(ProfileService),
-    advice_service: AdviceService = Depends(AdviceService),
+    user_service = UserService(),
+    profile_service = ProfileService(),
+    advice_service = AdviceService(),
 ):
     """提交建议执行反馈"""
     user = user_service.get_current_user(db)

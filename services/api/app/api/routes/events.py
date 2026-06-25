@@ -14,9 +14,9 @@ router = APIRouter(prefix="/events", tags=["events"])
 def create_event(
     payload: LifeEventCreateRequest,
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    intake_service: IntakeService = Depends(IntakeService),
-    workflow_service: ProfileWorkflowService = Depends(ProfileWorkflowService),
+    user_service = UserService(),
+    intake_service = IntakeService(),
+    workflow_service = ProfileWorkflowService(),
 ) -> LifeEventResponse:
     user = user_service.get_current_user(db)
     if user is None:
@@ -30,8 +30,8 @@ def create_event(
 @router.get("", response_model=list[LifeEventItem])
 def list_events(
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    intake_service: IntakeService = Depends(IntakeService),
+    user_service = UserService(),
+    intake_service = IntakeService(),
 ) -> list[LifeEventItem]:
     user = user_service.get_current_user(db)
     if user is None:

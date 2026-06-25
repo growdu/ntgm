@@ -666,7 +666,7 @@ class AdviceService:
             "failed": "重新评估改命建议",
         }
         title = title_map.get(feedback_type, "改命建议跟进")
-        body = f"您关于「{advice_item_id or "当前建议"}」的反馈已记录，请查看执行效果。"
+        body = f"您关于「{advice_item_id or '当前建议'}」的反馈已记录，请查看执行效果。"
 
         repo = ReminderRepository()
         repo.create(

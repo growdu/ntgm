@@ -14,8 +14,8 @@ router = APIRouter(prefix="/bazi", tags=["bazi"])
 @router.get("/current", response_model=BaziCurrentResponse)
 def get_current_bazi(
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    bazi_service: BaziService = Depends(BaziService),
+    user_service = UserService(),
+    bazi_service = BaziService(),
 ) -> BaziCurrentResponse:
     user = user_service.get_current_user(db)
     if user is None:
@@ -44,8 +44,8 @@ def get_current_bazi(
 @router.post("/analyze", response_model=JobCreateResponse)
 def analyze_bazi(
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    job_service: JobService = Depends(JobService),
+    user_service = UserService(),
+    job_service = JobService(),
 ) -> JobCreateResponse:
     """Trigger async bazi analysis"""
     user = user_service.get_current_user(db)

@@ -57,7 +57,7 @@ def _to_job_response(j) -> PushDispatchJobResponse:
 def create_reminder(
     payload: ReminderCreateRequest,
     db: Session = Depends(get_db),
-    service: UserService = Depends(UserService),
+    service = UserService(),
     repo: ReminderRepository = Depends(ReminderRepository),
 ) -> ReminderResponse:
     user = service.get_current_user(db)
@@ -79,7 +79,7 @@ def create_reminder(
 @router.get("", response_model=ReminderListResponse)
 def list_my_reminders(
     db: Session = Depends(get_db),
-    service: UserService = Depends(UserService),
+    service = UserService(),
     repo: ReminderRepository = Depends(ReminderRepository),
 ) -> ReminderListResponse:
     user = service.get_current_user(db)
@@ -93,8 +93,8 @@ def list_my_reminders(
 async def dispatch_reminder(
     reminder_id: UUID,
     db: Session = Depends(get_db),
-    service: UserService = Depends(UserService),
-    push: PushService = Depends(PushService),
+    service = UserService(),
+    push = PushService(),
     settings: Settings = Depends(get_settings),
 ) -> PushImmediateResponse:
     user = service.get_current_user(db)
@@ -121,8 +121,8 @@ async def dispatch_reminder(
 async def dispatch_immediate(
     payload: PushImmediateRequest,
     db: Session = Depends(get_db),
-    service: UserService = Depends(UserService),
-    push: PushService = Depends(PushService),
+    service = UserService(),
+    push = PushService(),
     settings: Settings = Depends(get_settings),
 ) -> PushImmediateResponse:
     """客户端主动推一条测试 / 自定义消息到当前用户的所有设备。"""
@@ -152,8 +152,8 @@ async def dispatch_immediate(
 @router.get("/jobs", response_model=PushDispatchJobListResponse)
 def list_my_jobs(
     db: Session = Depends(get_db),
-    service: UserService = Depends(UserService),
-    push: PushService = Depends(PushService),
+    service = UserService(),
+    push = PushService(),
 ) -> PushDispatchJobListResponse:
     user = service.get_current_user(db)
     if user is None:
@@ -166,7 +166,7 @@ def list_my_jobs(
 def mark_read(
     reminder_id: UUID,
     db: Session = Depends(get_db),
-    service: UserService = Depends(UserService),
+    service = UserService(),
     repo: ReminderRepository = Depends(ReminderRepository),
 ) -> None:
     user = service.get_current_user(db)

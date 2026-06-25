@@ -13,9 +13,9 @@ router = APIRouter(prefix="/matches", tags=["matches"])
 @router.get("/current", response_model=MatchCurrentResponse)
 def get_current_match(
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    profile_service: ProfileService = Depends(ProfileService),
-    match_service: MatchService = Depends(MatchService),
+    user_service = UserService(),
+    profile_service = ProfileService(),
+    match_service = MatchService(),
 ) -> MatchCurrentResponse:
     user = user_service.get_current_user(db)
     if user is None:

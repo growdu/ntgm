@@ -18,7 +18,7 @@ router = APIRouter(tags=["assets"])
 @router.post("/assets/upload-token", response_model=UploadTokenResponse)
 def create_upload_token(
     payload: UploadTokenRequest,
-    service: AssetService = Depends(AssetService),
+    service = AssetService(),
 ) -> UploadTokenResponse:
     token = service.create_upload_token(payload)
     return UploadTokenResponse(**token)
@@ -28,9 +28,9 @@ def create_upload_token(
 def confirm_upload(
     payload: IntakeImageRequest,
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    asset_service: AssetService = Depends(AssetService),
-    job_service: JobService = Depends(JobService),
+    user_service = UserService(),
+    asset_service = AssetService(),
+    job_service = JobService(),
 ) -> IntakeImageResponse:
     user = user_service.get_current_user(db)
     if user is None:

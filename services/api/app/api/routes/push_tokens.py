@@ -33,7 +33,7 @@ def _to_response(t: PushToken) -> PushTokenResponse:
 def register_token(
     payload: PushTokenRegisterRequest,
     db: Session = Depends(get_db),
-    service: UserService = Depends(UserService),
+    service = UserService(),
     repo: PushTokenRepository = Depends(PushTokenRepository),
 ) -> PushTokenResponse:
     """注册/更新当前用户的推送 token。"""
@@ -56,7 +56,7 @@ def register_token(
 @router.get("/tokens", response_model=PushTokenListResponse)
 def list_my_tokens(
     db: Session = Depends(get_db),
-    service: UserService = Depends(UserService),
+    service = UserService(),
     repo: PushTokenRepository = Depends(PushTokenRepository),
 ) -> PushTokenListResponse:
     user = service.get_current_user(db)
@@ -70,7 +70,7 @@ def list_my_tokens(
 def deactivate_token(
     token_id: UUID,
     db: Session = Depends(get_db),
-    service: UserService = Depends(UserService),
+    service = UserService(),
     repo: PushTokenRepository = Depends(PushTokenRepository),
 ) -> None:
     user = service.get_current_user(db)

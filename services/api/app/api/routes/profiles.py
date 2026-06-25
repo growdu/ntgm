@@ -19,8 +19,8 @@ router = APIRouter(prefix="/profiles", tags=["profiles"])
 @router.get("/current", response_model=ProfileSummaryResponse)
 def get_current_profile(
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    profile_service: ProfileService = Depends(ProfileService),
+    user_service = UserService(),
+    profile_service = ProfileService(),
 ) -> ProfileSummaryResponse:
     user = user_service.get_current_user(db)
     if user is None:
@@ -48,8 +48,8 @@ def get_current_profile(
 def list_profile_versions(
     limit: int = Query(default=10, ge=1, le=50),
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    profile_service: ProfileService = Depends(ProfileService),
+    user_service = UserService(),
+    profile_service = ProfileService(),
 ) -> ProfileVersionListResponse:
     user = user_service.get_current_user(db)
     if user is None:
@@ -75,8 +75,8 @@ def list_profile_versions(
 def get_profile_version(
     version_no: int,
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    profile_service: ProfileService = Depends(ProfileService),
+    user_service = UserService(),
+    profile_service = ProfileService(),
 ) -> ProfileSummaryResponse:
     user = user_service.get_current_user(db)
     if user is None:
@@ -104,8 +104,8 @@ def get_profile_version(
 def recompute_profile(
     payload: ProfileRecomputeRequest,
     db: Session = Depends(get_db),
-    user_service: UserService = Depends(UserService),
-    job_service: JobService = Depends(JobService),
+    user_service = UserService(),
+    job_service = JobService(),
 ) -> JobCreateResponse:
     user = user_service.get_current_user(db)
     if user is None:
