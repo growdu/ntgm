@@ -444,13 +444,84 @@ Nginx / Gateway
 
 ---
 
-## 17. 后续需要补充的内容
+## 17. 已完成补充（2026-06）
 
-在项目进入代码实现后，建议继续补充：
+1. Docker Compose 完整示例 — 见 `infra/compose/docker-compose.yml`
+2. CI/CD 配置说明 — 见 `.github/workflows/ci.yml`
+3. 健康检查接口定义 — `GET /api/v1/health`（基础）+ `GET /api/v1/ready`（含 DB/Redis/MinIO 实际探测）
+4. Sentry 监控接入 — `main.py` 中 `_init_sentry()`，配置 `SENTRY_DSN` 环境变量即生效
+5. Structured JSON logging — `python-json-logger`，所有日志 JSON 格式化
 
-1. Docker Compose 示例
-2. CI/CD 配置说明
-3. 迁移命令清单
-4. 健康检查接口定义
-5. 生产发布脚本说明
+## 18. Docker 快速启动命令
+
+```bash
+# 克隆项目
+git clone https://github.com/<org>/ntgm.git
+cd ntgm
+
+# 启动全套本地开发环境（postgres + redis + minio + api + worker + web）
+docker compose -f infra/compose/docker-compose.yml up -d
+
+# 查看服务状态
+docker compose -f infra/compose/docker-compose.yml ps
+
+# 查看 API 日志
+docker compose -f infra/compose/docker-compose.yml logs -f api
+
+# 查看 Worker 日志
+docker compose -f infra/compose/docker-compose.yml logs -f worker
+
+# 运行数据库迁移（首次启动后）
+docker compose -f infra/compose/docker-compose.yml exec api \\
+  python -c "from app.db import engine; from alembic import command; from alembic.config import Config; \\
+  cfg = Config('alembic.ini'); command.upgrade(cfg, 'head')"
+
+# 触发初始数据（创建测试用户等）
+docker compose -f infra/compose/docker-compose.yml exec api \\
+  python scripts/seed_dev_data.py
+
+# 停止所有服务
+docker compose -f infra/compose/docker-compose.yml down
+
+# 清理数据（慎用）
+docker compose -f infra/compose/docker-compose.yml down -v
+```
+
+## 19. 生产发布检查清单
+
+发布前必查：
+
+```bash
+# 1. 运行完整测试
+cd services/api && uv run pytest -q
+
+# 2. 构建所有镜像
+docker build -f infra/docker/api.Dockerfile -t ntgm-api:latest .
+docker build -f infra/docker/worker.Dockerfile -t ntgm-worker:latest .
+docker build -f infra/docker/web.Dockerfile -t ntgm-web:latest .
+
+# 3. 健康检查
+curl http://localhost:8000/api/v1/health
+curl http://localhost:8000/api/v1/ready
+
+# 4. 数据库备份（生产）
+pg_dump -h $PROD_HOST -U ntgm ntgm > backup_$(date +%Y%m%d).sql
+
+# 5. 执行迁移
+alembic upgrade head
+```
+
+## 20. 环境变量参考
+
+| 变量 | 说明 | 示例 |
+|------|------|------|
+| `APP_ENV` | 运行环境 | `production` |
+| `DATABASE_URL` | PostgreSQL 连接串 | `postgresql+psycopg://...` |
+| `REDIS_URL` | Redis 连接串 | `redis://localhost:6379/0` |
+| `S3_ENDPOINT` | MinIO/S3 端点 | `http://localhost:9000` |
+| `S3_BUCKET` | 对象存储桶名 | `ntgm-prod` |
+| `SENTRY_DSN` | Sentry DSN（留空禁用） | `https://...@sentry.io/...` |
+| `JWT_SECRET` | JWT 签名密钥 | `openssl rand -hex 32` |
+| `EXPO_ACCESS_TOKEN` | Expo Push 密钥 | （从 Expo 平台获取） |
+| `PUSH_DRY_RUN` | 是否真发推送 | `false`（生产） |
 

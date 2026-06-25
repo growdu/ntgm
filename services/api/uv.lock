@@ -337,7 +337,9 @@ dependencies = [
     { name = "httpx" },
     { name = "psycopg", extra = ["binary"] },
     { name = "pydantic-settings" },
+    { name = "python-json-logger" },
     { name = "redis" },
+    { name = "sentry-sdk" },
     { name = "sqlalchemy" },
     { name = "uvicorn", extra = ["standard"] },
 ]
@@ -349,7 +351,9 @@ requires-dist = [
     { name = "httpx", specifier = ">=0.27.0" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2.0" },
     { name = "pydantic-settings", specifier = ">=2.5.0" },
+    { name = "python-json-logger", specifier = ">=2.0.0" },
     { name = "redis", specifier = ">=5.0.0" },
+    { name = "sentry-sdk", specifier = ">=0.27.0" },
     { name = "sqlalchemy", specifier = ">=2.0.0" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.30.0" },
 ]
@@ -564,6 +568,15 @@ wheels = [
 ]
 
 [[package]]
+name = "python-json-logger"
+version = "4.1.0"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/f7/ff/3cc9165fd44106973cd7ac9facb674a65ed853494592541d339bdc9a30eb/python_json_logger-4.1.0.tar.gz", hash = "sha256:b396b9e3ed782b09ff9d6e4f1683d46c83ad0d35d2e407c09a9ebbf038f88195", size = 17573, upload-time = "2026-03-29T04:39:56.805Z" }
+wheels = [
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/27/be/0631a861af4d1c875f096c07d34e9a63639560a717130e7a87cbc82b7e3f/python_json_logger-4.1.0-py3-none-any.whl", hash = "sha256:132994765cf75bf44554be9aa49b06ef2345d23661a96720262716438141b6b2", size = 15021, upload-time = "2026-03-29T04:39:55.266Z" },
+]
+
+[[package]]
 name = "pyyaml"
 version = "6.0.3"
 source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
@@ -628,6 +641,19 @@ dependencies = [
 sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/7b/7f/3759b1d0d72b7c92f0d70ffd9dc962b7b7b5ee74e135f9d7d8ab06b8a318/redis-7.4.0.tar.gz", hash = "sha256:64a6ea7bf567ad43c964d2c30d82853f8df927c5c9017766c55a1d1ed95d18ad", size = 4943913, upload-time = "2026-03-24T09:14:37.53Z" }
 wheels = [
     { url = "https://pypi.tuna.tsinghua.edu.cn/packages/74/3a/95deec7db1eb53979973ebd156f3369a72732208d1391cd2e5d127062a32/redis-7.4.0-py3-none-any.whl", hash = "sha256:a9c74a5c893a5ef8455a5adb793a31bb70feb821c86eccb62eebef5a19c429ec", size = 409772, upload-time = "2026-03-24T09:14:35.968Z" },
+]
+
+[[package]]
+name = "sentry-sdk"
+version = "2.63.0"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
+dependencies = [
+    { name = "certifi" },
+    { name = "urllib3" },
+]
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/ba/c8/b3c970a5b186722d276cd40a05b3254e03bccc0208560aff20f612e018e8/sentry_sdk-2.63.0.tar.gz", hash = "sha256:2a1502bf864769275dbc8c2c9fc7a0f7f5e18358180b615d262d13a31ffba216", size = 912449, upload-time = "2026-06-16T12:45:57.553Z" }
+wheels = [
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/7b/57/cb205f7d93373120f666b9c5736dc0815524d96a9b278e7a728f018dc22a/sentry_sdk-2.63.0-py3-none-any.whl", hash = "sha256:3a9b5ddd403f79eb73bd670f75f04485819db53d28f76ced7bc09041cb0dfd6a", size = 495950, upload-time = "2026-06-16T12:45:55.819Z" },
 ]
 
 [[package]]
@@ -724,6 +750,15 @@ source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
 sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/ba/19/1b9b0e29f30c6d35cb345486df41110984ea67ae69dddbc0e8a100999493/tzdata-2026.2.tar.gz", hash = "sha256:9173fde7d80d9018e02a662e168e5a2d04f87c41ea174b139fbef642eda62d10", size = 198254, upload-time = "2026-04-24T15:22:08.651Z" }
 wheels = [
     { url = "https://pypi.tuna.tsinghua.edu.cn/packages/ce/e4/dccd7f47c4b64213ac01ef921a1337ee6e30e8c6466046018326977efd95/tzdata-2026.2-py2.py3-none-any.whl", hash = "sha256:bbe9af844f658da81a5f95019480da3a89415801f6cc966806612cc7169bffe7", size = 349321, upload-time = "2026-04-24T15:22:05.876Z" },
+]
+
+[[package]]
+name = "urllib3"
+version = "2.7.0"
+source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
+sdist = { url = "https://pypi.tuna.tsinghua.edu.cn/packages/53/0c/06f8b233b8fd13b9e5ee11424ef85419ba0d8ba0b3138bf360be2ff56953/urllib3-2.7.0.tar.gz", hash = "sha256:231e0ec3b63ceb14667c67be60f2f2c40a518cb38b03af60abc813da26505f4c", size = 433602, upload-time = "2026-05-07T16:13:18.596Z" }
+wheels = [
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/7f/3e/5db95bcf282c52709639744ca2a8b149baccf648e39c8cc87553df9eae0c/urllib3-2.7.0-py3-none-any.whl", hash = "sha256:9fb4c81ebbb1ce9531cce37674bbc6f1360472bc18ca9a553ede278ef7276897", size = 131087, upload-time = "2026-05-07T16:13:17.151Z" },
 ]
 
 [[package]]

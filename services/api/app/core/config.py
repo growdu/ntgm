@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     expo_access_token: str | None = None
     push_dry_run: bool = True  # 默认不真发，演示用
     reminder_dispatch_interval_seconds: int = 60  # 扫表周期
+    sentry_dsn: str = ""  # Sentry monitoring DSN (e.g. https://...), empty = disabled
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
