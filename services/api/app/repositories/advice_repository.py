@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import delete, desc, select, update
+from sqlalchemy import delete, desc, select
 from sqlalchemy.orm import Session
 
 from app.models.advice_plan import AdvicePlan

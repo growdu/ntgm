@@ -391,7 +391,6 @@ class MatchService:
             "learningVelocity": 0.6,    # 学习力 - 次要
         }
 
-        total_weight = sum(weights.values())
         weighted_distance = 0.0
         breakdown = {}
 

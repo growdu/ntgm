@@ -12,7 +12,6 @@ from datetime import datetime, timedelta
 from typing import Any
 
 from app.repositories.advice_repository import AdviceRepository
-from app.schemas.advice import AdviceCurrentResponse
 
 
 class AdviceService:
@@ -322,7 +321,7 @@ class AdviceService:
 
         # 分析各维度
         risk_pref = traits.get("riskPreference", 0.5)
-        long_term = traits.get("longTermOrientation", 0.5)
+        _long_term = traits.get("longTermOrientation", 0.5)
         emotion_stab = traits.get("emotionStability", 0.5)
         career_drive = traits.get("careerDrive", 0.5)
         control_drive = traits.get("controlDrive", 0.5)
@@ -480,9 +479,9 @@ class AdviceService:
 
         # 基于各维度生成每日计划
         risk_pref = traits.get("riskPreference", 0.5)
-        long_term = traits.get("longTermOrientation", 0.5)
+        _long_term = traits.get("longTermOrientation", 0.5)
         emotion_stab = traits.get("emotionStability", 0.5)
-        career_drive = traits.get("careerDrive", 0.5)
+        _career_drive = traits.get("careerDrive", 0.5)
         control_drive = traits.get("controlDrive", 0.5)
 
         daily_themes = [

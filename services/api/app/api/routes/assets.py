@@ -8,7 +8,6 @@ from app.schemas.asset import (
     UploadTokenRequest,
     UploadTokenResponse,
 )
-from app.schemas.job import JobCreateResponse
 from app.services.asset_service import AssetService
 from app.services.job_service import JobService
 from app.services.user_service import UserService
@@ -41,7 +40,7 @@ def confirm_upload(
 
     # Create job for face analysis
     job_type = "analyze_face" if payload.assetType == "face" else "analyze_palm"
-    job = job_service.create_job(
+    job_service.create_job(
         db,
         user_id=user.id,
         job_type=job_type,

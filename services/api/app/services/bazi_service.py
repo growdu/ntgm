@@ -380,7 +380,6 @@ class BaziService:
 
         使用从天纪录或精确的公历转儒略日算法
         """
-        from datetime import date
 
         y = birth.year
         m = birth.month
@@ -472,8 +471,6 @@ class BaziService:
         """
         day_element = FIVE_ELEMENTS[chart.day_gan]
         day_is_yang = STEM_INDEX[chart.day_gan] % 2 == 0
-
-        element_strength = element_analysis["element_strength"]
 
         # 计算日主在八字中的强弱
         # 考虑因素：
