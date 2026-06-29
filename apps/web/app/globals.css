@@ -1,29 +1,36 @@
 :root {
-  /* 主背景色 */
-  --bg-primary: #0d1016;
-  --bg-secondary: #111827;
-  --bg-card: rgba(30, 35, 45, 0.8);
-  --bg-card-hover: rgba(40, 48, 60, 0.9);
-
-  /* 强调色 */
-  --accent-gold: #b6883d;
-  --accent-gold-light: #d4a856;
-  --accent-gold-dark: #8a6629;
-  --accent-red: #c94040;
-  --accent-jade: #3d7a6e;
-  --accent-jade-light: #5a9e8f;
+  /* 主背景色 - 水墨色阶 */
+  --bg-paper: #faf6ee;          /* 米白/宣纸 */
+  --bg-paper-dark: #14110d;     /* 深墨 */
+  --bg-primary: #0d1016;        /* 主背景 - 深墨 */
+  --bg-secondary: #1a1714;      /* 次背景 */
+  --bg-card: rgba(30, 28, 24, 0.7);
+  --bg-card-hover: rgba(40, 38, 32, 0.8);
 
   /* 文字色 */
   --text-primary: #f3ead7;
   --text-secondary: #a8998a;
   --text-muted: #6b5d52;
+  --ink-wash: #d4c8b0;          /* 淡墨 */
+  --ink-light: #f3ead7;         /* 浓墨淡晕 */
+
+  /* 强调色 - 限定5种以合五行 */
+  --accent-ink: #2c2826;        /* 墨色 */
+  --accent-jade: #4a7c74;       /* 玉青 - 木 */
+  --accent-jade-light: #8fb5ad; /* 玉青淡 */
+  --accent-cinnabar: #b73e3a;   /* 朱砂 - 火 */
+  --accent-amber: #b6883d;      /* 琥珀 - 土 */
+  --accent-ink-black: #0a0908;  /* 玄 */
 
   /* 边框 */
   --border-color: rgba(182, 136, 61, 0.3);
   --border-gold: rgba(182, 136, 61, 0.6);
+  --border-subtle: rgba(168, 153, 138, 0.15);
 
   /* 字体 */
-  font-family: "Noto Serif SC", "PingFang SC", serif;
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  --font-kai: "Ma Shan Zheng", "Noto Serif SC", "KaiTi", "楷体", serif;
+  --font-sans: "PingFang SC", "Noto Sans SC", system-ui, sans-serif;
 
   color-scheme: dark;
 }
@@ -34,20 +41,67 @@
   padding: 0;
 }
 
+html, body {
+  font-family: var(--font-serif);
+  scroll-behavior: smooth;
+}
+
 body {
   min-height: 100vh;
   background:
-    radial-gradient(circle at top, rgba(182, 136, 61, 0.12), transparent 32%),
+    /* 太极阴阳鱼光晕（顶部居中） */
     radial-gradient(
-      circle at 80% 20%,
-      rgba(201, 64, 64, 0.06),
-      transparent 25%
+      ellipse 60% 60% at 50% -10%,
+      rgba(182, 136, 61, 0.08) 0%,
+      transparent 60%
     ),
-    linear-gradient(180deg, #0d1016 0%, #111827 50%, #0d1016 100%);
+    /* 朱砂余晕（左上） */
+    radial-gradient(
+      circle at 8% 15%,
+      rgba(183, 62, 58, 0.04) 0%,
+      transparent 22%
+    ),
+    /* 玉青余晕（右下） */
+    radial-gradient(
+      circle at 92% 85%,
+      rgba(74, 124, 116, 0.05) 0%,
+      transparent 22%
+    ),
+    /* 深墨至玄的纵向渐变 */
+    linear-gradient(180deg, #0d1016 0%, #0a0908 100%);
   background-attachment: fixed;
   color: var(--text-primary);
-  line-height: 1.6;
+  line-height: 1.75;
 }
+
+/* 太极专用视觉组件 */
+.taiji-symbol {
+  display: inline-block;
+  filter: drop-shadow(0 0 24px rgba(182, 136, 61, 0.18));
+  animation: taiji-rotate 32s linear infinite;
+}
+
+@keyframes taiji-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ink-spread {
+  0% { opacity: 0; transform: scale(0.92); filter: blur(12px); }
+  100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+.ink-reveal {
+  animation: ink-spread 1.2s ease-out both;
+}
+
+.ink-reveal-delay-1 { animation-delay: 0.2s; }
+.ink-reveal-delay-2 { animation-delay: 0.4s; }
+.ink-reveal-delay-3 { animation-delay: 0.6s; }
+.ink-reveal-delay-4 { animation-delay: 0.8s; }
+
+.vertical-rl { writing-mode: vertical-rl; }
+.vertical-lr { writing-mode: vertical-lr; }
 
 a {
   color: var(--accent-gold);
@@ -360,19 +414,56 @@ button {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding: 36px 32px;
+  background: linear-gradient(
+    160deg,
+    rgba(243, 234, 215, 0.04) 0%,
+    rgba(74, 124, 116, 0.06) 100%
+  );
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
   color: var(--text-secondary);
+  position: relative;
+  overflow: hidden;
+}
+
+.authBenefits::before {
+  content: "☯";
+  position: absolute;
+  top: -36px;
+  right: -36px;
+  font-size: 180px;
+  opacity: 0.05;
+  pointer-events: none;
+  font-family: "STKaiti", "KaiTi", "楷体", serif;
+  line-height: 1;
 }
 
 .authBenefitsTitle {
-  font-size: 1.6rem;
+  font-family: "STKaiti", "KaiTi", "楷体", serif;
+  font-size: 1.7rem;
   color: var(--text-primary);
   font-weight: 600;
-  line-height: 1.4;
-  margin-bottom: 8px;
+  line-height: 1.5;
+  margin: 0;
+  letter-spacing: 0.06em;
+  position: relative;
+  z-index: 1;
 }
 
 .authBenefitsAccent {
-  color: var(--accent-gold);
+  color: var(--accent-jade);
+  border-bottom: 1px solid var(--accent-jade);
+  padding-bottom: 2px;
+}
+
+.authBenefitsIntro {
+  font-family: "STKaiti", "KaiTi", "楷体", serif;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+  margin: 0;
+  font-style: italic;
 }
 
 .authBenefitsList {
@@ -387,24 +478,32 @@ button {
 .authBenefitItem {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 14px;
   font-size: 0.95rem;
-  line-height: 1.5;
+  line-height: 1.7;
+  font-family: "STKaiti", "KaiTi", "楷体", serif;
+  letter-spacing: 0.04em;
 }
 
-.authBenefitItem::before {
-  content: "✓";
-  color: var(--accent-jade-light);
-  font-weight: 700;
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
+/* 用真·汉字（壹贰叁肆伍）代替符号 */
+.authBenefitBullet {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(124, 175, 132, 0.12);
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  font-family: "STKaiti", "KaiTi", "楷体", serif;
+  font-size: 0.9rem;
+  color: var(--ink-wash);
+  background: rgba(74, 124, 116, 0.12);
+  border: 1px solid var(--accent-jade);
   border-radius: 50%;
-  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.authBenefitItem::before {
+  content: none;
 }
 
 .authSocialProof {
@@ -1428,4 +1527,115 @@ button {
 .markdown img {
   max-width: 100%;
   border-radius: 6px;
+}
+
+/* ============================================
+   定价页 · 太极主题
+   ============================================ */
+.pricingHero {
+  text-align: center;
+  padding: 64px 24px 32px;
+  margin-bottom: 56px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pricingHeroSymbol {
+  display: inline-block;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 2px 24px rgba(243, 234, 215, 0.12));
+  animation: taiji-rotate 80s linear infinite;
+}
+
+.pricingTitle {
+  font-family: "STKaiti", "KaiTi", "楷体", serif;
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 16px 0 12px;
+  letter-spacing: 0.12em;
+}
+
+.pricingSubtitle {
+  font-family: "STKaiti", "KaiTi", "楷体", serif;
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+  letter-spacing: 0.08em;
+}
+
+.pricingStage {
+  display: inline-block;
+  font-family: "STKaiti", "KaiTi", "楷体", serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  color: var(--accent-jade);
+  padding: 4px 14px;
+  border: 1px solid var(--accent-jade);
+  border-radius: 999px;
+  margin-bottom: 12px;
+  background: rgba(74, 124, 116, 0.08);
+}
+
+.pricingCardHighlight .pricingStage {
+  color: var(--ink-wash);
+  border-color: var(--accent-amber);
+  background: rgba(182, 136, 61, 0.12);
+}
+
+.pricingPriceFree {
+  font-family: "STKaiti", "KaiTi", "楷体", serif;
+  font-size: 1.8rem;
+  color: var(--accent-jade);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+}
+
+.pricingDivider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--border-subtle) 30%,
+    var(--border-subtle) 70%,
+    transparent 100%
+  );
+  margin: 24px 0 20px;
+}
+
+.pricingFeatureBullet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  font-family: "STKaiti", "KaiTi", "楷体", serif;
+  font-size: 0.75rem;
+  color: var(--accent-jade);
+  background: rgba(74, 124, 116, 0.1);
+  border: 1px solid var(--accent-jade);
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.pricingFeature {
+  display: flex !important;
+  align-items: center;
+  gap: 12px;
+}
+
+.pricingFeature::before {
+  content: none !important;
+}
+
+@media (max-width: 720px) {
+  .pricingHero {
+    padding: 48px 16px 24px;
+  }
+  .pricingTitle {
+    font-size: 1.9rem;
+  }
 }

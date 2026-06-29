@@ -77,15 +77,25 @@ function LoginContent() {
             <h2 className="authBenefitsTitle">
               欢迎回到你的<span className="authBenefitsAccent"> 命理画像 </span>
             </h2>
+            <p className="authBenefitsIntro">以道御术，以术证道。</p>
             <ul className="authBenefitsList">
-              <li className="authBenefitItem">查看你的最新分析结果</li>
-              <li className="authBenefitItem">继续未完成的人生建议</li>
-              <li className="authBenefitItem">查看历史归档与画像演进</li>
-              <li className="authBenefitItem">更新资料，触发新一轮画像重算</li>
+              <li className="authBenefitItem">
+                <span className="authBenefitBullet">道</span>
+                持续演进的画像，不止一卦
+              </li>
+              <li className="authBenefitItem">
+                <span className="authBenefitBullet">术</span>
+                八字命盘 · 五行喜忌 · 性格倾向
+              </li>
+              <li className="authBenefitItem">
+                <span className="authBenefitBullet">人</span>
+                历史人物共鸣 · 寻精神同频者
+              </li>
+              <li className="authBenefitItem">
+                <span className="authBenefitBullet">行</span>
+                每日个性化建议 · 反馈校准
+              </li>
             </ul>
-            <div className="authSocialProof">
-              🔒 登录会话仅保存在你的浏览器，不会上传到服务器。
-            </div>
           </aside>
 
           {/* Right: Login Form */}

@@ -8,6 +8,7 @@ import { useAuth, toErrorMessage } from "../../lib/auth";
 import { getPricingPlans } from "../../lib/mockApi";
 import { getCheckoutProvider } from "../../lib/checkout-provider";
 import { Toast } from "../components/Toast";
+import { Taiji } from "../components/DaoElements";
 import type { Plan } from "@ntgm/sdk";
 
 function formatPrice(cents: number): string {
@@ -83,19 +84,26 @@ function PricingContent() {
   return (
     <>
       <div className="pricingShell">
-        <div className="sectionHeader">
-          <span className="sectionEyebrow">定价</span>
-          <h1 className="sectionTitle">选择适合你的套餐</h1>
-          <p className="sectionSubtitle">
-            免费版可体验完整主流程，Pro / Master 解锁创作、PDF
-            导出、持续画像演进等全部能力。
+        {/* 太极主图头 */}
+        <div className="pricingHero">
+          <div className="pricingHeroSymbol">
+            <Taiji size={88} />
+          </div>
+          <span className="sectionEyebrow">套餐</span>
+          <h1 className="pricingTitle">取法乎上，仅得其中</h1>
+          <p className="pricingSubtitle">
+            免费起步，进阶有道，Master 通幽。
+            <br />
+            一阴一阳之谓道，三重境界各有所宜。
           </p>
         </div>
 
         <div className="pricingGrid">
-          {plans.map((p) => {
+          {plans.map((p, i) => {
             const isCurrent = user?.plan === p.id;
             const isHighlight = !!p.highlight;
+            // 道家三境：初（free）/ 觉（pro）/ 觉（master）
+            const daoStage = ["初境", "觉境", "觉境"][i];
             return (
               <div
                 key={p.id}
@@ -103,22 +111,32 @@ function PricingContent() {
               >
                 {p.badge && <div className="pricingBadge">{p.badge}</div>}
 
+                <div className="pricingStage">{daoStage}</div>
                 <div className="pricingPlanName">{p.name}</div>
                 <div className="pricingPlanDesc">{p.description}</div>
 
                 <div className="pricingPrice">
-                  <span className="pricingPriceCurrency">¥</span>
-                  <span className="pricingPriceAmount">
-                    {formatPrice(p.priceCents)}
-                  </span>
-                  <span className="pricingPriceUnit">
-                    {p.priceCents === 0 ? "永久免费" : "/ 月"}
-                  </span>
+                  {p.priceCents === 0 ? (
+                    <span className="pricingPriceAmount pricingPriceFree">
+                      永久免费
+                    </span>
+                  ) : (
+                    <>
+                      <span className="pricingPriceCurrency">¥</span>
+                      <span className="pricingPriceAmount">
+                        {formatPrice(p.priceCents)}
+                      </span>
+                      <span className="pricingPriceUnit"> / 月</span>
+                    </>
+                  )}
                 </div>
 
+                <div className="pricingDivider" />
+
                 <ul className="pricingFeatureList">
-                  {p.features.map((f) => (
+                  {p.features.map((f, j) => (
                     <li key={f} className="pricingFeature">
+                      <span className="pricingFeatureBullet">{["壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖", "拾"][j]}</span>
                       {f}
                     </li>
                   ))}
@@ -147,7 +165,7 @@ function PricingContent() {
                       ? "处理中..."
                       : p.id === "free"
                         ? "开始免费试用"
-                        : `升级到 ${p.name.split(" ")[0]}`}
+                        : `升级至 ${p.name.split(" ")[0]}`}
                   </button>
                 )}
               </div>
@@ -156,7 +174,7 @@ function PricingContent() {
         </div>
 
         <div className="pricingFaq">
-          <h2 className="pricingFaqTitle">常见问题</h2>
+          <h2 className="pricingFaqTitle">常见之疑</h2>
           <Faq
             q="可以随时取消订阅吗？"
             a="可以。套餐在下一个计费周期前可随时取消，不会重复扣费。"

@@ -84,17 +84,35 @@ function SignupContent() {
     <>
       <div className="authShell">
         <div className="authLayout">
-          {/* Left: Free Benefits */}
+          {/* Left: 免费之惠 */}
           <aside className="authBenefits">
             <h2 className="authBenefitsTitle">
               免费开启你的<span className="authBenefitsAccent"> 命理画像 </span>之旅
             </h2>
+            <p className="authBenefitsIntro">
+              以道御术，以术证道。注册既得：
+            </p>
             <ul className="authBenefitsList">
-              <li className="authBenefitItem">完整八字命盘分析（无需付费）</li>
-              <li className="authBenefitItem">基于 5 大维度的性格画像</li>
-              <li className="authBenefitItem">历史人物匹配，找到你的精神同频者</li>
-              <li className="authBenefitItem">每日个性化建议（免费版每日 3 条）</li>
-              <li className="authBenefitItem">数据本地保存，隐私可控</li>
+              <li className="authBenefitItem">
+                <span className="authBenefitBullet">壹</span>
+                完整八字命盘分析（无需付费）
+              </li>
+              <li className="authBenefitItem">
+                <span className="authBenefitBullet">贰</span>
+                基于 5 大维度的性格画像
+              </li>
+              <li className="authBenefitItem">
+                <span className="authBenefitBullet">叁</span>
+                历史人物匹配 · 寻精神同频者
+              </li>
+              <li className="authBenefitItem">
+                <span className="authBenefitBullet">肆</span>
+                每日个性化建议（免费版每日 3 条）
+              </li>
+              <li className="authBenefitItem">
+                <span className="authBenefitBullet">伍</span>
+                数据本地保存 · 隐私可控
+              </li>
             </ul>
             <div className="authSocialProof">
               💡 提示：注册完全免费，无需绑定信用卡。付费版仅在你主动升级时才会扣费。
