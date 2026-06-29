@@ -75,7 +75,7 @@ function CreateContent() {
 
   useEffect(() => {
     refreshAiQuota();
-    // 订阅 plan 变化
+    // 订阅 plan 变
   }, [plan, user]);
 
   const aiAvailable = aiQuota.total !== 0;
@@ -106,7 +106,7 @@ function CreateContent() {
     loadWorks();
   }, []);
 
-  // 草稿自动保存
+  // 草稿自动存
   useEffect(() => {
     if (!user) return;
     if (editingId) return; // 编辑模式不存草稿
@@ -164,10 +164,10 @@ function CreateContent() {
   };
 
   const handleDelete = async (workId: string) => {
-    if (!confirm("确定要删除这篇作品吗？此操作不可恢复。")) return;
+    if (!confirm("定要除这篇作品吗？此操作不可恢复。")) return;
     try {
       await deleteWork(workId);
-      setSuccess("作品已删除");
+      setSuccess("作品已除");
       if (editingId === workId) resetForm();
       await loadWorks();
     } catch (err) {
@@ -198,7 +198,7 @@ function CreateContent() {
     try {
       if (editingId) {
         await updateWork(editingId, { title, body, tags });
-        setSuccess("已更新");
+        setSuccess("已新");
       } else {
         await createWork({ title, body, tags, visibility: "public" });
         setSuccess("发布成功！");
@@ -260,13 +260,13 @@ function CreateContent() {
   return (
     <div className="createShell">
       <div className="createHeader">
-        <h1 className="createTitle">创作</h1>
+        <h1 className="createTitle">化人 · 传心</h1>
         <p className="createSubtitle">
-          分享你的解读、心得、命例。支持 Markdown，付费用户可发布与编辑。
+          传汝之解读、心得、命例。支持 Markdown，进境用户可发与改。
         </p>
       </div>
 
-      {/* 草稿恢复提示 */}
+      {/* 草稿恢复示 */}
       {draftPromptVisible && pendingDraft && (
         <div
           style={{
@@ -283,7 +283,7 @@ function CreateContent() {
           }}
         >
           <span style={{ fontSize: "0.9rem" }}>
-            ✨ 发现未完成的草稿（保存于{" "}
+            ✨ 发现未成的草稿（存于{" "}
             {new Date(pendingDraft.savedAt).toLocaleString("zh-CN")}）
           </span>
           <div style={{ display: "flex", gap: 8 }}>
@@ -331,7 +331,7 @@ function CreateContent() {
                 fontFamily: "inherit",
               }}
             >
-              取消编辑
+              销编辑
             </button>
           </div>
         )}
@@ -344,7 +344,7 @@ function CreateContent() {
             <input
               id="title"
               className="createInput"
-              placeholder="给你的解读起个标题"
+              placeholder="给汝之解读起个标题"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               maxLength={80}
@@ -450,7 +450,7 @@ function CreateContent() {
                       color: "var(--text-muted)",
                       marginLeft: 4,
                     }}
-                    title="今日剩余次数"
+                    title="今剩余次数"
                   >
                     {aiQuota.total === "unlimited"
                       ? "∞"
@@ -472,7 +472,7 @@ function CreateContent() {
               </div>
             </div>
 
-            {/* AI 加载态 / 建议展示 */}
+            {/* AI 载入态 / 建议展示 */}
             {aiLoading && (
               <div
                 style={{
@@ -628,11 +628,11 @@ function CreateContent() {
             <span className="createMeta">
               {!editingId && draftSavedAt && (
                 <>
-                  草稿已保存 ·{" "}
+                  草稿已存 ·{" "}
                   {new Date(draftSavedAt).toLocaleTimeString("zh-CN")}
                 </>
               )}
-              {editingId && <>编辑模式：发布按钮将更新现有作品</>}
+              {editingId && <>编辑模式：发布按钮将新现有作品</>}
             </span>
             <button
               type="button"
@@ -647,13 +647,13 @@ function CreateContent() {
               className="btn btn-primary"
               disabled={submitting}
             >
-              {submitting ? "处理中..." : editingId ? "保存修改" : "发布"}
+              {submitting ? "处理中..." : editingId ? "存改" : "发布"}
             </button>
           </div>
         </form>
       </div>
 
-      {/* 我的创作 */}
+      {/* 吾之创作 */}
       {myWorks.length > 0 && (
         <>
           <h2
@@ -664,7 +664,7 @@ function CreateContent() {
               marginTop: 32,
             }}
           >
-            我的创作 ({myWorks.length})
+            吾之创作 ({myWorks.length})
           </h2>
           <div className="createWorkList">
             {myWorks.map((w) => (
@@ -687,7 +687,7 @@ function CreateContent() {
                       className="btn btn-danger"
                       style={{ padding: "4px 12px", fontSize: "0.78rem" }}
                     >
-                      删除
+                      除
                     </button>
                   </span>
                 </div>
@@ -708,11 +708,11 @@ function CreateContent() {
         广场精选
       </h2>
       {loading ? (
-        <p className="createMeta">加载中...</p>
+        <p className="createMeta">载入中...</p>
       ) : (
         <div className="createWorkList">
           {works.length === 0 ? (
-            <p className="createMeta">还没有作品。来做第一个吧。</p>
+            <p className="createMeta">还无作品。来做第一个吧。</p>
           ) : (
             works.map((w) => <WorkCard key={w.workId} work={w} />)
           )}

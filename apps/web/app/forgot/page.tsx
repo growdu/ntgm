@@ -19,7 +19,7 @@ export default function ForgotPage() {
               color: "var(--text-muted)",
             }}
           >
-            加载中...
+            载入中...
           </div>
         }
       >
@@ -40,7 +40,7 @@ function ForgotContent() {
     setError(null);
     setResetUrl(null);
     if (!email.trim()) {
-      setError("请填写注册邮箱");
+      setError("请留汝注册之号");
       return;
     }
     setSubmitting(true);
@@ -49,7 +49,7 @@ function ForgotContent() {
       if (res.resetUrl) {
         setResetUrl(res.resetUrl);
       } else {
-        // 邮箱不存在，但出于安全不告诉用户 — 仍然提示「已发送」
+        // 邮箱不存在，但出于安全不告诉用户 — 仍然示「已发送」
         setResetUrl("__not_found__");
       }
     } catch (err) {
@@ -63,8 +63,8 @@ function ForgotContent() {
     <div className="authShell">
       <div className="authCard">
         <div className="authHeader">
-          <h1 className="authTitle">找回密码</h1>
-          <p className="authSubtitle">输入注册邮箱，我们会发送重置链接</p>
+          <h1 className="authTitle">寻回密语</h1>
+          <p className="authSubtitle">入汝注册之号，吾遣重置之简</p>
         </div>
 
         {resetUrl ? (
@@ -88,10 +88,10 @@ function ForgotContent() {
                     marginBottom: 8,
                   }}
                 >
-                  如果该邮箱已注册，重置链接已发送
+                  若该邮箱已注册，重置链接已发送
                 </p>
                 <p style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
-                  请检查邮箱（含垃圾邮件）。若没收到，请确认邮箱拼写。
+                  烦请查收（兼杂尘）。未得复书，可校核拼写。
                 </p>
               </>
             ) : (
@@ -104,7 +104,7 @@ function ForgotContent() {
                     marginBottom: 8,
                   }}
                 >
-                  重置链接已生成（演示项目）
+                  重置之简已成（示例项目）
                 </p>
                 <p
                   style={{
@@ -113,14 +113,14 @@ function ForgotContent() {
                     marginBottom: 16,
                   }}
                 >
-                  真实场景下，链接会通过邮件发送。这里直接展示：
+                  实际之境，简以邮件传之。今直接示之：
                 </p>
                 <Link
                   href={resetUrl}
                   className="btn btn-primary btnBlock"
                   style={{ marginBottom: 12 }}
                 >
-                  打开重置链接 →
+                  启重置之简 →
                 </Link>
                 <button
                   onClick={() => {
@@ -130,7 +130,7 @@ function ForgotContent() {
                   className="btn btn-ghost btnBlock"
                   style={{ fontSize: "0.85rem" }}
                 >
-                  用别的邮箱重试
+                  异号复试
                 </button>
               </>
             )}
@@ -165,21 +165,21 @@ function ForgotContent() {
               className="btn btn-primary btnBlock btnLarge"
               disabled={submitting}
             >
-              {submitting ? "发送中..." : "发送重置链接"}
+              {submitting ? "传书中..." : "传重置之简"}
             </button>
 
             <p className="formHint" style={{ textAlign: "center" }}>
-              链接 30 分钟内有效。
+              简 30 刻内有效。
             </p>
           </form>
         )}
 
-        <div className="authDivider">提示</div>
+        <div className="authDivider">示</div>
 
         <div className="authFooter">
-          想起来了？<Link href="/login">直接登录</Link>
+          忽忆之？<Link href="/login">归位</Link>
           <span style={{ margin: "0 8px" }}>·</span>
-          <Link href="/signup">注册新账号</Link>
+          <Link href="/signup">结新缘</Link>
         </div>
       </div>
 

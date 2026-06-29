@@ -97,7 +97,7 @@ export default function QuestionnairePage() {
 
   const handleNext = async () => {
     if (!selectedOption) {
-      showToast("请选择一个选项");
+      showToast("请择一个选项");
       return;
     }
 
@@ -126,11 +126,11 @@ export default function QuestionnairePage() {
         }));
         await submitQuestionnaireAnswers(API_BASE_URL, answerItems);
         setSubmitted(true);
-        showToast("所有问题已完成，感谢你的回答！");
+        showToast("所有问题已成，感谢汝之回答！");
         // Clear localStorage after successful submit
         localStorage.removeItem(STORAGE_KEY);
       } catch {
-        showToast("提交失败，请重试");
+        showToast("传失败，请重试");
       }
     }
   };
@@ -141,7 +141,7 @@ export default function QuestionnairePage() {
         <div className={styles.page}>
           <div className={styles.container}>
             <div className={styles.completedState}>
-              <p className={styles.completedDesc}>加载中...</p>
+              <p className={styles.completedDesc}>载入中...</p>
             </div>
           </div>
         </div>
@@ -159,7 +159,7 @@ export default function QuestionnairePage() {
               <div className={styles.completedIcon}>&#9789;</div>
               <h2 className={styles.completedTitle}>暂无待回答问题</h2>
               <p className={styles.completedDesc}>
-                系统尚未生成新的校准问题。请先完成基础建档。
+                系统尚未生成新的校准问题。请先成立命之资。
               </p>
             </div>
           </div>
@@ -175,12 +175,12 @@ export default function QuestionnairePage() {
           <div className={styles.container}>
             <div className={styles.completedState}>
               <div className={styles.completedIcon}>&#10003;</div>
-              <h2 className={styles.completedTitle}>问答完成</h2>
+              <h2 className={styles.completedTitle}>问答成</h2>
               <p className={styles.completedDesc}>
-                你已完成 {total} 道校准问题。系统将根据你的回答更新画像。
+                你已成 {total} 道校准问题。系统将根据汝之回答新画像。
               </p>
               <p className={styles.completedSub}>
-                预计置信度提升：风险偏好 +8%，长线主义 +5%
+                预计置信度提升：趋避之性 +8%，长线之志 +5%
               </p>
             </div>
           </div>
@@ -202,7 +202,7 @@ export default function QuestionnairePage() {
           <div className={styles.progressSection}>
             <div className={styles.progressInfo}>
               <span className={styles.progressText}>
-                校准你的画像：第 {currentIndex + 1} / {total} 题
+                校准汝之画像：第 {currentIndex + 1} / {total} 题
               </span>
               <div className={styles.progressBarWrap}>
                 <div
@@ -262,7 +262,7 @@ export default function QuestionnairePage() {
                         [currentQuestion.questionId ?? ""]: e.target.value,
                       }))
                     }
-                    placeholder="可以补充一些背景信息，帮助系统更准确地理解你的选择..."
+                    placeholder="可补充一些背景信息，帮助系统更准确地理解汝之择..."
                     className={styles.reasoningInput}
                     rows={3}
                     aria-label="补充说明"
@@ -279,17 +279,17 @@ export default function QuestionnairePage() {
                   上一题
                 </button>
                 <button className="btn btn-primary" onClick={handleNext}>
-                  {currentIndex < total - 1 ? "提交并继续" : "完成问答"}
+                  {currentIndex < total - 1 ? "传并续" : "成问答"}
                 </button>
               </div>
             </div>
 
-            {/* 右侧预览 */}
+            {/* 右预览 */}
             <div className={styles.sidebar}>
               <div className={`${styles.card} ${styles.previewCard}`}>
                 <h3 className={styles.previewTitle}>
                   <span className={styles.previewIcon}>&#128768;</span>
-                  当前回答后，系统可能会：
+                  今回答后，系统可能会：
                 </h3>
                 <ul className={styles.previewList}>
                   {(currentQuestion.traitTargets ?? []).map((trait, index) => (
@@ -302,21 +302,21 @@ export default function QuestionnairePage() {
               </div>
 
               <div className={`${styles.card} ${styles.hintCard}`}>
-                <h3 className={styles.hintTitle}>答题提示</h3>
+                <h3 className={styles.hintTitle}>答题示</h3>
                 <ul className={styles.hintList}>
-                  <li>根据你的真实行为选择，而非理想状态</li>
-                  <li>没有正确答案，系统需要的是真实的你</li>
-                  <li>可以补充说明来提供更多上下文</li>
+                  <li>根据汝之真实行为择，而非理想状态</li>
+                  <li>无正确答案，系统须的是真实的你</li>
+                  <li>可补充说明来提供更多上下文</li>
                 </ul>
               </div>
 
               <div className={`${styles.card} ${styles.progressCard}`}>
-                <h3 className={styles.progressTitle}>当前画像置信度</h3>
+                <h3 className={styles.progressTitle}>今之画像置信度</h3>
                 <div className={styles.confidenceList}>
                   {Object.entries({
-                    riskPreference: "风险偏好",
-                    longTermOrientation: "长线主义",
-                    emotionStability: "情绪稳定",
+                    riskPreference: "趋避之性",
+                    longTermOrientation: "长线之志",
+                    emotionStability: "静定之力",
                   }).map(([key, label]) => (
                     <div key={key} className={styles.confidenceItem}>
                       <span>{label}</span>

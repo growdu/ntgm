@@ -20,7 +20,7 @@ export default function ResetPage() {
               color: "var(--text-muted)",
             }}
           >
-            加载中...
+            载入中...
           </div>
         }
       >
@@ -46,21 +46,21 @@ function ResetContent() {
     setError(null);
     setSuccess(null);
     if (!token) {
-      setError("无效的重置链接");
+      setError("无效之重置简");
       return;
     }
     if (password !== confirm) {
-      setError("两次输入的密码不一致");
+      setError("两次所入之密语不一");
       return;
     }
     if (password.length < 6) {
-      setError("密码至少 6 位");
+      setError("密语至少六字");
       return;
     }
     setSubmitting(true);
     try {
       await confirmPasswordReset(token, password);
-      setSuccess("密码已重置！正在跳转到登录页...");
+      setSuccess("密语已重置！正归位...");
       setTimeout(() => router.push("/login"), 1200);
     } catch (err) {
       setError(toErrorMessage(err));
@@ -75,11 +75,11 @@ function ResetContent() {
         <div className="authCard">
           <div className="authHeader">
             <div style={{ fontSize: "3rem", marginBottom: 12 }}>⚠</div>
-            <h1 className="authTitle">链接无效</h1>
-            <p className="authSubtitle">请回到找回密码页重新申请</p>
+            <h1 className="authTitle">简之无效</h1>
+            <p className="authSubtitle">请归寻回密语之页，复请之</p>
           </div>
           <Link href="/forgot" className="btn btn-primary btnBlock btnLarge">
-            重新申请
+            复请之
           </Link>
         </div>
       </div>
@@ -90,20 +90,20 @@ function ResetContent() {
     <div className="authShell">
       <div className="authCard">
         <div className="authHeader">
-          <h1 className="authTitle">设置新密码</h1>
-          <p className="authSubtitle">请输入新密码（至少 6 位）</p>
+          <h1 className="authTitle">立新密语</h1>
+          <p className="authSubtitle">请入新密语（至少六字）</p>
         </div>
 
         <form className="authForm" onSubmit={handleSubmit} noValidate>
           <div className="formField">
             <label htmlFor="password" className="formLabel">
-              新密码
+              新密语
             </label>
             <input
               id="password"
               type="password"
               className="formInput"
-              placeholder="至少 6 位"
+              placeholder="至少六字"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={submitting}
@@ -114,13 +114,13 @@ function ResetContent() {
 
           <div className="formField">
             <label htmlFor="confirm" className="formLabel">
-              确认新密码
+              再入新密语
             </label>
             <input
               id="confirm"
               type="password"
               className="formInput"
-              placeholder="再输入一次"
+              placeholder="再入一次"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               disabled={submitting}
@@ -140,13 +140,13 @@ function ResetContent() {
             className="btn btn-primary btnBlock btnLarge"
             disabled={submitting || !!success}
           >
-            {submitting ? "重置中..." : success ? "已重置 ✓" : "重置密码"}
+            {submitting ? "重置中..." : success ? "已重置 ✓" : "重置密语"}
           </button>
         </form>
 
         <div className="authDivider">或</div>
         <div className="authFooter">
-          <Link href="/login">回到登录</Link>
+          <Link href="/login">归位</Link>
         </div>
       </div>
 

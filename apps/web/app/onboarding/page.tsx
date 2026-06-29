@@ -12,10 +12,10 @@ const API_BASE_URL =
 
 const steps = [
   { id: 1, label: "基础信息" },
-  { id: 2, label: "上传照片" },
-  { id: 3, label: "初始分析" },
-  { id: 4, label: "校准问答" },
-  { id: 5, label: "完成" },
+  { id: 2, label: "传照片" },
+  { id: 3, label: "知己之观" },
+  { id: 4, label: "省身之问" },
+  { id: 5, label: "成" },
 ];
 
 interface FormData {
@@ -63,9 +63,9 @@ export default function OnboardingPage() {
     const newErrors: Record<string, string> = {};
 
     if (currentStep === 1) {
-      if (!formData.name.trim()) newErrors.name = "请输入姓名";
-      if (!formData.gender) newErrors.gender = "请选择性别";
-      if (!formData.birthDate) newErrors.birthDate = "请选择出生日期";
+      if (!formData.name.trim()) newErrors.name = "请入姓名";
+      if (!formData.gender) newErrors.gender = "请择性别";
+      if (!formData.birthDate) newErrors.birthDate = "请择诞日";
     }
 
     setErrors(newErrors);
@@ -107,7 +107,7 @@ export default function OnboardingPage() {
           birthPlace: formData.birthPlace,
         });
       } catch {
-        showToast("保存失败，但可以继续下一步", "error");
+        showToast("存之失，但可续下一步", "error");
       }
       setIsSubmitting(false);
     }
@@ -140,7 +140,7 @@ export default function OnboardingPage() {
     };
 
   const impactedItems = [
-    "八字命盘计算",
+    "八字命盘之算",
     "初版性格推断",
     "待补充问题列表",
     "命运走势初步判断",
@@ -152,9 +152,9 @@ export default function OnboardingPage() {
         return (
           <>
             <div className={styles.formHeader}>
-              <h1 className={styles.title}>第一步：建立你的命理底盘</h1>
+              <h1 className={styles.title}>壹 · 立汝命理之底盘</h1>
               <p className={styles.subtitle}>
-                这些信息用于生成第一版命盘，不会直接决定最终画像
+                这些信息以生成第一版命盘，不会直接决定最终画像
               </p>
             </div>
 
@@ -166,7 +166,7 @@ export default function OnboardingPage() {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="请输入姓名"
+                  placeholder="请入姓名"
                   className={`${styles.input} ${errors.name ? styles.inputError : ""}`}
                   aria-label="姓名"
                 />
@@ -184,7 +184,7 @@ export default function OnboardingPage() {
                   className={`${styles.select} ${errors.gender ? styles.inputError : ""}`}
                   aria-label="性别"
                 >
-                  <option value="">请选择</option>
+                  <option value="">请择</option>
                   <option value="M">男</option>
                   <option value="F">女</option>
                 </select>
@@ -195,14 +195,14 @@ export default function OnboardingPage() {
 
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>出生日期</label>
+                  <label className={styles.label}>诞日</label>
                   <input
                     type="date"
                     name="birthDate"
                     value={formData.birthDate}
                     onChange={handleInputChange}
                     className={`${styles.input} ${errors.birthDate ? styles.inputError : ""}`}
-                    aria-label="出生日期"
+                    aria-label="诞日"
                   />
                   {errors.birthDate && (
                     <span className={styles.errorText}>{errors.birthDate}</span>
@@ -210,16 +210,16 @@ export default function OnboardingPage() {
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>出生时辰</label>
+                  <label className={styles.label}>诞时</label>
                   <div className={styles.timeInput}>
                     <select
                       name="birthTime"
                       value={formData.birthTime}
                       onChange={handleInputChange}
                       className={styles.select}
-                      aria-label="出生时辰"
+                      aria-label="诞时"
                     >
-                      <option value="">请选择</option>
+                      <option value="">请择</option>
                       <option value="00:00">子时 (23:00-01:00)</option>
                       <option value="01:00">丑时 (01:00-03:00)</option>
                       <option value="02:00">寅时 (03:00-05:00)</option>
@@ -244,14 +244,14 @@ export default function OnboardingPage() {
                           }))
                         }
                       />
-                      时辰不确定
+                      时辰不定
                     </label>
                   </div>
                 </div>
               </div>
 
               <div className={styles.formGroup}>
-                <label className={styles.label}>出生地</label>
+                <label className={styles.label}>诞地</label>
                 <input
                   type="text"
                   name="birthPlace"
@@ -259,7 +259,7 @@ export default function OnboardingPage() {
                   onChange={handleInputChange}
                   placeholder="如：浙江省杭州市"
                   className={styles.input}
-                  aria-label="出生地"
+                  aria-label="诞地"
                 />
               </div>
             </div>
@@ -267,12 +267,12 @@ export default function OnboardingPage() {
             {formData.timeUncertain && (
               <div className={styles.notice}>
                 <span className={styles.noticeIcon}>⚠</span>
-                <p>系统将生成多个候选命盘，后续通过问答校准确定准确时辰。</p>
+                <p>系统将生成多个候选命盘，后续通过问答校准定准确时辰。</p>
               </div>
             )}
 
             <div className={styles.impactSection}>
-              <h3 className={styles.impactTitle}>本轮提交后将更新：</h3>
+              <h3 className={styles.impactTitle}>本轮传后将新：</h3>
               <ul className={styles.impactList}>
                 {impactedItems.map((item, index) => (
                   <li key={index} className={styles.impactItem}>
@@ -291,7 +291,7 @@ export default function OnboardingPage() {
             <div className={styles.formHeader}>
               <h1 className={styles.title}>第二步：补充外在特征</h1>
               <p className={styles.subtitle}>
-                你的照片不会单独决定结论，它们只会作为画像的辅助证据
+                汝之影不独决论，它们只会作为画像的辅助证据
               </p>
             </div>
 
@@ -311,7 +311,7 @@ export default function OnboardingPage() {
                   ) : (
                     <div className={styles.photoPlaceholder}>
                       <span className={styles.photoIcon}>📷</span>
-                      <span>上传正脸照</span>
+                      <span>传正脸照</span>
                     </div>
                   )}
                 </div>
@@ -321,16 +321,16 @@ export default function OnboardingPage() {
                   accept="image/*"
                   onChange={handlePhotoUpload("face")}
                   className={styles.hiddenInput}
-                  aria-label="上传面部照片"
+                  aria-label="传面部照片"
                 />
-                <p className={styles.photoHint}>光线均匀、无遮挡</p>
+                <p className={styles.photoHint}>光线均匀、无遮</p>
                 <p className={styles.photoStatus}>
-                  {formData.facePhoto ? "✓ 已上传" : "待上传"}
+                  {formData.facePhoto ? "✓ 已传" : "待传"}
                 </p>
               </div>
 
               <div className={styles.photoCard}>
-                <h3 className={styles.photoTitle}>手掌照片</h3>
+                <h3 className={styles.photoTitle}>掌心之影</h3>
                 <div
                   className={styles.photoUpload}
                   onClick={() => palmInputRef.current?.click()}
@@ -344,7 +344,7 @@ export default function OnboardingPage() {
                   ) : (
                     <div className={styles.photoPlaceholder}>
                       <span className={styles.photoIcon}>✋</span>
-                      <span>上传左手掌</span>
+                      <span>传左手掌</span>
                     </div>
                   )}
                 </div>
@@ -354,20 +354,20 @@ export default function OnboardingPage() {
                   accept="image/*"
                   onChange={handlePhotoUpload("palm")}
                   className={styles.hiddenInput}
-                  aria-label="上传手掌照片"
+                  aria-label="传掌心之影"
                 />
                 <p className={styles.photoHint}>掌心朝上、手指自然张开</p>
                 <p className={styles.photoStatus}>
-                  {formData.palmPhoto ? "✓ 已上传" : "待上传"}
+                  {formData.palmPhoto ? "✓ 已传" : "待传"}
                 </p>
               </div>
             </div>
 
             <div className={styles.photoTips}>
-              <h4 className={styles.tipsTitle}>拍摄提示</h4>
+              <h4 className={styles.tipsTitle}>拍摄示</h4>
               <ul className={styles.tipsList}>
                 <li>正脸直视镜头</li>
-                <li>不使用夸张滤镜</li>
+                <li>不用夸张滤镜</li>
                 <li>手掌线条需清晰</li>
               </ul>
             </div>
@@ -378,8 +378,8 @@ export default function OnboardingPage() {
         return (
           <>
             <div className={styles.formHeader}>
-              <h1 className={styles.title}>第三步：初始分析</h1>
-              <p className={styles.subtitle}>系统正在分析你的信息...</p>
+              <h1 className={styles.title}>第三步：知己之观</h1>
+              <p className={styles.subtitle}>系统正在分析汝之信息...</p>
             </div>
             <div className={styles.analyzingState}>
               <div className={styles.analyzingSpinner}>☯</div>
@@ -387,11 +387,11 @@ export default function OnboardingPage() {
               <div className={styles.analyzingSteps}>
                 <div className={styles.analyzingStep}>
                   <span className={styles.stepDone}>✓</span>
-                  <span>基础信息分析完成</span>
+                  <span>基础信息分析成</span>
                 </div>
                 <div className={styles.analyzingStep}>
                   <span className={styles.stepDone}>✓</span>
-                  <span>八字命盘计算中...</span>
+                  <span>八字命盘之算中...</span>
                 </div>
                 <div className={styles.analyzingStep}>
                   <span className={`${styles.stepPending} ${styles.active}`}>
@@ -408,7 +408,7 @@ export default function OnboardingPage() {
         return (
           <>
             <div className={styles.formHeader}>
-              <h1 className={styles.title}>第四步：校准问答</h1>
+              <h1 className={styles.title}>第四步：省身之问</h1>
               <p className={styles.subtitle}>
                 回答几个问题，帮助系统更准确地了解你
               </p>
@@ -416,12 +416,12 @@ export default function OnboardingPage() {
             <div className={styles.questionPreview}>
               <p className={styles.questionLabel}>系统将问你 8 道问题</p>
               <p className={styles.questionDesc}>
-                每道题大约需要 30 秒，预计 5 分钟完成
+                每道题大约须 30 秒，预计 5 分钟成
               </p>
               <div className={styles.questionTopics}>
-                <span className={styles.topic}>风险偏好</span>
-                <span className={styles.topic}>决策风格</span>
-                <span className={styles.topic}>人际关系</span>
+                <span className={styles.topic}>趋避之性</span>
+                <span className={styles.topic}>断之格</span>
+                <span className={styles.topic}>人际之系</span>
                 <span className={styles.topic}>事业规划</span>
               </div>
             </div>
@@ -432,20 +432,20 @@ export default function OnboardingPage() {
         return (
           <>
             <div className={styles.formHeader}>
-              <h1 className={styles.title}>建档完成</h1>
-              <p className={styles.subtitle}>恭喜！你已完成初始建档</p>
+              <h1 className={styles.title}>立命成</h1>
+              <p className={styles.subtitle}>恭喜！你已成立命之资</p>
             </div>
             <div className={styles.completionState}>
               <div className={styles.completionIcon}>✓</div>
-              <h2 className={styles.completionTitle}>初始画像 V1 已生成</h2>
+              <h2 className={styles.completionTitle}>初版画像 · V1 已成</h2>
               <p className={styles.completionDesc}>
-                系统已基于你的基础信息生成第一版画像。
-                继续补充更多信息，系统会持续校准，让画像越来越准确。
+                系统已依汝之基础信息生成第一版画像。
+                续补充更多信息，系统会持续校准，让画像越来越准确。
               </p>
               <div className={styles.completionStats}>
                 <div className={styles.statItem}>
                   <span className={styles.statValue}>V1</span>
-                  <span className={styles.statLabel}>当前版本</span>
+                  <span className={styles.statLabel}>今版</span>
                 </div>
                 <div className={styles.statItem}>
                   <span className={styles.statValue}>61%</span>
@@ -458,10 +458,10 @@ export default function OnboardingPage() {
               </div>
               <div className={styles.completionActions}>
                 <Link href="/analysis" className="btn btn-primary">
-                  查看初始分析
+                  观知己之观
                 </Link>
                 <Link href="/questionnaire" className="btn btn-secondary">
-                  开始问答校准
+                  始问答校准
                 </Link>
               </div>
             </div>
@@ -509,7 +509,7 @@ export default function OnboardingPage() {
             </div>
           </div>
 
-          {/* 主内容区 */}
+          {/* 主 */}
           <div className={styles.content}>
             <div className={styles.formSection}>
               {renderStepContent()}
@@ -527,7 +527,7 @@ export default function OnboardingPage() {
                         className="btn btn-secondary"
                         onClick={handleNext}
                       >
-                        稍后上传
+                        稍后传
                       </button>
                     )}
                     {currentStep < 3 && (
@@ -536,7 +536,7 @@ export default function OnboardingPage() {
                         onClick={handleNext}
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? "保存中..." : "下一步"}
+                        {isSubmitting ? "存中..." : "下一步"}
                       </button>
                     )}
                     {currentStep === 3 && (
@@ -550,7 +550,7 @@ export default function OnboardingPage() {
                     )}
                     {currentStep === 4 && (
                       <Link href="/questionnaire" className="btn btn-primary">
-                        开始问答
+                        始问答
                       </Link>
                     )}
                   </div>
@@ -558,10 +558,10 @@ export default function OnboardingPage() {
               )}
             </div>
 
-            {/* 右侧辅助信息 */}
+            {/* 右辅助信息 */}
             <div className={styles.sidebar}>
               <div className={styles.sidebarCard}>
-                <h3 className={styles.sidebarTitle}>建档进度</h3>
+                <h3 className={styles.sidebarTitle}>立命进度</h3>
                 <div className={styles.progressInfo}>
                   <div className={styles.progressStat}>
                     <span className={styles.progressValue}>{currentStep}</span>
@@ -585,14 +585,14 @@ export default function OnboardingPage() {
                   <div className={styles.sidebarCard}>
                     <h3 className={styles.sidebarTitle}>预计耗时</h3>
                     <p className={styles.sidebarText}>
-                      约 5 分钟完成基本信息录入
+                      约 5 分钟成基本信息录入
                     </p>
                   </div>
 
                   <div className={styles.sidebarCard}>
                     <h3 className={styles.sidebarTitle}>隐私说明</h3>
                     <p className={styles.sidebarText}>
-                      你的信息仅用于命理分析，不会共享给第三方。
+                      汝之信息仅以命理分析，不与第三方共。
                     </p>
                   </div>
                 </>
@@ -602,7 +602,7 @@ export default function OnboardingPage() {
                 <div className={styles.sidebarCard}>
                   <h3 className={styles.sidebarTitle}>照片说明</h3>
                   <p className={styles.sidebarText}>
-                    照片仅用于面相和手相分析，不会存储在服务器超过必要时间。
+                    照片仅以面相和手相分析，不会存储在服务器超过必要时间。
                   </p>
                 </div>
               )}

@@ -186,7 +186,7 @@ export default function ProfilePage() {
   const abilityData = [
     { label: "执行力", value: abilityTraits?.execution ?? 0.7 },
     { label: "领导力", value: abilityTraits?.leadership ?? 0.7 },
-    { label: "学习力", value: abilityTraits?.learning ?? 0.7 },
+    { label: "学之力", value: abilityTraits?.learning ?? 0.7 },
     { label: "资源整合", value: abilityTraits?.resourceIntegration ?? 0.7 },
     { label: "策略思维", value: abilityTraits?.strategy ?? 0.7 },
   ];
@@ -206,14 +206,14 @@ export default function ProfilePage() {
     : [];
 
   const traitLabels: Record<string, string> = {
-    introversion: "内向/外向",
-    rationality: "理性/感性",
-    impulsiveness: "冲动/克制",
-    riskPreference: "风险偏好",
+    introversion: "内阴/外阳",
+    rationality: "理质/感质",
+    impulsiveness: "动性/制性",
+    riskPreference: "趋避之性",
     powerDrive: "权力驱动",
-    emotionStability: "情绪稳定",
+    emotionStability: "静定之力",
     orderliness: "秩序感",
-    creativity: "创造力",
+    creativity: "创之力",
   };
 
   // Extract summary data
@@ -238,7 +238,7 @@ export default function ProfilePage() {
                 <span className="version-tag">V{selectedVersion}</span>
               </div>
               <div className={styles.headerInfo}>
-                <h1 className={styles.title}>动态画像</h1>
+                <h1 className={styles.title}>今之画像</h1>
                 <div className={styles.scoreInfo}>
                   <span className="score-badge">
                     {summary?.overallScore ?? 85}
@@ -258,7 +258,7 @@ export default function ProfilePage() {
 
           {/* Version Selector */}
           <div className={styles.versionSelector}>
-            <span className={styles.selectorLabel}>查看版本：</span>
+            <span className={styles.selectorLabel}>观版：</span>
             <div className={styles.versionButtons}>
               {sortedVersions.length > 0 ? (
                 sortedVersions.map((v) => (
@@ -279,7 +279,7 @@ export default function ProfilePage() {
           </div>
 
           <div className={styles.content}>
-            {/* 左侧：性格维度 + 雷达图 */}
+            {/* 左：性格维度 + 雷达图 */}
             <div className={styles.leftColumn}>
               {/* 性格矩阵 */}
               <div className={`${styles.card} ${styles.personalityCard}`}>
@@ -358,14 +358,14 @@ export default function ProfilePage() {
                   <button
                     className={styles.closeBtn}
                     onClick={() => setSelectedDimension(null)}
-                    aria-label="关闭"
+                    aria-label="闭"
                   >
                     ×
                   </button>
                 </div>
                 <div className={styles.evidenceDrawerContent}>
                   <div className={styles.dimensionValue}>
-                    <span className={styles.valueLabel}>当前值：</span>
+                    <span className={styles.valueLabel}>今值：</span>
                     <span className={styles.valueNumber}>
                       {Math.round(
                         (personalityTraits?.[selectedDimension] || 0) * 100
@@ -394,23 +394,23 @@ export default function ProfilePage() {
                   <div className={styles.dimensionSources}>
                     <h4 className={styles.sourcesTitle}>证据来源</h4>
                     <ul className={styles.sourcesList}>
-                      <li>八字分析 - 基于出生日期的命盘推算</li>
+                      <li>八字之析 - 依诞日的命盘推算</li>
                       <li>
-                        问卷回答 - 基于 {selectedDimension} 相关问题的回答
+                        问卷之答 - 依 {selectedDimension} 相关问题的回答
                       </li>
-                      <li>人生事件 - 记录的生活事件对维度的影响</li>
+                      <li>生平之事 - 所记生平之事对维之影响</li>
                     </ul>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* 右侧：变化说明 + 证据来源 */}
+            {/* 右：变说明 + 证据来源 */}
             <div className={styles.rightColumn}>
-              {/* 版本变化信息 */}
+              {/* 版变信息 */}
               <div className={`${styles.card} ${styles.changeCard}`}>
                 <div className="card-header">
-                  <span className="card-title">本次变化</span>
+                  <span className="card-title">本次变</span>
                   <span className="tag">
                     V{Math.max(0, selectedVersion - 1)} → V{selectedVersion}
                   </span>
@@ -425,16 +425,16 @@ export default function ProfilePage() {
                         <div className={styles.changeItem}>
                           <div className={styles.changeHeader}>
                             <span className={styles.changeDimension}>
-                              画像更新
+                              画像新
                             </span>
                             <span
                               className={`${styles.changeDirection} ${styles.increase}`}
                             >
-                              ↑ 更新
+                              ↑ 新
                             </span>
                           </div>
                           <p className={styles.changeReason}>
-                            根据最新问答和生活事件更新了你的画像。
+                            根据今之最问答和生活事件新了汝之画像。
                           </p>
                         </div>
                       );
@@ -489,9 +489,9 @@ export default function ProfilePage() {
                 </div>
                 <div className={styles.evidenceTabs}>
                   {[
-                    { key: "bazi", label: "八字分析" },
+                    { key: "bazi", label: "八字之析" },
                     { key: "qa", label: "问答记录" },
-                    { key: "events", label: "人生事件" },
+                    { key: "events", label: "生平之事" },
                     { key: "face", label: "面相" },
                     { key: "palm", label: "手相" },
                   ].map((tab) => (
@@ -508,24 +508,24 @@ export default function ProfilePage() {
                   <ul className={styles.evidenceList}>
                     {activeTab === "bazi" && (
                       <>
-                        <li>出生日期推算八字命盘</li>
-                        <li>五行强弱统计分析</li>
-                        <li>十神关系分析</li>
+                        <li>诞日推算八字命盘</li>
+                        <li>五行旺衰统计分析</li>
+                        <li>十神之系分析</li>
                         <li>大运流年初步预测</li>
                       </>
                     )}
                     {activeTab === "qa" && (
                       <>
-                        <li>创业风险偏好问卷回答</li>
-                        <li>职业发展问答反馈</li>
-                        <li>重大决策风格评估</li>
+                        <li>创业趋避之性问卷之答</li>
+                        <li>职业发展问答回</li>
+                        <li>重大断之格评估</li>
                       </>
                     )}
                     {activeTab === "events" && (
                       <>
-                        <li>2025年创业经历</li>
-                        <li>2024年职业转型</li>
-                        <li>2023年人际关系变化</li>
+                        <li>2025年创业之历</li>
+                        <li>2024年职业之转</li>
+                        <li>2023年人际之系变</li>
                       </>
                     )}
                     {activeTab === "face" && (
@@ -546,7 +546,7 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              {/* 版本历史 */}
+              {/* 版历史 */}
               <div className={`${styles.card} ${styles.historyCard}`}>
                 <div className="card-header">
                   <span className="card-title">演进历史</span>
@@ -563,7 +563,7 @@ export default function ProfilePage() {
                       <div className={styles.historyContent}>
                         <span className={styles.historyTitle}>
                           {(item.summary as { versionTitle?: string })
-                            ?.versionTitle || "画像版本"}
+                            ?.versionTitle || "画像版"}
                         </span>
                         <span className={styles.historyDate}>
                           {new Date(item.createdAt).toLocaleDateString("zh-CN")}

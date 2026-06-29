@@ -45,13 +45,13 @@ export default function AnalysisPage() {
   const summary = profileV1?.summary as Record<string, unknown> | undefined;
   const keywords = (summary?.keywords as string[]) ?? [
     "行动力强",
-    "理性控制",
+    "理质控制",
     "事业驱动",
   ];
 
   // Extract uncertainty from featureData
   const uncertainty = (bazi?.featureData?.uncertainty as string[]) ?? [
-    "出生时辰不确定，影响事业节奏判断",
+    "诞时不定，影响事业节奏判断",
     "午时与未时出生的命盘差异较大，需进一步校准",
   ];
 
@@ -111,23 +111,23 @@ export default function AnalysisPage() {
                 <span className="version-tag">
                   V{profileV1?.profileVersion ?? 1}
                 </span>
-                <span className={styles.versionLabel}>版本</span>
+                <span className={styles.versionLabel}>版</span>
               </div>
-              <h1 className={styles.title}>你的第一版命理画像</h1>
+              <h1 className={styles.title}>汝之第一版命理画像</h1>
               <p className={styles.confidence}>
-                当前结论置信度：<strong>{overallScore}%</strong>
+                今结论置信度：<strong>{overallScore}%</strong>
               </p>
             </div>
             <div className={styles.headerNote}>
               <span className={styles.noteIcon}>💡</span>
               <span>
-                这是起点，不是终局。系统会随着你的信息补充持续修正结论。
+                这是起点，不是终局。系统会随着汝之信息补充持续修正结论。
               </span>
             </div>
           </div>
 
           <div className={styles.content}>
-            {/* 左侧主内容 */}
+            {/* 左主内容 */}
             <div className={styles.mainContent}>
               {/* 命盘摘要 */}
               <div className={`${styles.card} ${styles.baziCard}`}>
@@ -216,10 +216,10 @@ export default function AnalysisPage() {
                 <p className={styles.inferDesc}>{interpretation}</p>
               </div>
 
-              {/* 当前不确定项 */}
+              {/* 今不定项 */}
               <div className={`${styles.card} ${styles.uncertaintyCard}`}>
                 <div className="card-header">
-                  <span className="card-title">当前不确定项</span>
+                  <span className="card-title">今不定项</span>
                   <span className="tag tag-warning">待校准</span>
                 </div>
                 <ul className={styles.uncertaintyList}>
@@ -233,7 +233,7 @@ export default function AnalysisPage() {
               </div>
             </div>
 
-            {/* 右侧辅助 */}
+            {/* 右辅助 */}
             <div className={styles.sidebar}>
               <div className={styles.sidebarCard}>
                 <h3 className={styles.sidebarTitle}>证据来源</h3>
@@ -243,28 +243,28 @@ export default function AnalysisPage() {
                       className={styles.sourceDot}
                       style={{ background: "var(--accent-gold)" }}
                     />
-                    八字分析
+                    八字之析
                   </li>
                   <li className={styles.sourceItem}>
                     <span
                       className={styles.sourceDot}
                       style={{ background: "var(--text-muted)" }}
                     />
-                    面相分析（未完成）
+                    面相分析（未成）
                   </li>
                   <li className={styles.sourceItem}>
                     <span
                       className={styles.sourceDot}
                       style={{ background: "var(--text-muted)" }}
                     />
-                    手相分析（未完成）
+                    手相分析（未成）
                   </li>
                   <li className={styles.sourceItem}>
                     <span
                       className={styles.sourceDot}
                       style={{ background: "var(--text-muted)" }}
                     />
-                    问答记录（未开始）
+                    问答记录（未始）
                   </li>
                 </ul>
               </div>
@@ -279,7 +279,7 @@ export default function AnalysisPage() {
                     补充基本信息
                   </Link>
                   <Link href="/questionnaire" className={styles.nextAction}>
-                    开始问答
+                    始问答
                   </Link>
                 </div>
               </div>
@@ -287,7 +287,7 @@ export default function AnalysisPage() {
               <div className={styles.sidebarCard}>
                 <h3 className={styles.sidebarTitle}>置信度说明</h3>
                 <p className={styles.sidebarText}>
-                  当前置信度 {overallScore}
+                  今置信度 {overallScore}
                   %，系统认为画像基础框架已建立，但细节仍需校准。
                 </p>
               </div>
@@ -297,7 +297,7 @@ export default function AnalysisPage() {
           {/* Footer Action */}
           <div className={styles.footerAction}>
             <Link href="/questionnaire" className="btn btn-primary">
-              回答下一组问题，继续校准画像
+              回答下一组问题，续校准画像
             </Link>
           </div>
         </div>

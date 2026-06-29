@@ -24,7 +24,7 @@ export default function VerifyPage() {
               color: "var(--text-muted)",
             }}
           >
-            加载中...
+            载入中...
           </div>
         }
       >
@@ -53,12 +53,12 @@ function VerifyContent() {
     }
   }, [user]);
 
-  // 链接自动验证
+  // 链接自动验
   useEffect(() => {
     if (!token) return;
     if (status !== "idle") return;
     if (!user) {
-      setError("请先登录后再验证邮箱");
+      setError("请先归位后再验汝之号");
       return;
     }
     setStatus("verifying");
@@ -92,30 +92,30 @@ function VerifyContent() {
     }
   };
 
-  // 自动验证中
+  // 自动验中
   if (status === "verifying") {
     return (
       <div className="authShell">
         <div className="authCard" style={{ textAlign: "center" }}>
           <div style={{ fontSize: "3rem", marginBottom: 12 }}>⏳</div>
-          <h1 className="authTitle">正在验证...</h1>
+          <h1 className="authTitle">验中...</h1>
         </div>
       </div>
     );
   }
 
-  // 已验证
+  // 已验
   if (status === "verified" || isVerified) {
     return (
       <div className="authShell">
         <div className="authCard" style={{ textAlign: "center" }}>
           <div style={{ fontSize: "3rem", marginBottom: 12 }}>✓</div>
-          <h1 className="authTitle">邮箱已验证</h1>
+          <h1 className="authTitle">邮箱已验</h1>
           <p className="authSubtitle" style={{ marginBottom: 24 }}>
-            欢迎加入。{status === "verified" ? "正在跳转..." : ""}
+            欢迎入道。{status === "verified" ? "正归静观台..." : ""}
           </p>
           <Link href="/home" className="btn btn-primary btnBlock btnLarge">
-            进入工作台
+            归静观
           </Link>
         </div>
       </div>
@@ -126,13 +126,13 @@ function VerifyContent() {
     <div className="authShell">
       <div className="authCard" style={{ textAlign: "center" }}>
         <div style={{ fontSize: "3rem", marginBottom: 12 }}>📧</div>
-        <h1 className="authTitle">验证你的邮箱</h1>
+        <h1 className="authTitle">验汝之号</h1>
         {user ? (
           <p className="authSubtitle">
-            验证邮箱 <strong>{user.email}</strong> 以解锁全部功能
+            验汝之号 <strong>{user.email}</strong> 以解全通
           </p>
         ) : (
-          <p className="authSubtitle">请先登录后再继续</p>
+          <p className="authSubtitle">请先归位再续</p>
         )}
 
         {verifyUrl ? (
@@ -146,7 +146,7 @@ function VerifyContent() {
             }}
           >
             <p style={{ color: "var(--accent-jade-light)", marginBottom: 12 }}>
-              ✓ 验证邮件已发送（演示项目）
+              ✓ 验书已发（示例项目）
             </p>
             <p
               style={{
@@ -155,10 +155,10 @@ function VerifyContent() {
                 marginBottom: 12,
               }}
             >
-              真实场景会通过邮件投递。这里直接打开：
+              实际之境，书以邮件传之。今直接示之：
             </p>
             <Link href={verifyUrl} className="btn btn-primary btnBlock">
-              打开验证链接 →
+              启验之简 →
             </Link>
           </div>
         ) : (
@@ -168,7 +168,7 @@ function VerifyContent() {
             disabled={resending || !user}
             style={{ marginTop: 24 }}
           >
-            {resending ? "发送中..." : user ? "发送验证邮件" : "请先登录"}
+            {resending ? "传书中..." : user ? "传验书" : "请先归位"}
           </button>
         )}
 
@@ -182,7 +182,7 @@ function VerifyContent() {
           或
         </div>
         <div className="authFooter">
-          <Link href="/home">跳过，先逛逛</Link>
+          <Link href="/home">暂过，先观之</Link>
         </div>
       </div>
 

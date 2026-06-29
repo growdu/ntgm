@@ -76,13 +76,13 @@ export default function ArchivePage() {
         doc.rect(0, 0, pageWidth, 40, "F");
         doc.setTextColor(182, 136, 61);
         doc.setFontSize(24);
-        doc.text("逆天改命 · 成长档案", pageWidth / 2, 25, { align: "center" });
+        doc.text("逆天改命 · 致远档案", pageWidth / 2, 25, { align: "center" });
 
         // Profile info
         doc.setTextColor(40, 40, 40);
         doc.setFontSize(14);
         const currentV = profile?.profileVersion ?? currentVersion;
-        doc.text(`当前画像: V${currentV}`, 20, 55);
+        doc.text(`今之画像: V${currentV}`, 20, 55);
 
         // Match info
         const topMatch = match?.topMatches?.[0];
@@ -98,7 +98,7 @@ export default function ArchivePage() {
         let y = 80;
         doc.setFontSize(12);
         doc.setTextColor(182, 136, 61);
-        doc.text("版本演进时间线", 20, y);
+        doc.text("版演进时间线", 20, y);
         y += 10;
 
         doc.setTextColor(60, 60, 60);
@@ -118,13 +118,13 @@ export default function ArchivePage() {
         y += 5;
         doc.setFontSize(12);
         doc.setTextColor(182, 136, 61);
-        doc.text("画像版本变化", 20, y);
+        doc.text("画像版变", 20, y);
         y += 10;
 
         doc.setTextColor(60, 60, 60);
         doc.setFontSize(10);
         changes.forEach((change) => {
-          const headline = change.reasonSummary.headline ?? "更新";
+          const headline = change.reasonSummary.headline ?? "新";
           doc.text(
             `V${change.fromVersion} → V${change.toVersion}: ${headline}`,
             20,
@@ -137,11 +137,11 @@ export default function ArchivePage() {
         // Footer
         doc.setFontSize(8);
         doc.setTextColor(150, 150, 150);
-        doc.text(`导出时间: ${new Date().toLocaleString("zh-CN")}`, 20, 290);
+        doc.text(`出之时间: ${new Date().toLocaleString("zh-CN")}`, 20, 290);
         doc.text("逆天改命算命软件", pageWidth - 20, 290, { align: "right" });
 
-        doc.save(`逆天改命-成长档案-V${currentV}.pdf`);
-        showToast("PDF 导出成功！", "success");
+        doc.save(`逆天改命-致远档案-V${currentV}.pdf`);
+        showToast("PDF 出之成功！", "success");
       } else {
         // Poster generation
         const canvas = document.createElement("canvas");
@@ -172,7 +172,7 @@ export default function ArchivePage() {
 
         ctx.fillStyle = "#f3ead7";
         ctx.font = "18px serif";
-        ctx.fillText("我的命运画像档案", 400, 160);
+        ctx.fillText("吾之命理档案", 400, 160);
 
         // Version
         const currentV = profile?.profileVersion ?? currentVersion;
@@ -199,8 +199,8 @@ export default function ArchivePage() {
         ctx.fillStyle = "#f3ead7";
         ctx.font = "14px serif";
         const statsY = 450;
-        ctx.fillText(`画像版本: ${versions.length}`, 400, statsY);
-        ctx.fillText(`版本变化: ${changes.length}`, 400, statsY + 25);
+        ctx.fillText(`画像版: ${versions.length}`, 400, statsY);
+        ctx.fillText(`版变: ${changes.length}`, 400, statsY + 25);
         ctx.fillText(`时间线事件: ${timeline.length}`, 400, statsY + 50);
 
         // Keywords
@@ -223,14 +223,14 @@ export default function ArchivePage() {
 
         // Download poster
         const link = document.createElement("a");
-        link.download = `逆天改命-分享海报-V${currentV}.png`;
+        link.download = `逆天改命-传海报-V${currentV}.png`;
         link.href = canvas.toDataURL("image/png");
         link.click();
-        showToast("分享海报已生成！", "success");
+        showToast("传海报已成！", "success");
       }
     } catch (error) {
       console.error("Export error:", error);
-      showToast("导出失败，请重试", "error");
+      showToast("出之失败，请重试", "error");
     }
     setExporting(null);
   };
@@ -242,7 +242,7 @@ export default function ArchivePage() {
           <div className={styles.container}>
             <div className={styles.loading}>
               <div className={styles.loadingSpinner} />
-              <span className={styles.loadingText}>加载成长档案中...</span>
+              <span className={styles.loadingText}>载入致远档案中...</span>
             </div>
           </div>
         </div>
@@ -262,19 +262,19 @@ export default function ArchivePage() {
         <div className={styles.container}>
           {/* Header */}
           <div className={styles.header}>
-            <h1 className={styles.title}>你的成长档案</h1>
+            <h1 className={styles.title}>汝之致远档案</h1>
             <p className={styles.subtitle}>
-              记录你的画像演进历程，追踪命运变化轨迹
+              记录汝之画像演进历程，追踪命运变轨迹
             </p>
           </div>
 
           <div className={styles.content}>
-            {/* 左侧时间线 */}
+            {/* 左时间线 */}
             <div className={styles.mainSection}>
-              {/* 版本时间线 */}
+              {/* 版时间线 */}
               <div className={`${styles.card} ${styles.timelineCard}`}>
                 <div className="card-header">
-                  <span className="card-title">版本时间线</span>
+                  <span className="card-title">版时间线</span>
                 </div>
                 <div className={styles.timeline}>
                   {timeline.map((item, index) => (
@@ -308,10 +308,10 @@ export default function ArchivePage() {
                 </div>
               </div>
 
-              {/* 画像变化历史 */}
+              {/* 画像变历史 */}
               <div className={`${styles.card} ${styles.figuresCard}`}>
                 <div className="card-header">
-                  <span className="card-title">画像变化历史</span>
+                  <span className="card-title">画像变历史</span>
                 </div>
                 <div className={styles.figureTrail}>
                   {changes.map((change, index) => (
@@ -323,7 +323,7 @@ export default function ArchivePage() {
                         V{change.fromVersion} → V{change.toVersion}
                       </span>
                       <span className={styles.figureVersion}>
-                        {change.reasonSummary.headline ?? "更新"}
+                        {change.reasonSummary.headline ?? "新"}
                       </span>
                       {index < changes.length - 1 && (
                         <div className={styles.figureArrow}>→</div>
@@ -334,15 +334,15 @@ export default function ArchivePage() {
                 <p className={styles.figureNote}>
                   {changes.length > 0
                     ? (changes[changes.length - 1].reasonSummary.trigger ??
-                      "系统持续追踪你的变化轨迹")
-                    : "暂无变化记录"}
+                      "系统持续追踪汝之变轨迹")
+                    : "暂无变记录"}
                 </p>
               </div>
 
-              {/* 画像版本列表 */}
+              {/* 画像版列表 */}
               <div className={`${styles.card} ${styles.versionsCard}`}>
                 <div className="card-header">
-                  <span className="card-title">画像版本列表</span>
+                  <span className="card-title">画像版列表</span>
                 </div>
                 <div className={styles.versionsList}>
                   {versions
@@ -356,9 +356,9 @@ export default function ArchivePage() {
                           <span className="version-tag">
                             {version.profileVersion}
                           </span>
-                          <span className={styles.versionLabel}>版本</span>
+                          <span className={styles.versionLabel}>版</span>
                           {version.profileVersion === currentVersion && (
-                            <span className="tag tag-success">当前</span>
+                            <span className="tag tag-success">今</span>
                           )}
                         </div>
                         <div className={styles.versionStats}>
@@ -371,7 +371,7 @@ export default function ArchivePage() {
                             </span>
                           </div>
                           <div className={styles.versionStat}>
-                            <span className={styles.statLabel}>引擎版本</span>
+                            <span className={styles.statLabel}>引擎版</span>
                             <span className={styles.statValue}>
                               {version.engineVersion}
                             </span>
@@ -379,7 +379,7 @@ export default function ArchivePage() {
                         </div>
                         {version.profileVersion === currentVersion && (
                           <div className={styles.versionNote}>
-                            最新版本，画像最为完善
+                            今之最版，画像最为完善
                           </div>
                         )}
                       </div>
@@ -388,13 +388,13 @@ export default function ArchivePage() {
               </div>
             </div>
 
-            {/* 右侧辅助 */}
+            {/* 右辅助 */}
             <div className={styles.sidebar}>
-              {/* 导出功能 */}
+              {/* 出之功能 */}
               <div className={`${styles.card} ${styles.exportCard}`}>
-                <h3 className={styles.exportTitle}>导出与分享</h3>
+                <h3 className={styles.exportTitle}>出之与传</h3>
                 <p className={styles.exportText}>
-                  将你的成长档案导出为 PDF 或生成分享海报
+                  将汝之致远档案出之为 PDF 或生成传海报
                 </p>
                 <div className={styles.exportActions}>
                   <button
@@ -405,7 +405,7 @@ export default function ArchivePage() {
                     <span className={styles.exportIcon}>
                       {exporting === "pdf" ? "⏳" : "📄"}
                     </span>
-                    {exporting === "pdf" ? "导出中..." : "导出 PDF"}
+                    {exporting === "pdf" ? "出之中..." : "出之 PDF"}
                   </button>
                   <button
                     className={styles.exportBtn}
@@ -415,22 +415,22 @@ export default function ArchivePage() {
                     <span className={styles.exportIcon}>
                       {exporting === "poster" ? "⏳" : "🖼"}
                     </span>
-                    {exporting === "poster" ? "生成中..." : "生成分享海报"}
+                    {exporting === "poster" ? "生成中..." : "生成传海报"}
                   </button>
                 </div>
               </div>
 
               {/* 统计 */}
               <div className={`${styles.card} ${styles.statsCard}`}>
-                <h3 className={styles.statsTitle}>档案统计</h3>
+                <h3 className={styles.statsTitle}>档案之统</h3>
                 <div className={styles.statsList}>
                   <div className={styles.statItem}>
                     <span className={styles.statNumber}>{versions.length}</span>
-                    <span className={styles.statName}>画像版本</span>
+                    <span className={styles.statName}>画像版</span>
                   </div>
                   <div className={styles.statItem}>
                     <span className={styles.statNumber}>{changes.length}</span>
-                    <span className={styles.statName}>版本变化</span>
+                    <span className={styles.statName}>版变</span>
                   </div>
                   <div className={styles.statItem}>
                     <span className={styles.statNumber}>{timeline.length}</span>
@@ -441,12 +441,12 @@ export default function ArchivePage() {
 
               {/* 说明 */}
               <div className={`${styles.card} ${styles.infoCard}`}>
-                <h3 className={styles.infoTitle}>成长档案说明</h3>
+                <h3 className={styles.infoTitle}>致远档案说明</h3>
                 <p className={styles.infoText}>
-                  你的每一版画像都会被完整保存，系统持续追踪你的性格、能力、关系模式的演变轨迹。
+                  汝之每一版画像都会被完整存，系统持续追踪汝之性格、能力、关系模式的演变轨迹。
                 </p>
                 <p className={styles.infoText}>
-                  通过回顾历史版本，你可以清晰地看到「系统是如何逐步认识你的」。
+                  通过回顾历史版，你可清晰地看到「系统是如何逐步认识汝之」。
                 </p>
               </div>
             </div>

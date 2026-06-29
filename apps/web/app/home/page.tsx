@@ -45,7 +45,7 @@ export default function HomePage() {
             color: "var(--text-muted)",
           }}
         >
-          加载中...
+          载入中...
         </div>
       </AppShell>
     );
@@ -53,7 +53,7 @@ export default function HomePage() {
 
   return (
     <AppShell>
-      <Workbench userName={user?.displayName ?? "你"} />
+      <Workbench userName={user?.displayName ?? "客官"} />
     </AppShell>
   );
 }
@@ -101,19 +101,19 @@ function Workbench({ userName }: { userName: string }) {
 
   return (
     <div className={styles.page}>
-      {/* Hero / 欢迎 */}
+      {/* Hero / 静观 */}
       <section className={styles.hero}>
         <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>欢迎回来，{userName}</h1>
+          <h1 className={styles.heroTitle}>静观·{userName}</h1>
           <p className={styles.heroSubtitle}>
-            这里是你的命运画像工作台，所有数据一目了然。
+            此处是汝之命理画像静观台，万象罗列，一目可览。
           </p>
           <div className={styles.heroActions}>
             <Link href="/onboarding" className="btn btn-primary">
-              {hasData ? "更新基础资料" : "开始建档"}
+              {hasData ? "新立命之资" : "始立命"}
             </Link>
             <Link href="/questionnaire" className="btn btn-secondary">
-              继续问答
+              续省身
             </Link>
           </div>
         </div>
@@ -124,15 +124,15 @@ function Workbench({ userName }: { userName: string }) {
         </div>
       </section>
 
-      {/* 没有数据时给新手引导 */}
+      {/* 无画像时给新人引导 */}
       {!hasData && !loading && (
         <section className={styles.cardsSection}>
           <div className="card" style={{ textAlign: "center", padding: 48 }}>
-            <h2 style={{ color: "var(--accent-gold)", marginBottom: 12 }}>
-              还没有画像数据
+            <h2 style={{ color: "var(--accent-amber)", marginBottom: 12 }}>
+              尚无画像
             </h2>
             <p style={{ color: "var(--text-secondary)", marginBottom: 20 }}>
-              完成下面 3 步，系统会为你生成初始画像 V1。
+              走完下述三步，系统为汝生成初版画像（V1）。
             </p>
             <div
               style={{
@@ -143,13 +143,13 @@ function Workbench({ userName }: { userName: string }) {
               }}
             >
               <Link href="/onboarding" className="btn btn-primary">
-                1. 基础建档
+                壹 · 立命之资
               </Link>
               <Link href="/questionnaire" className="btn btn-secondary">
-                2. 回答校准问答
+                贰 · 省身校准
               </Link>
               <Link href="/analysis" className="btn btn-ghost">
-                3. 查看初始分析
+                叁 · 知己之观
               </Link>
             </div>
           </div>
@@ -164,7 +164,7 @@ function Workbench({ userName }: { userName: string }) {
             {profile && (
               <div className={`${styles.card} ${styles.profileCard}`}>
                 <div className="card-header">
-                  <span className="card-title">当前画像</span>
+                  <span className="card-title">今之画像</span>
                   <span className="version-tag">
                     {`v${profile.profileVersion}`}
                   </span>
@@ -173,7 +173,7 @@ function Workbench({ userName }: { userName: string }) {
                   <span className="score-badge">
                     {profileSummary?.overallScore ?? "-"}
                   </span>
-                  <span className={styles.scoreLabel}>综合评分</span>
+                  <span className={styles.scoreLabel}>综观之评</span>
                 </div>
                 <div className={styles.keywords}>
                   {(profileSummary?.keywords ?? []).map((kw) => (
@@ -184,32 +184,32 @@ function Workbench({ userName }: { userName: string }) {
                 </div>
                 <div className={styles.statBars}>
                   <StatBar
-                    label="风险偏好"
+                    label="趋避之性"
                     value={personalityTraits?.riskPreference ?? 0}
-                    gradient="linear-gradient(90deg, var(--accent-gold-dark), var(--accent-red))"
+                    gradient="linear-gradient(90deg, var(--accent-amber-dark), var(--accent-cinnabar))"
                   />
                   <StatBar
-                    label="长线主义"
+                    label="长线之志"
                     value={fortuneTraits?.longTermOrientation ?? 0}
                     gradient="linear-gradient(90deg, var(--accent-jade), var(--accent-jade-light))"
                   />
                   <StatBar
-                    label="情绪稳定"
+                    label="静定之力"
                     value={personalityTraits?.emotionStability ?? 0}
-                    gradient="linear-gradient(90deg, var(--accent-gold-dark), var(--accent-gold))"
+                    gradient="linear-gradient(90deg, var(--accent-amber-dark), var(--accent-amber))"
                   />
                 </div>
                 <Link href="/profile" className={styles.cardLink}>
-                  查看完整画像 →
+                  观其全貌 →
                 </Link>
               </div>
             )}
 
-            {/* 历史人物匹配 */}
+            {/* 千古人物同炉 */}
             {match && topMatch && (
               <div className={`${styles.card} ${styles.matchCard}`}>
                 <div className="card-header">
-                  <span className="card-title">最像的历史人物</span>
+                  <span className="card-title">千古最似者</span>
                 </div>
                 <div className={styles.matchMain}>
                   <div className={styles.matchFigure}>
@@ -221,23 +221,23 @@ function Workbench({ userName }: { userName: string }) {
                         {topMatch.figureName}
                       </div>
                       <div className={styles.figureEra}>
-                        相似度{" "}
+                        神似{" "}
                         {Math.round((topMatch.similarityScore ?? 0) * 100)}%
                       </div>
                     </div>
                   </div>
                 </div>
                 <Link href="/match" className={styles.cardLink}>
-                  查看 Top 3 →
+                  览其 Top 三 →
                 </Link>
               </div>
             )}
 
-            {/* 改命建议 */}
+            {/* 改过之议 */}
             {advice && (
               <div className={`${styles.card} ${styles.adviceCard}`}>
                 <div className="card-header">
-                  <span className="card-title">改命建议</span>
+                  <span className="card-title">改过之议</span>
                 </div>
                 <p
                   style={{
@@ -250,19 +250,19 @@ function Workbench({ userName }: { userName: string }) {
                   advice.summary &&
                   "headline" in advice.summary
                     ? String((advice.summary as { headline: string }).headline)
-                    : "根据你的画像，我们生成了个性化的改命建议。"}
+                    : "依汝画像，示以可履之修身之议。"}
                 </p>
                 <Link href="/advice" className={styles.cardLink}>
-                  查看完整建议 →
+                  观其全篇 →
                 </Link>
               </div>
             )}
 
-            {/* 时间线 */}
+            {/* 时序之变 */}
             {timeline && timeline.items.length > 0 && (
               <div className={`${styles.card} ${styles.timelineCard}`}>
                 <div className="card-header">
-                  <span className="card-title">最近变化</span>
+                  <span className="card-title">近来之变</span>
                 </div>
                 <div className={styles.timelineList}>
                   {timeline.items.slice(0, 3).map((evt, idx) => (
@@ -280,7 +280,7 @@ function Workbench({ userName }: { userName: string }) {
                   ))}
                 </div>
                 <Link href="/archive" className={styles.cardLink}>
-                  查看完整时间线 →
+                  览其全程 →
                 </Link>
               </div>
             )}

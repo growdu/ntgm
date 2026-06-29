@@ -54,8 +54,8 @@ export default function MatchPage() {
         <div className={styles.page}>
           <div className={styles.container}>
             <div className={styles.header}>
-              <h1 className={styles.title}>历史人物匹配</h1>
-              <p className={styles.subtitle}>暂无匹配结果，请先完成问卷</p>
+              <h1 className={styles.title}>千古人物同炉</h1>
+              <p className={styles.subtitle}>暂无匹配结果，请先成问卷</p>
             </div>
           </div>
         </div>
@@ -69,18 +69,18 @@ export default function MatchPage() {
         <div className={styles.container}>
           {/* Header */}
           <div className={styles.header}>
-            <h1 className={styles.title}>历史人物匹配</h1>
+            <h1 className={styles.title}>千古人物同炉</h1>
             <p className={styles.subtitle}>
-              基于当前画像，系统为你匹配了最相似的历史人物
+              依今之画像，系统为你匹配了最相似的千古人物
             </p>
           </div>
 
           <div className={styles.content}>
-            {/* 左侧主卡片 */}
+            {/* 左主卡片 */}
             <div className={styles.mainSection}>
               <div className={`${styles.card} ${styles.mainCard}`}>
                 <div className={styles.mainCardHeader}>
-                  <span className={styles.mainCardLabel}>现在的你，最像：</span>
+                  <span className={styles.mainCardLabel}>今的你，最像：</span>
                 </div>
                 <div className={styles.figureDisplay}>
                   <div className={styles.figureAvatar}>
@@ -135,7 +135,7 @@ export default function MatchPage() {
               </div>
             </div>
 
-            {/* 右侧候选列表 */}
+            {/* 右候选列表 */}
             <div className={styles.sidebar}>
               <div className={styles.candidateCard}>
                 <h3 className={styles.candidateTitle}>候选人物</h3>
@@ -167,19 +167,19 @@ export default function MatchPage() {
               <div className={styles.infoCard}>
                 <h3 className={styles.infoTitle}>匹配说明</h3>
                 <p className={styles.infoText}>
-                  历史人物匹配基于你的画像维度（性格、能力、关系模式、命运节奏）与历史人物原型进行多维匹配。
+                  千古人物同炉依汝之画像维度（性格、能力、关系模式、命运节奏）与千古人物原型进行多维匹配。
                 </p>
                 <p className={styles.infoText}>
-                  匹配结果会随着你的画像演进而变化。
+                  匹配结果会随着汝之画像演进而变。
                 </p>
               </div>
 
               <div className={styles.infoCard}>
                 <h3 className={styles.infoTitle}>为什么重要？</h3>
-                <p className={styles.infoText}>了解「你像谁」可以帮助你：</p>
+                <p className={styles.infoText}>了解「你像谁」可帮助你：</p>
                 <ul className={styles.benefitList}>
                   <li>更清晰地理解自己的行为模式</li>
-                  <li>从历史人物的成功与失败中学习</li>
+                  <li>从千古人物的成功与失败中学习</li>
                   <li>预见自己可能的人生轨迹</li>
                 </ul>
               </div>
