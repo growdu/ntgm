@@ -140,11 +140,8 @@ class TestSummarizeTickets:
 class TestRoutesRegistered:
     """验证 push_tokens / reminders 路由被注册到主 router。"""
 
-    # pre-existing repo bug: UserService(repository: UserRepository | None = None)
-    # 在 pydantic v2 下注册路由时崩，与 push 后端无关
-    pytestmark = pytest.mark.skipif(
-        True, reason="pre-existing repo bug, see test_bazi_service fixme"
-    )
+    # NOTE: 之前 skip 是因为 pydantic v2 + UserService DI 报错
+    # 现已修复（UserService.repository 使用了 factory default）—— 尝试启用
 
     def test_push_routes_paths(self):
         from app.api.routes.push_tokens import router as r

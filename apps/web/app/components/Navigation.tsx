@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "../../lib/auth";
+import { StatusPill } from "./StatusPill";
+import { PageTransition } from "./PageTransition";
 import styles from "./Navigation.module.css";
 
 const navItems = [
@@ -105,6 +107,7 @@ export function Navigation() {
         </nav>
 
         <div className={styles.actions}>
+          <StatusPill />
           {isAuthenticated && user ? (
             <>
               <PlanBadge plan={plan} />
@@ -212,7 +215,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className={styles.appShell}>
       <Navigation />
-      <main className={styles.main}>{children}</main>
+      <main className={styles.main}>
+        <PageTransition>{children}</PageTransition>
+      </main>
       <footer className={styles.footer}>
         <div className={styles.footerContent}>
           <span>逆天改命算命软件 · 原型演示</span>

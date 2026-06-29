@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AppShell } from "../components/Navigation";
 import { fetchCurrentMatch } from "@ntgm/sdk";
 import type { MatchCurrentResponse } from "@ntgm/sdk";
+import { Skeleton, SkeletonCard } from "../components/Skeleton";
 import styles from "./match.module.css";
 
 const API_BASE_URL =
@@ -31,8 +32,15 @@ export default function MatchPage() {
         <div className={styles.page}>
           <div className={styles.container}>
             <div className={styles.header}>
-              <h1 className={styles.title}>历史人物匹配</h1>
-              <p className={styles.subtitle}>加载中...</p>
+              <Skeleton width="220px" height="32px" />
+              <div style={{ marginTop: 8 }}>
+                <Skeleton width="340px" height="16px" />
+              </div>
+            </div>
+            <div style={{ marginTop: 24, display: "grid", gap: 16 }}>
+              <SkeletonCard rows={3} />
+              <SkeletonCard rows={3} />
+              <SkeletonCard rows={3} />
             </div>
           </div>
         </div>

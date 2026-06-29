@@ -1,116 +1,176 @@
+<div align="center">
+
 # 逆天改命算命软件
 
-这是一个面向“持续交互演进画像”的命理产品仓库。
+**持续交互演进画像的命理产品仓库**
 
-项目核心不是一次性算命报告，而是围绕以下闭环展开：
+☯ 一命二运三风水 · 四积阴德五读书 ☯
 
-1. 用户提交基础资料、照片、问答和人生事件
-2. 系统持续生成和修正用户画像
-3. 系统匹配历史人物原型
-4. 系统输出可执行建议并接收反馈
-5. 所有结果沉淀为可回溯的成长档案
+[快速上手](#快速开始) · [文档中心](https://growdu.github.io/ntgm/) · [GitHub](https://github.com/growdu/ntgm) · [演示](http://localhost:3001)
 
-## 文档目录
+[![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](apps/web/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Python-009688?logo=fastapi)](services/api/)
+[![Celery](https://img.shields.io/badge/Celery-Worker-37814A?logo=celery)](services/worker/)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker)](infra/docker/)
+[![MkDocs](https://img.shields.io/badge/MkDocs-Material-blue)](https://growdu.github.io/ntgm/)
 
-所有项目文档统一放在 [docs](./docs/) 目录下：
+</div>
 
-1. [产品需求文档](./docs/product.md)
-2. [概要设计文档](./docs/overview-design.md)
-3. [详细设计文档](./docs/detailed-design.md)
-4. [UI 原型设计与交互流程文档](./docs/ui.md)
-5. [模块设计与数据流向文档](./docs/mod.md)
-6. [技术架构选型文档](./docs/tech.md)
-7. [资源要求文档](./docs/resource.md)
-8. [部署文档](./docs/deployment.md)
-9. [API 文档](./docs/api.md)
-10. [实施路线文档](./docs/roadmap.md)
-11. [项目目录结构文档](./docs/project-structure.md)
-12. [实现计划文档](./docs/implementation-plan.md)
-13. [用户文档](./docs/user-guide.md)
-14. [运维文档](./docs/operations.md)
+---
 
-## 推荐阅读顺序
+## 📖 项目概述
 
-如果你是第一次进入项目，建议按这个顺序阅读：
+本仓库是面向「持续交互演进画像」的命理产品源代码实现。**核心不是一次性算命报告**，而是围绕以下闭环展开：
 
-1. [docs/product.md](./docs/product.md)
-2. [docs/ui.md](./docs/ui.md)
-3. [docs/overview-design.md](./docs/overview-design.md)
-4. [docs/detailed-design.md](./docs/detailed-design.md)
-5. [docs/mod.md](./docs/mod.md)
-6. [docs/tech.md](./docs/tech.md)
-7. [docs/resource.md](./docs/resource.md)
-8. [docs/deployment.md](./docs/deployment.md)
-9. [docs/api.md](./docs/api.md)
-10. [docs/roadmap.md](./docs/roadmap.md)
-11. [docs/project-structure.md](./docs/project-structure.md)
-12. [docs/implementation-plan.md](./docs/implementation-plan.md)
-13. [docs/user-guide.md](./docs/user-guide.md)
-14. [docs/operations.md](./docs/operations.md)
+1. **用户提交**：基础资料、照片、问答、人生事件
+2. **持续生成**：画像随事件演进，永远不是终态
+3. **人物匹配**：从历史原型中找到共鸣
+4. **可执行建议**：基于画像的风水/方位/数字/日期
+5. **反馈接收**：建议效果进入下次重算
+6. **成长档案**：所有结果沉淀为可回溯的时间线
 
-## 当前状态
+## ✨ 当前能力
 
-`Phase 5` 已完成。核心后端主链、Web 演示工作台、移动端（Expo）均已打通，8 服务 Docker Compose 就绪。
+| 模块 | 状态 | 端点 |
+|------|------|------|
+| 用户系统（邮箱/密码） | ✅ 完成 | `POST /auth/*` |
+| 八字分析（占位算法） | ✅ 完成 | `POST /bazi/analyze` |
+| 画像演进（版本化） | ✅ 完成 | `POST /profiles/recompute` |
+| 历史人物匹配 | ✅ 完成 | `POST /match/*` |
+| 个性化建议 | ✅ 完成 | `GET /advice/current` |
+| 成长档案 | ✅ 完成 | `GET /archive/timeline` |
+| 真实人脸提取 | 🚧 计划 | - |
 
-现阶段输出已经覆盖：
+## 🚀 快速开始
 
-1. 产品需求
-2. 系统设计
-3. UI 原型与交互流程
-4. 模块与数据流
-5. 技术选型
-6. 资源要求
-7. 部署文档
-8. API 文档
-9. 实施路线
-10. 项目目录结构
-11. 实现计划
-12. 用户文档
-13. 运维文档
-14. Monorepo 工程骨架
-15. Web / Mobile / API / Worker 最小入口
-16. 建档 / 八字占位 / 画像重算 / 匹配 / 建议的最小 API 链路
-17. Web 单页工作台演示入口
-18. 画像版本变化记录与成长档案时间线
-19. 时间线筛选、版本联动与画像历史查看
+### 环境要求
 
-## 当前工程结构
+- Docker 24+ 与 Docker Compose v2
+- Node.js 22+ 与 pnpm 10+
+- Python 3.11+ 与 [uv](https://github.com/astral-sh/uv)
+- 至少 4GB 可用内存
 
-当前仓库已建立以下目录：
+### 一键启动（推荐）
 
-1. `apps/web`：Next.js Web 工作台原型与演示主流程
-2. `apps/mobile`：React Native + Expo 骨架
-3. `services/api`：FastAPI API 骨架
-4. `services/worker`：Celery Worker 骨架
-5. `packages/*`：共享 SDK、领域模型、校验与设计 token
-6. `infra/docker`：Docker 镜像定义（api/web/worker Dockerfile）+ 8 服务完整编排
-7. `infra/compose`：遗留基础编排（已弃用，请使用 `infra/docker/docker-compose.yml`）
+```bash
+# 克隆仓库
+git clone https://github.com/growdu/ntgm.git
+cd ntgm
 
-## 快速开始
+# 启动基础设施（postgres/redis/minio/api/worker）
+./start-all.sh up
 
-当前阶段建议先完成本地基础设施启动，再分别接入 Web 与 API 开发。
+# 在新终端启动前端
+./start-web.sh
 
-1. 复制环境变量模板：`.env.example`
-2. 启动全套 8 服务：`cd infra/docker && docker compose up -d`
-3. 启动 API：`services/api`
-4. 启动 Worker：`services/worker`
-5. 启动 Web：`apps/web`
-6. 启动移动端：`apps/mobile`
+# 浏览器访问
+open http://localhost:3001
+```
 
-当前不是完整产品，但 Web 端已经可以对接现有 API 演示以下最小主流程：
+### 手动启动（开发者模式）
 
-1. 基础建档
-2. 八字占位分析
-3. 持续问答与事件录入
-4. 画像重算与版本演进
-5. 历史人物匹配与建议查看
-6. 成长档案时间线、变化记录与版本回看
+```bash
+# 1) 启动基础设施
+cd infra/docker
+docker compose up -d postgres redis minio
+docker compose up -d minio-init
 
-## 下一步建议
+# 2) 启动 API（端口 8001）
+cd ../../services/api
+uv sync --frozen
+uv run python -m uvicorn app.main:app --reload --port 8001
 
-以下为可选的增强方向（Phase 5 已完成，所有核心功能已就绪）：
+# 3) 启动 Worker（新终端）
+cd services/worker
+uv run python -m celery -A app.celery_app worker -l info
 
-1. Face Tasks — 接入 MediaPipe/OpenCV 实现真实人脸特征提取（`services/worker/app/tasks/face_tasks.py`）
-2. 八字引擎增强 — 接入真实天文算法替代占位实现
-3. 画像引擎 V2 — 引入机器学习模型替代规则引擎
-4. 移动端高级功能 — 推送通知后台接收、手势交互
+# 4) 启动 Web（端口 3001，新终端）
+cd apps/web
+pnpm install --frozen-lockfile
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8001/api/v1 pnpm dev
+```
+
+验证环境就绪：
+
+```bash
+curl http://localhost:8001/api/v1/ready
+# {"success":true,"data":{"status":"ready","checks":{...}}}
+```
+
+## 🏗 架构
+
+```
+┌─────────────┐     ┌─────────────┐     ┌──────────┐
+│  Web (Next) │────▶│ API (Fast)  │────▶│ Postgres │
+│  Mobile RN  │     │             │     └──────────┘
+└─────────────┘     └──────┬──────┘     ┌──────────┐
+                           ├───────────▶│  Redis   │
+                           │            │ (队列)    │
+                           ▼            └──────────┘
+                  ┌─────────────┐      ┌──────────┐
+                  │Worker(Celery)│─────▶│ MinIO(S3)│
+                  └─────────────┘      └──────────┘
+```
+
+- **apps/web/** — Next.js 15 App Router 前端
+- **apps/mobile/** — Expo React Native 移动端
+- **services/api/** — FastAPI 后端服务
+- **services/worker/** — Celery 异步任务
+- **packages/** — 共享 SDK（@ntgm/sdk）
+- **infra/docker/** — Docker Compose 编排
+
+## 📚 文档
+
+完整文档托管在 GitHub Pages：[**growdu.github.io/ntgm**](https://growdu.github.io/ntgm/)
+
+包含以下章节：
+
+| 章节 | 内容 |
+|------|------|
+| 📜 产品需求 | 产品定位、用户画像、Phase 划分 |
+| 🜲 概要设计 | 架构图、数据流、模块边界 |
+| ⚙ 详细设计 | 模块拆分、算法、接口契约 |
+| 🎨 UI 设计 | 交互流程、视觉规范 |
+| ⚡ API 参考 | REST 端点、OpenAPI、SDK |
+| 🚀 部署指南 | Docker、生产环境、CI/CD |
+| 🛡 运维手册 | 监控、备份、故障排查 |
+| 📋 实施路线 | 路线图、当前进度 |
+
+## 🧪 测试
+
+```bash
+# 后端 pytest
+cd services/api && uv run pytest -q
+# .................... [100%] 20 passed
+
+# 前端 lint + typecheck + build
+cd apps/web
+pnpm lint
+pnpm typecheck
+pnpm build
+
+# 端到端
+./start-all.sh status
+curl http://localhost:8001/api/v1/ready
+```
+
+## 🤝 贡献
+
+我们欢迎各种形式的贡献！详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+- 🐛 报告 Bug：GitHub Issues
+- 💡 提出功能：先开 Issue 讨论
+- 🔧 提交 PR：遵循 [Conventional Commits](https://www.conventionalcommits.org/)
+
+## 📜 许可证
+
+[MIT License](LICENSE) - 2024-2026 NTGM Contributors
+
+## 🙏 致谢
+
+- [FastAPI](https://fastapi.tiangolo.com/) · 高性能 Python Web 框架
+- [Next.js](https://nextjs.org/) · React 全栈框架
+- [Celery](https://docs.celeryq.dev/) · 分布式任务队列
+- [MinIO](https://min.io/) · 高性能对象存储
+- [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) · 现代化文档站

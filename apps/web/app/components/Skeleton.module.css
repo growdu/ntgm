@@ -1,0 +1,50 @@
+.skeleton {
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    rgba(168, 153, 138, 0.08) 0%,
+    rgba(168, 153, 138, 0.18) 50%,
+    rgba(168, 153, 138, 0.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  vertical-align: middle;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.textGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card {
+  background: var(--bg-card, rgba(30, 35, 45, 0.8));
+  border: 1px solid var(--border-color, rgba(182, 136, 61, 0.3));
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background: rgba(168, 153, 138, 0.12);
+  }
+}

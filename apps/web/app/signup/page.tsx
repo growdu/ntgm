@@ -83,11 +83,30 @@ function SignupContent() {
   return (
     <>
       <div className="authShell">
-        <div className="authCard">
-          <div className="authHeader">
-            <h1 className="authTitle">创建账号</h1>
-            <p className="authSubtitle">30 秒注册，开启你的命运画像</p>
-          </div>
+        <div className="authLayout">
+          {/* Left: Free Benefits */}
+          <aside className="authBenefits">
+            <h2 className="authBenefitsTitle">
+              免费开启你的<span className="authBenefitsAccent"> 命理画像 </span>之旅
+            </h2>
+            <ul className="authBenefitsList">
+              <li className="authBenefitItem">完整八字命盘分析（无需付费）</li>
+              <li className="authBenefitItem">基于 5 大维度的性格画像</li>
+              <li className="authBenefitItem">历史人物匹配，找到你的精神同频者</li>
+              <li className="authBenefitItem">每日个性化建议（免费版每日 3 条）</li>
+              <li className="authBenefitItem">数据本地保存，隐私可控</li>
+            </ul>
+            <div className="authSocialProof">
+              💡 提示：注册完全免费，无需绑定信用卡。付费版仅在你主动升级时才会扣费。
+            </div>
+          </aside>
+
+          {/* Right: Signup Form */}
+          <div className="authCard">
+            <div className="authHeader">
+              <h1 className="authTitle">创建账号</h1>
+              <p className="authSubtitle">30 秒注册，开启你的命运画像</p>
+            </div>
 
           <form className="authForm" onSubmit={handleSubmit} noValidate>
             <div className="formField">
@@ -194,6 +213,7 @@ function SignupContent() {
             <Link href={`/login?next=${encodeURIComponent(next)}`}>
               直接登录
             </Link>
+          </div>
           </div>
         </div>
       </div>

@@ -82,7 +82,7 @@ function PricingContent() {
 
   return (
     <>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "64px 24px" }}>
+      <div className="pricingShell">
         <div className="sectionHeader">
           <span className="sectionEyebrow">定价</span>
           <h1 className="sectionTitle">选择适合你的套餐</h1>
@@ -155,21 +155,8 @@ function PricingContent() {
           })}
         </div>
 
-        <div className="authDivider" style={{ marginTop: 64 }}>
-          常见问题
-        </div>
-
-        <div
-          style={{
-            maxWidth: 720,
-            margin: "0 auto",
-            display: "flex",
-            flexDirection: "column",
-            gap: 16,
-            color: "var(--text-secondary)",
-            fontSize: "0.92rem",
-          }}
-        >
+        <div className="pricingFaq">
+          <h2 className="pricingFaqTitle">常见问题</h2>
           <Faq
             q="可以随时取消订阅吗？"
             a="可以。套餐在下一个计费周期前可随时取消，不会重复扣费。"
@@ -188,7 +175,7 @@ function PricingContent() {
           />
         </div>
 
-        <div style={{ textAlign: "center", marginTop: 64 }}>
+        <div className="pricingFooter">
           <Link href={next} className="btn btn-ghost">
             ← {next === "/create" ? "先看看创作" : "返回"}
           </Link>
@@ -205,33 +192,18 @@ function Faq({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
     <details
+      className="pricingFaqItem"
       open={open}
       onClick={(e) => {
         e.preventDefault();
         setOpen(!open);
       }}
-      style={{
-        background: "var(--bg-card)",
-        border: "1px solid var(--border-color)",
-        borderRadius: 10,
-        padding: "16px 20px",
-        cursor: "pointer",
-      }}
     >
-      <summary
-        style={{
-          color: "var(--text-primary)",
-          fontWeight: 500,
-          listStyle: "none",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+      <summary className="pricingFaqQuestion">
         {q}
-        <span style={{ color: "var(--accent-gold)" }}>{open ? "−" : "+"}</span>
+        <span className="pricingFaqIcon">{open ? "−" : "+"}</span>
       </summary>
-      <p style={{ marginTop: 12, lineHeight: 1.7 }}>{a}</p>
+      <p className="pricingFaqAnswer">{a}</p>
     </details>
   );
 }

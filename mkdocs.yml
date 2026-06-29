@@ -1,0 +1,112 @@
+site_name: 逆天改命算命软件 - 文档中心
+site_description: 持续交互演进画像的命理产品仓库 - 设计文档、API 参考、部署指南
+site_url: https://growdu.github.io/ntgm/
+repo_url: https://github.com/growdu/ntgm
+repo_name: growdu/ntgm
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - toc.follow
+  palette:
+    - scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: 切换到暗色
+    - scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到亮色
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil
+    view: material/eye
+  font:
+    text: Noto Sans SC
+    code: JetBrains Mono
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - meta
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.keys
+  - pymdownx.tilde
+  - pymdownx.caret
+  - pymdownx.smartsymbols
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - 首页: index.md
+  - 用户指南:
+      - 用户文档: user-guide.md
+  - 设计文档:
+      - 产品需求: product.md
+      - 概要设计: overview-design.md
+      - 详细设计: detailed-design.md
+      - UI 设计: ui.md
+      - 模块设计: mod.md
+      - 技术架构: tech.md
+  - API 参考:
+      - API 文档: api.md
+  - 实施规划:
+      - 路线图: roadmap.md
+      - 实现计划: implementation-plan.md
+  - 部署运维:
+      - 部署指南: deployment.md
+      - 运维手册: operations.md
+      - 资源要求: resource.md
+  - 项目管理:
+      - 项目结构: project-structure.md
+
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/growdu/ntgm
+  generator: false
+
+copyright: Copyright © 2024-2026 NTGM Contributors · 基于 MIT 协议

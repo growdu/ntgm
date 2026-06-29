@@ -1,12 +1,12 @@
 services:
   postgres:
-    image: postgres:16-alpine
+    image: docker.m.daocloud.io/library/postgres:16
     environment:
       POSTGRES_USER: ntgm
       POSTGRES_PASSWORD: ntgm
       POSTGRES_DB: ntgm
     ports:
-      - "5432:5432"
+      - "5433:5432"  # host:container — avoid conflict with host postgres on 5432
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
@@ -16,9 +16,9 @@ services:
       retries: 5
 
   redis:
-    image: redis:7-alpine
+    image: redis:6-alpine  # cached locally
     ports:
-      - "6379:6379"
+      - "6380:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -26,42 +26,42 @@ services:
       retries: 5
 
   minio:
-    image: minio/minio:latest
+    image: docker.m.daocloud.io/minio/minio:latest
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "9000:9000"  # S3 API
+      - "9001:9001"  # web console
     volumes:
       - minio-data:/data
     healthcheck:
-      test: ["CMD", "mc", "ready", "local"]
+      test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/health/live || exit 1"]
       interval: 5s
-      timeout: 5s
-      retries: 5
+      timeout: 3s
+      retries: 10
 
   minio-init:
-    image: minio/mc:latest
+    image: docker.m.daocloud.io/minio/mc:latest
     depends_on:
       minio:
         condition: service_healthy
     entrypoint: >
-      /bin/sh -c '
+      /bin/sh -c "
+      sleep 3;
       mc alias set local http://minio:9000 minioadmin minioadmin;
-      mc mb local/ntgm-dev --ignore-existing;
-      mc anonymous set download local/ntgm-dev;
-      echo "Bucket ntgm-dev ready";
-      exit 0;
-      '
+      mc mb --ignore-existing local/ntgm;
+      mc anonymous set download local/ntgm 2>/dev/null || true;
+      echo 'MinIO bucket ntgm ready';
+      "
 
   api:
     build:
       context: ../..
       dockerfile: infra/docker/api.Dockerfile
     ports:
-      - "8000:8000"
+      - "8001:8000"
     environment:
       APP_ENV: development
       DATABASE_URL: postgresql+psycopg://ntgm:ntgm@postgres:5432/ntgm
@@ -69,10 +69,9 @@ services:
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/1
       S3_ENDPOINT: http://minio:9000
-      S3_BUCKET: ntgm-dev
       S3_ACCESS_KEY: minioadmin
       S3_SECRET_KEY: minioadmin
-      JWT_SECRET: dev-jwt-secret-change-in-production
+      S3_BUCKET: ntgm
       SENTRY_DSN: ""
       SENTRY_ENVIRONMENT: development
     depends_on:
@@ -82,11 +81,6 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health')\""]
-      interval: 10s
-      timeout: 5s
-      retries: 3
 
   worker:
     build:
@@ -94,14 +88,16 @@ services:
       dockerfile: infra/docker/worker.Dockerfile
     environment:
       APP_ENV: development
+      PYTHONPATH: /app/api_app:/app/worker_app
+      API_APP_PATH: /app/api_app
       DATABASE_URL: postgresql+psycopg://ntgm:ntgm@postgres:5432/ntgm
       REDIS_URL: redis://redis:6379/0
       CELERY_BROKER_URL: redis://redis:6379/0
       CELERY_RESULT_BACKEND: redis://redis:6379/1
       S3_ENDPOINT: http://minio:9000
-      S3_BUCKET: ntgm-dev
       S3_ACCESS_KEY: minioadmin
       S3_SECRET_KEY: minioadmin
+      S3_BUCKET: ntgm
       SENTRY_DSN: ""
       SENTRY_ENVIRONMENT: development
     depends_on:
@@ -109,45 +105,23 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD-SHELL", "celery -A worker_app.celery_app inspect ping || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  beat:
-    build:
-      context: ../..
-      dockerfile: infra/docker/worker.Dockerfile
-    command: ["celery", "-A", "worker_app.celery_app", "beat", "--loglevel=INFO"]
-    environment:
-      APP_ENV: development
-      DATABASE_URL: postgresql+psycopg://ntgm:ntgm@postgres:5432/ntgm
-      REDIS_URL: redis://redis:6379/0
-      CELERY_BROKER_URL: redis://redis:6379/0
-      CELERY_RESULT_BACKEND: redis://redis:6379/1
-      SENTRY_DSN: ""
-      SENTRY_ENVIRONMENT: development
-    depends_on:
-      redis:
+      minio:
         condition: service_healthy
+      api:
+        condition: service_started  # worker needs API code copied in build, not runtime
 
+  # frontend opt-in only — see DEPLOY.md
   frontend:
+    profiles: ["never"]
     build:
       context: ../..
       dockerfile: infra/docker/web.Dockerfile
     ports:
-      - "3000:3000"
-    environment:
-      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000/api/v1
+      - "3001:3000"
     depends_on:
-      api:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:3000')\""]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+      - api
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8001/api/v1
 
 volumes:
   postgres-data:

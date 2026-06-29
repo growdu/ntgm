@@ -64,7 +64,7 @@ def analyze_bazi(
     )
 
     # Dispatch async task
-    from app.tasks import dispatch_bazi_analyze
+    from app.task_client import dispatch_bazi_analyze
     dispatch_bazi_analyze(str(user.id))
 
     return JobCreateResponse(jobId=job.id, jobType=job.job_type, status=job.status)

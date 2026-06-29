@@ -14,20 +14,30 @@ import tempfile
 from pathlib import Path
 from uuid import UUID
 
-import mediapipe as mp
-import minio
 from celery import Task
 
 logger = logging.getLogger(__name__)
 
-mp_face_mesh = mp.solutions.face_mesh
-mp_drawing = mp.solutions.drawing_utils
-mp_drawing_styles = mp.solutions.drawing_styles
+# ─── Lazy-loaded MediaPipe globals (initialized on first use) ─────────────────
+_mp_face_mesh = None
+_mp_drawing = None
+_mp_drawing_styles = None
+
+
+def _get_mp_face_mesh():
+    global _mp_face_mesh, _mp_drawing, _mp_drawing_styles
+    if _mp_face_mesh is None:
+        import mediapipe as mp
+        _mp_face_mesh = mp.solutions.face_mesh
+        _mp_drawing = mp.solutions.drawing_utils
+        _mp_drawing_styles = mp.solutions.drawing_styles
+    return _mp_face_mesh, _mp_drawing, _mp_drawing_styles
 
 # ─── MinIO client (lazy, initialized per-task to respect config changes) ────
 
 
-def _minio_client() -> minio.Minio:
+def _minio_client() -> "minio.Minio":
+    import minio
     settings_module = __import__("app.core.config", fromlist=["get_settings"])
     get_settings = getattr(settings_module, "get_settings")
     s = get_settings()
@@ -192,6 +202,7 @@ def _extract_face_features(image_path: Path) -> dict:
     """
     Run MediaPipe FaceMesh on a local image file and return structured features.
     """
+    mp_face_mesh, _, _ = _get_mp_face_mesh()
     with mp_face_mesh.FaceMesh(
         static_image_mode=True,
         max_num_faces=1,
@@ -295,6 +306,13 @@ class FaceAnalyzeTask(Task):
     retry_backoff_max = 60
 
     def run(self, payload: dict) -> dict:  # noqa: D102
+        import sys
+        import os
+        api_path = os.environ.get("API_APP_PATH", "/work/ai/ntgm/services/api")
+        sys.path.insert(0, api_path)
+        for key in list(sys.modules.keys()):
+            if key == "app" or key.startswith("app."):
+                del sys.modules[key]
         from app.core.config import get_settings
         from app.db import SessionLocal
         from app.repositories.asset_repository import AssetRepository

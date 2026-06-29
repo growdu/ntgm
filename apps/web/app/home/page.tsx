@@ -18,6 +18,7 @@ import type {
   AdviceCurrentResponse,
   ArchiveTimelineResponse,
 } from "@ntgm/sdk";
+import { Skeleton, SkeletonCard } from "../components/Skeleton";
 import styles from "../page.module.css";
 
 const API_BASE_URL =
@@ -288,9 +289,11 @@ function Workbench({ userName }: { userName: string }) {
       )}
 
       {loading && (
-        <p style={{ textAlign: "center", color: "var(--text-muted)" }}>
-          加载数据中...
-        </p>
+        <div style={{ marginTop: 24, display: "grid", gap: 16 }}>
+          <SkeletonCard rows={3} />
+          <SkeletonCard rows={2} />
+          <SkeletonCard rows={4} />
+        </div>
       )}
     </div>
   );

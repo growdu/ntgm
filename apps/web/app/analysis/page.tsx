@@ -5,6 +5,7 @@ import { AppShell } from "../components/Navigation";
 import { fetchCurrentBazi, fetchProfileVersion } from "@ntgm/sdk";
 import type { BaziCurrentResponse, ProfileSummaryResponse } from "@ntgm/sdk";
 import { useEffect, useState } from "react";
+import { Skeleton, SkeletonCard, SkeletonText } from "../components/Skeleton";
 import styles from "./analysis.module.css";
 
 const API_BASE_URL =
@@ -74,8 +75,26 @@ export default function AnalysisPage() {
   if (loading) {
     return (
       <AppShell>
-        <div className={styles.loadingContainer}>
-          <span className={styles.loadingText}>正在加载分析数据...</span>
+        <div className={styles.page}>
+          <header className={styles.header}>
+            <div>
+              <Skeleton width="180px" height="28px" />
+              <div style={{ marginTop: 8 }}>
+                <Skeleton width="280px" height="14px" />
+              </div>
+            </div>
+            <Skeleton width="120px" height="40px" radius="8px" />
+          </header>
+          <div className={styles.content}>
+            <main className={styles.main}>
+              <SkeletonCard rows={4} />
+              <div style={{ height: 16 }} />
+              <SkeletonCard rows={6} />
+            </main>
+            <aside className={styles.sidebar}>
+              <SkeletonCard rows={3} />
+            </aside>
+          </div>
         </div>
       </AppShell>
     );

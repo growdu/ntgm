@@ -120,7 +120,7 @@ def recompute_profile(
     )
 
     # Dispatch async task
-    from app.tasks import dispatch_profile_recompute
+    from app.task_client import dispatch_profile_recompute
     dispatch_profile_recompute(str(user.id), payload.reason)
 
     return JobCreateResponse(jobId=job.id, jobType=job.job_type, status=job.status)

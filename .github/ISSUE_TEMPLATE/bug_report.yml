@@ -1,0 +1,98 @@
+name: 🐛 Bug 报告
+description: 报告一个 Bug 帮助我们改进
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你提交 Bug 报告！请尽可能详细填写以下信息。
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: 严重程度
+      description: 这个 Bug 的影响范围
+      options:
+        - 关键（核心功能不可用）
+        - 严重（主要功能受影响）
+        - 一般（次要功能受影响）
+        - 轻微（不影响使用，仅显示问题）
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 版本
+      description: 受影响的代码版本（commit/tag/branch）
+      placeholder: v0.3.0 / commit abc1234
+    validations:
+      required: true
+
+  - type: textarea
+    id: describe
+    attributes:
+      label: 描述
+      description: 简洁清晰地描述 Bug
+      placeholder: |
+        用户在 X 情况下执行 Y 操作时，预期发生 Z，
+        但实际看到 W。
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 触发 Bug 的具体步骤
+      placeholder: |
+        1. 进入 '...'
+        2. 点击 '...'
+        3. 滚动到 '...'
+        4. 看到错误
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为
+      description: 你认为应该发生什么
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为
+      description: 实际发生了什么
+    validations:
+      required: true
+
+  - type: textarea
+    id: env
+    attributes:
+      label: 环境
+      description: 操作系统、浏览器、Node/Python 版本等
+      placeholder: |
+        OS: Ubuntu 22.04
+        Browser: Chrome 125
+        Node: 22.3.0
+        pnpm: 10.0.0
+        Python: 3.11.5
+        uv: 0.2.10
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关日志
+      description: 任何相关错误日志或截图
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 补充说明
+      description: 其他有助于排查的信息

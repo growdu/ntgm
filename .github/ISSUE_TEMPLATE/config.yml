@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: ❓ 用户问答
+    url: https://github.com/growdu/ntgm/discussions
+    about: 提问、寻求帮助、讨论使用方法
+  - name: 📚 文档中心
+    url: https://growdu.github.io/ntgm/
+    about: 查阅所有项目文档

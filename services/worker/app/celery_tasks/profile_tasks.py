@@ -28,6 +28,13 @@ class ProfileRecomputeTask(Task):
                 "reason": str,
             }
         """
+        import sys
+        import os
+        api_path = os.environ.get("API_APP_PATH", "/work/ai/ntgm/services/api")
+        sys.path.insert(0, api_path)
+        for key in list(sys.modules.keys()):
+            if key == "app" or key.startswith("app."):
+                del sys.modules[key]
         from app.db import SessionLocal
         from app.repositories.job_repository import JobRepository
         from app.services.advice_service import AdviceService

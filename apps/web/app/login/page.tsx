@@ -71,11 +71,29 @@ function LoginContent() {
   return (
     <>
       <div className="authShell">
-        <div className="authCard">
-          <div className="authHeader">
-            <h1 className="authTitle">欢迎回来</h1>
-            <p className="authSubtitle">登录继续你的命运画像</p>
-          </div>
+        <div className="authLayout">
+          {/* Left: Welcome Benefits */}
+          <aside className="authBenefits">
+            <h2 className="authBenefitsTitle">
+              欢迎回到你的<span className="authBenefitsAccent"> 命理画像 </span>
+            </h2>
+            <ul className="authBenefitsList">
+              <li className="authBenefitItem">查看你的最新分析结果</li>
+              <li className="authBenefitItem">继续未完成的人生建议</li>
+              <li className="authBenefitItem">查看历史归档与画像演进</li>
+              <li className="authBenefitItem">更新资料，触发新一轮画像重算</li>
+            </ul>
+            <div className="authSocialProof">
+              🔒 登录会话仅保存在你的浏览器，不会上传到服务器。
+            </div>
+          </aside>
+
+          {/* Right: Login Form */}
+          <div className="authCard">
+            <div className="authHeader">
+              <h1 className="authTitle">欢迎回来</h1>
+              <p className="authSubtitle">登录继续你的命运画像</p>
+            </div>
 
           <form className="authForm" onSubmit={handleSubmit} noValidate>
             <div className="formField">
@@ -170,6 +188,7 @@ function LoginContent() {
             <br />
             想先体验？点上方"使用演示账户"一键填入 demo@ntgm.app。
           </p>
+          </div>
         </div>
       </div>
 

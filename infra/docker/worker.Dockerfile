@@ -1,40 +1,40 @@
-FROM python:3.12-slim
+# Use locally cached debian:bookworm-slim as base (network unreliable for python:3.12-slim)
+FROM docker.m.daocloud.io/library/debian:bookworm-slim
 
 WORKDIR /app
 
-# Install OpenCV + MediaPipe system deps
+# Install Python 3.11 + OpenCV system deps + libgl
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    libsm6 \
-    libxext6 \
-    libxrender1 \
-    libgomp1 \
-    && rm -rf /var/lib/apt/lists/*
+    python3.11 python3.11-venv python3-pip \
+    libgl1-mesa-glx libglib2.0-0 libsm6 libxrender1 libxext6 \
+    libpq5 curl ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && ln -sf /usr/bin/python3.11 /usr/bin/python3
 
 # Install uv
-RUN pip install uv
+RUN curl -fsSL --max-time 30 https://astral.sh/uv/install.sh | sh || \
+    pip3 install --break-system-packages uv
+ENV PATH="/root/.local/bin:${PATH}"
 
-# Copy project files
-COPY services/api/pyproject.toml /app/api_pyproject.toml
-COPY services/api/app /app/api_app
-COPY services/worker/app /app/worker_app
+# Copy API code (worker imports from API)
+COPY services/api /app/api_app
 
-# Install API deps (SQLAlchemy, httpx, redis, etc.) via uv sync --frozen
-# This creates a venv at /app/.venv
-RUN uv sync --frozen \
-    --python python3.12 \
-    --index-url https://pypi.tuna.tsinghua.edu.cn/simple \
-    --no-dev \
-    -p /app/api_pyproject.toml
+# Copy worker code
+COPY services/worker /app/worker_app
 
-# Overlay worker-specific deps on top of the venv via pip.
-# /app/.venv is where uv sync created the environment.
-RUN /app/.venv/bin/python -m pip install --no-cache-dir \
-    "mediapipe" \
-    "minio" \
-    "opencv-python-headless"
+# Install worker deps with uv
+WORKDIR /app/worker_app
+RUN uv sync --no-dev --index-url https://pypi.tuna.tsinghua.edu.cn/simple
+
+# Run as non-root
+RUN useradd -m -u 1000 ntgm && chown -R ntgm:ntgm /app
+USER ntgm
 
 ENV PYTHONPATH=/app/api_app:/app/worker_app
+ENV API_APP_PATH=/app/api_app
+ENV PATH="/app/worker_app/.venv/bin:${PATH}"
+# celery uses import_from_cwd which doesn't see PYTHONPATH from workdir —
+# explicitly pass it so app.celery_app resolves from /app/worker_app/app/celery_app.py
+ENV C_FORCE_ROOT=1
 
-CMD ["celery", "-A", "worker_app.celery_app", "worker", "--loglevel=INFO"]
+CMD ["sh", "-c", "cd /app/worker_app && exec python -m celery -A app.celery_app worker --loglevel=INFO -Q celery"]  # WORKDIR=/app/worker_app + PYTHONPATH

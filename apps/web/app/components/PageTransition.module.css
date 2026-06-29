@@ -1,0 +1,18 @@
+.wrapper {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.32s ease-out, transform 0.32s ease-out;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrapper {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

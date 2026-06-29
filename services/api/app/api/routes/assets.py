@@ -49,7 +49,7 @@ def confirm_upload(
 
     # Dispatch async task
     if payload.assetType == "face":
-        from app.tasks import dispatch_face_analyze
+        from app.task_client import dispatch_face_analyze
         dispatch_face_analyze(str(user.id), str(asset.id))
 
     return IntakeImageResponse(assetId=asset.id, jobType=job_type)
