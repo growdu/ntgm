@@ -8,17 +8,18 @@ import { StatusPill } from "./StatusPill";
 import { PageTransition } from "./PageTransition";
 import styles from "./Navigation.module.css";
 
+// 修道六境 + 入门
 const navItems = [
   { path: "/", label: "首页" },
-  { path: "/home", label: "工作台", authOnly: true },
-  { path: "/onboarding", label: "建档" },
-  { path: "/analysis", label: "初始分析" },
-  { path: "/questionnaire", label: "持续问答" },
-  { path: "/profile", label: "动态画像" },
-  { path: "/match", label: "历史人物" },
-  { path: "/advice", label: "改命建议" },
-  { path: "/archive", label: "成长档案" },
-  { path: "/create", label: "创作" },
+  { path: "/home", label: "静观", authOnly: true },        // 工作台
+  { path: "/onboarding", label: "立命" },                  // 建档
+  { path: "/analysis", label: "知己" },                    // 初始分析
+  { path: "/questionnaire", label: "省身" },               // 持续问答
+  { path: "/profile", label: "格物" },                     // 动态画像
+  { path: "/match", label: "通古" },                       // 历史人物
+  { path: "/advice", label: "改过" },                      // 改命建议
+  { path: "/archive", label: "致远" },                     // 成长档案
+  { path: "/create", label: "化人" },                      // 创作
 ];
 
 const publicNavItems = navItems.filter((i) => !i.authOnly);
@@ -28,18 +29,18 @@ function PlanBadge({ plan }: { plan: "free" | "pro" | "master" }) {
   if (plan === "free") {
     return (
       <span className={`${styles.planBadge} ${styles.planBadgeFree}`}>
-        免费
+        初境
       </span>
     );
   }
   if (plan === "pro") {
     return (
-      <span className={`${styles.planBadge} ${styles.planBadgePro}`}>PRO</span>
+      <span className={`${styles.planBadge} ${styles.planBadgePro}`}>入境</span>
     );
   }
   return (
     <span className={`${styles.planBadge} ${styles.planBadgeMaster}`}>
-      MASTER
+      大成
     </span>
   );
 }
@@ -86,7 +87,7 @@ export function Navigation() {
           onClick={() => setMobileMenuOpen(false)}
         >
           <span className={styles.logoIcon}>☯</span>
-          <span className={styles.logoText}>逆天改命</span>
+          <span className={styles.logoText}>知命</span>
         </Link>
 
         <nav
@@ -145,7 +146,7 @@ export function Navigation() {
                       className={styles.navUserDropdownItem}
                       onClick={() => setUserMenuOpen(false)}
                     >
-                      升级套餐
+                      进阶套餐
                     </Link>
                     <Link
                       href="/create"
@@ -159,7 +160,7 @@ export function Navigation() {
                       className={styles.navUserDropdownItem}
                       onClick={handleLogout}
                     >
-                      退出登录
+                      归去
                     </button>
                   </div>
                 )}
@@ -171,14 +172,14 @@ export function Navigation() {
                 href="/login"
                 className={`${styles.navItem} ${pathname === "/login" ? styles.active : ""}`}
               >
-                登录
+                入门
               </Link>
               <Link
                 href="/signup"
                 className="btn btn-primary"
                 style={{ padding: "8px 16px", fontSize: "0.88rem" }}
               >
-                免费注册
+                结缘
               </Link>
             </>
           )}
@@ -220,9 +221,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </main>
       <footer className={styles.footer}>
         <div className={styles.footerContent}>
-          <span>逆天改命算命软件 · 原型演示</span>
+          <span>逆天改命算命软件 · 道术合一</span>
           <span className={styles.footerDivider}>|</span>
-          <span>持续交互演进画像系统</span>
+          <span>持续交互演进画像</span>
         </div>
       </footer>
     </div>
