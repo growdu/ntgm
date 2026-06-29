@@ -13,26 +13,26 @@ import styles from "./page.module.css";
 const valueProps = [
   {
     icon: "☯",
-    title: "画像持续演进",
-    desc: "非一卦定终身。随你提交的经历、问答、事件，命格随之推移，画像逐日精进。",
+    title: "画像常照常新",
+    desc: "非一卦可定终身。随你所历、所答、所感，命格随之流转，画像日日精进。",
   },
   {
-    icon: "人",
-    title: "古今人物共鸣",
-    desc: "以 5000 年历史为坐标系，看你更像曾国藩的稳健，还是李白的洒脱。",
+    icon: "古",
+    title: "千古人物同炉",
+    desc: "以五千年为坐标，观你更似曾国藩之稳健，抑或李白之潇洒。",
   },
   {
     icon: "行",
-    title: "可执行的修身",
-    desc: "结合画像给具体可操作的下一步，并通过你的反馈持续校准，不流于空言。",
+    title: "可履之修身",
+    desc: "依画像呈具体可行之下手处，借你之反馈常校常准，不落玄谈。",
   },
 ];
 
 const daoSteps = [
-  { num: "01", title: "格物", desc: "免费浏览真实命例与画像样例，先观后入" },
-  { num: "02", title: "诚意", desc: "邮箱即注册，三十息完成" },
-  { num: "03", title: "正心", desc: "免费起步，Pro / Master 解锁完整能力" },
-  { num: "04", title: "修身", desc: "持续画像 + 发布你的解读文章" },
+  { num: "一", title: "格物", desc: "先观免费命例与画像样例，不入而先观其妙" },
+  { num: "二", title: "诚意", desc: "邮箱即名号，三十息立成" },
+  { num: "三", title: "正心", desc: "初境起步，入境 · 大成 解全貌" },
+  { num: "四", title: "修身", desc: "持续画像 + 自出解读篇章" },
 ];
 
 const wuXingNames = ["木", "火", "土", "金", "水"];
@@ -40,51 +40,51 @@ const wuXingNames = ["木", "火", "土", "金", "水"];
 const testimonials = [
   {
     quote:
-      "以前测过不下十款算命应用，没有一款会回头问我『这周过得如何』。这一款，会。",
-    author: "互联网产品人 · 三十二岁",
-    initial: "产",
+      "昔曾试过不下十数算命之作，无一回头问过「此周过得如何」。此作会。",
+    author: "互联网造物人 · 三十又二",
+    initial: "造",
   },
   {
     quote:
-      "画像变化那条时间线让我意外。原来半年前的我，与今日的我，竟是两个人。",
-    author: "创业者 · 二十八岁",
+      "画像流转之时间线，颇出我意料。原来半载前之我，与今时之我，竟似两人。",
+    author: "始创者 · 二十又八",
     initial: "创",
   },
   {
     quote:
-      "内子的 Master 套餐里那一对一的解读，对我们做家庭决定，真的有用。",
-    author: "心理咨询师 · 三十五岁",
+      "内子所订之大成套餐中一对一之解读，于吾家议决，确有裨益。",
+    author: "心海引渡人 · 三十又五",
     initial: "心",
   },
 ];
 
 const stats = [
-  { num: "一二四八零", label: "已生成画像" },
-  { num: "五千余", label: "历史人物原型" },
-  { num: "九八·六%", label: "用户满意度" },
-  { num: "三十息", label: "平均注册耗时" },
+  { num: "一二四八零", label: "已成之画像" },
+  { num: "五千余", label: "古来人物原型" },
+  { num: "九八·六%", label: "用户称许度" },
+  { num: "三十息", label: "平均入门耗时" },
 ];
 
 const faq = [
   {
-    q: "我不懂命理，能看懂么？",
-    a: "能。所有输出皆以白话写就，不堆术语，关键概念首次出现处附简释。",
+    q: "不解命理，亦可观乎？",
+    a: "可。所言皆以常语写就，不堆术语；要义首现处附短释。",
   },
   {
-    q: "我的数据会被用来训练么？",
-    a: "默认不会。生产环境下数据全程加密、不可见第三方。如启用 AI 训练，会单开窗口征你同意。",
+    q: "吾之数据，可供训练否？",
+    a: "默认不供。生产环境下数据全程加密，不与第三方相见。若启 AI 训练，另开专窗征你允诺。",
   },
   {
-    q: "Pro 与 Master 的差别？",
-    a: "Pro 解锁持续画像演进、PDF 导出、创作。Master 增一对一解读、API 接入、优先客服。详见「查看套餐」。",
+    q: "入境与大成之别？",
+    a: "入境开持续画像演进、PDF 导出、自出篇章。大成增一对一解读、API 接入、优先引渡。详见「进阶套餐」。",
   },
   {
-    q: "退款之制？",
-    a: "首次订阅七日内不满意，全额退，不问缘由。联系客官即可。",
+    q: "退订之制？",
+    a: "首次订阅七日之内未惬，全数奉还，不问所以。寻客官即可。",
   },
   {
-    q: "支付之方？",
-    a: "演示仅 Mock 支付。生产支持微信、支付宝、Stripe（信用卡）。",
+    q: "支付之法？",
+    a: "今仅 Mock 支付。生产则承微信、支付宝、Stripe（信用卡）。",
   },
 ];
 
@@ -104,9 +104,9 @@ export default function HomePage() {
     : "/signup";
   const ctaLabel = isAuthenticated
     ? plan === "free"
-      ? "升级套餐"
-      : "进入工作台"
-    : "免费注册";
+      ? "进阶套餐"
+      : "归静观"
+    : "结缘入道";
 
   return (
     <AppShell>
@@ -117,13 +117,13 @@ export default function HomePage() {
             <Taiji size={160} />
           </div>
           <h1 className={styles.daoHeroTitle}>
-            <span className={styles.daoHeroTitleKicker}>知命 · 顺命 · 改命</span>
+            <span className={styles.daoHeroTitleKicker}>知命 · 顺命 · 立命</span>
             <span className={styles.daoHeroTitleMain}>逆天·改命</span>
           </h1>
           <p className={styles.daoHeroSubtitle}>
-            自出生信息、照片、人生事件至性格模式，
+            自降生之时、容貌之相、人生之变至性情之常，
             <br />
-            渐次形成你专属的命理画像。
+            渐次凝成汝专属之命理画像。
           </p>
           <p className={styles.daoHeroQuote}>
             「{classicQuotes[3]}」
@@ -133,11 +133,11 @@ export default function HomePage() {
               {ctaLabel}
             </Link>
             <Link href="/pricing" className="btn btn-secondary btnLarge">
-              查看套餐
+              进阶套餐
             </Link>
           </div>
           <div className={styles.daoHeroTrust}>
-            <span>✓ 三十息注册</span>
+            <span>✓ 三十息立成</span>
             <span>✓ 七日可退</span>
             <span>✓ 数据全程加密</span>
           </div>
@@ -171,67 +171,67 @@ export default function HomePage() {
             <span className={styles.sectionEyebrow}>修身起手</span>
             <h2 className={styles.sectionTitle}>六步入命，首份画像</h2>
             <p className={styles.sectionSubtitle}>
-              每一步皆可随时暂停。下次归时，自会接着走。
+              每步皆可随时驻足。下次归来，自会接续。
             </p>
           </div>
           <div className={styles.onboardingGrid}>
             <OnboardingStep
-              step="01"
-              title="基础资料"
+              step="一"
+              title="本初资料"
               points={[
-                "出生年月日时（不确定可勾选）",
-                "出生地点（用于真太阳时修正）",
-                "性别、昵称",
+                "降生年月日时（不知者可勾选）",
+                "降生之方（用于真太阳时校准）",
+                "性别、字号",
               ]}
               icon="✎"
             />
             <OnboardingStep
-              step="02"
-              title="照片采集"
+              step="二"
+              title="容颜采集"
               points={[
-                "正面免冠照（用于面部特征分析）",
-                "手掌照片（可选，用于掌纹初探）",
-                "支持手机直接拍照上传",
+                "正面免冠相（用于面相初探）",
+                "掌心之相（可选，用于掌纹初探）",
+                "可手机直拍上传",
               ]}
               icon="◉"
             />
             <OnboardingStep
-              step="03"
-              title="初始分析"
+              step="三"
+              title="初命解析"
               points={[
                 "八字排盘（含真太阳时）",
                 "五行旺衰与喜忌神",
-                "性格倾向 · 风险偏好",
+                "性情倾向 · 风险偏好",
               ]}
               icon="✦"
             />
             <OnboardingStep
-              step="04"
-              title="校准问答"
+              step="四"
+              title="校心问答"
               points={[
-                "十至二十道选择题（动态出题）",
+                "十至二十道抉择题（动态而出）",
                 "每答五题触发一次画像重算",
-                "支持跳过与重置",
+                "可跳可回",
               ]}
               icon="？"
             />
             <OnboardingStep
-              step="05"
-              title="人物共鸣"
+              step="五"
+              title="古贤同炉"
               points={[
-                "前三名历史人物原型",
-                "相似点与差异点解释",
-                "人物生平对你的启示",
+                "前三名古来人物原型",
+                "相似与差异之释",
+                "古人平生对你之启",
               ]}
-              icon="人"
+              icon="古"
             />
             <OnboardingStep
-              step="06"
-              title="改命建议"
+              step="六"
+              title="立命之议"
               points={[
-                "短期 · 中期 · 长期三档",
-                "具体可执行的下一步",
-                "支持反馈 → 持续校准",
+                "短 · 中 · 长三程",
+                "具体可履之下手",
+                "凭反馈而常校",
               ]}
               icon="上"
             />
@@ -241,11 +241,11 @@ export default function HomePage() {
         {/* VALUE · 道之三要 */}
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
-            <span className={styles.sectionEyebrow}>为何不同</span>
-            <h2 className={styles.sectionTitle}>非一卦即可</h2>
+            <span className={styles.sectionEyebrow}>何以为异</span>
+            <h2 className={styles.sectionTitle}>非一卦可尽</h2>
             <p className={styles.sectionSubtitle}>
-              命理之病，多在「算完再无归期」。我们重设全回路——
-              让你愿意每周归来，画像方能日日精进。
+              命理之病，多在「算毕再无归期」。吾重设全回环——
+              令汝乐得周周归返，画像方能日日精进。
             </p>
           </div>
           <div className={styles.valueGrid}>
@@ -263,7 +263,7 @@ export default function HomePage() {
         <section className={`${styles.section} ${styles.sectionAlt}`}>
           <div className={styles.sectionHeader}>
             <span className={styles.sectionEyebrow}>入门四步</span>
-            <h2 className={styles.sectionTitle}>从识到行，全闭环</h2>
+            <h2 className={styles.sectionTitle}>由识至行，全回环</h2>
             <p className={styles.sectionSubtitle}>
               行完下述四步，便是从容熟客了。
             </p>
@@ -297,7 +297,7 @@ export default function HomePage() {
         <section className={`${styles.section} ${styles.sectionAlt}`}>
           <div className={styles.sectionHeader}>
             <span className={styles.sectionEyebrow}>众人之评</span>
-            <h2 className={styles.sectionTitle}>真客如何说</h2>
+            <h2 className={styles.sectionTitle}>真客云何</h2>
           </div>
           <div className={styles.testimonialGrid}>
             {testimonials.map((t, i) => (
@@ -315,8 +315,8 @@ export default function HomePage() {
         {/* FAQ */}
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
-            <span className={styles.sectionEyebrow}>FAQ</span>
-            <h2 className={styles.sectionTitle}>常见之疑</h2>
+            <span className={styles.sectionEyebrow}>常问</span>
+            <h2 className={styles.sectionTitle}>常见之惑</h2>
           </div>
           <div className={styles.faqList}>
             {faq.map((f, i) => (
@@ -333,7 +333,7 @@ export default function HomePage() {
             </div>
             <h2 className={styles.sectionTitle}>命格至此，由此而始</h2>
             <p className={styles.sectionSubtitle} style={{ marginBottom: 24 }}>
-              三十息注册，邮箱即账号。免费版亦能走通完整主流程。
+              三十息立成，邮箱即名号。初境亦能走通全主回环。
             </p>
             <div className={styles.daoHeroCta}>
               <Link href={ctaHref} className="btn btn-primary btnLarge">
@@ -341,7 +341,7 @@ export default function HomePage() {
               </Link>
               {!isAuthenticated && (
                 <Link href="/login" className="btn btn-ghost btnLarge">
-                  已有账号 · 登录
+                  已有账号 · 归位
                 </Link>
               )}
             </div>

@@ -55,22 +55,22 @@ function SignupContent() {
     setSuccess(null);
 
     if (password !== confirm) {
-      setError("两次输入的密码不一致");
+      setError("两次所入之密语不一");
       return;
     }
     if (password.length < 6) {
-      setError("密码至少 6 位");
+      setError("密语至少六字");
       return;
     }
     if (!email.trim() || !displayName.trim()) {
-      setError("请填写完整信息");
+      setError("请留名号与字号");
       return;
     }
 
     setSubmitting(true);
     try {
       await signup({ email, password, displayName });
-      setSuccess("注册成功！正在为你跳转...");
+      setSuccess("结缘成！正为你转...");
       setTimeout(() => {
         router.push(next);
       }, 600);
@@ -90,52 +90,52 @@ function SignupContent() {
               免费开启你的<span className="authBenefitsAccent"> 命理画像 </span>之旅
             </h2>
             <p className="authBenefitsIntro">
-              以道御术，以术证道。注册既得：
+              以道御术，以术证道。结缘即得：
             </p>
             <ul className="authBenefitsList">
               <li className="authBenefitItem">
                 <span className="authBenefitBullet">壹</span>
-                完整八字命盘分析（无需付费）
+                完整八字命盘解析（不取分文）
               </li>
               <li className="authBenefitItem">
                 <span className="authBenefitBullet">贰</span>
-                基于 5 大维度的性格画像
+                五维性情画像
               </li>
               <li className="authBenefitItem">
                 <span className="authBenefitBullet">叁</span>
-                历史人物匹配 · 寻精神同频者
+                古来人物同炉 · 觅精神同频者
               </li>
               <li className="authBenefitItem">
                 <span className="authBenefitBullet">肆</span>
-                每日个性化建议（免费版每日 3 条）
+                日日个性化之议（初境每日三条）
               </li>
               <li className="authBenefitItem">
                 <span className="authBenefitBullet">伍</span>
-                数据本地保存 · 隐私可控
+                数据本地所存 · 私隐自掌
               </li>
             </ul>
             <div className="authSocialProof">
-              💡 提示：注册完全免费，无需绑定信用卡。付费版仅在你主动升级时才会扣费。
+              💡 提示：结缘完全免费，无须绑定任何凭信。进阶套餐仅在你主动升起时方收分文。
             </div>
           </aside>
 
           {/* Right: Signup Form */}
           <div className="authCard">
             <div className="authHeader">
-              <h1 className="authTitle">创建账号</h1>
-              <p className="authSubtitle">30 秒注册，开启你的命运画像</p>
+              <h1 className="authTitle">结缘</h1>
+              <p className="authSubtitle">三十息立号，开汝之画像</p>
             </div>
 
           <form className="authForm" onSubmit={handleSubmit} noValidate>
             <div className="formField">
               <label htmlFor="displayName" className="formLabel">
-                昵称
+                字号
               </label>
               <input
                 id="displayName"
                 type="text"
                 className="formInput"
-                placeholder="你想怎么被称呼"
+                placeholder="汝欲如何被称"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 disabled={submitting}
@@ -146,7 +146,7 @@ function SignupContent() {
 
             <div className="formField">
               <label htmlFor="email" className="formLabel">
-                邮箱
+                名号（邮箱）
               </label>
               <input
                 id="email"
@@ -163,13 +163,13 @@ function SignupContent() {
 
             <div className="formField">
               <label htmlFor="password" className="formLabel">
-                密码
+                密语（密码）
               </label>
               <input
                 id="password"
                 type="password"
                 className="formInput"
-                placeholder="至少 6 位"
+                placeholder="至少六字"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={submitting}
@@ -180,13 +180,13 @@ function SignupContent() {
 
             <div className="formField">
               <label htmlFor="confirm" className="formLabel">
-                确认密码
+                再入密语
               </label>
               <input
                 id="confirm"
                 type="password"
                 className="formInput"
-                placeholder="再输入一次"
+                placeholder="再入一次"
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 disabled={submitting}
@@ -216,20 +216,20 @@ function SignupContent() {
               className="btn btn-primary btnBlock btnLarge"
               disabled={submitting}
             >
-              {submitting ? "注册中..." : "注册"}
+              {submitting ? "结缘中..." : "结缘入道"}
             </button>
 
             <p className="formHint" style={{ textAlign: "center" }}>
-              注册即表示同意《用户协议》和《隐私政策》
+              结缘即示允《用户之约》与《私隐之护》
             </p>
           </form>
 
           <div className="authDivider">或</div>
 
           <div className="authFooter">
-            已有账号？
+            已有号？
             <Link href={`/login?next=${encodeURIComponent(next)}`}>
-              直接登录
+              归位续修
             </Link>
           </div>
           </div>

@@ -50,7 +50,7 @@ function LoginContent() {
     e.preventDefault();
     setError(null);
     if (!email.trim() || !password) {
-      setError("请填写邮箱和密码");
+      setError("请留名号与密语");
       return;
     }
     setSubmitting(true);
@@ -75,25 +75,25 @@ function LoginContent() {
           {/* Left: Welcome Benefits */}
           <aside className="authBenefits">
             <h2 className="authBenefitsTitle">
-              欢迎回到你的<span className="authBenefitsAccent"> 命理画像 </span>
+              归位续修你的<span className="authBenefitsAccent"> 命理画像 </span>
             </h2>
             <p className="authBenefitsIntro">以道御术，以术证道。</p>
             <ul className="authBenefitsList">
               <li className="authBenefitItem">
                 <span className="authBenefitBullet">道</span>
-                持续演进的画像，不止一卦
+                常照常新之画像，非一卦可尽
               </li>
               <li className="authBenefitItem">
                 <span className="authBenefitBullet">术</span>
-                八字命盘 · 五行喜忌 · 性格倾向
+                八字命盘 · 五行喜忌 · 性情倾向
               </li>
               <li className="authBenefitItem">
-                <span className="authBenefitBullet">人</span>
-                历史人物共鸣 · 寻精神同频者
+                <span className="authBenefitBullet">古</span>
+                古来人物同炉 · 觅精神同频者
               </li>
               <li className="authBenefitItem">
                 <span className="authBenefitBullet">行</span>
-                每日个性化建议 · 反馈校准
+                日日个性化之议 · 凭反馈而常校
               </li>
             </ul>
           </aside>
@@ -101,14 +101,14 @@ function LoginContent() {
           {/* Right: Login Form */}
           <div className="authCard">
             <div className="authHeader">
-              <h1 className="authTitle">欢迎回来</h1>
-              <p className="authSubtitle">登录继续你的命运画像</p>
+              <h1 className="authTitle">归位</h1>
+              <p className="authSubtitle">续修你的命理画像</p>
             </div>
 
           <form className="authForm" onSubmit={handleSubmit} noValidate>
             <div className="formField">
               <label htmlFor="email" className="formLabel">
-                邮箱
+                名号（邮箱）
               </label>
               <input
                 id="email"
@@ -125,7 +125,7 @@ function LoginContent() {
 
             <div className="formField">
               <label htmlFor="password" className="formLabel">
-                密码
+                密语（密码）
               </label>
               <input
                 id="password"
@@ -151,7 +151,7 @@ function LoginContent() {
               className="btn btn-primary btnBlock btnLarge"
               disabled={submitting}
             >
-              {submitting ? "登录中..." : "登录"}
+              {submitting ? "归位中..." : "归位"}
             </button>
 
             <div
@@ -163,7 +163,7 @@ function LoginContent() {
               }}
             >
               <Link href={`/signup?next=${encodeURIComponent(next)}`}>
-                还没账号？免费注册
+                尚无号？结缘入道
               </Link>
               <button
                 type="button"
@@ -171,15 +171,15 @@ function LoginContent() {
                 style={{
                   background: "transparent",
                   border: "none",
-                  color: "var(--accent-gold)",
+                  color: "var(--accent-amber)",
                   cursor: "pointer",
                   fontSize: "0.85rem",
                   fontFamily: "inherit",
                   padding: 0,
                 }}
-                title="填入演示账户"
+                title="填入演示名号"
               >
-                使用演示账户
+                试以客官之号
               </button>
             </div>
           </form>
@@ -194,9 +194,9 @@ function LoginContent() {
               lineHeight: 1.7,
             }}
           >
-            首次访问？注册即可创建账号（演示项目仅本地存储）。
+            首次造访？结缘入道即可立号（今仅本地所存）。
             <br />
-            想先体验？点上方"使用演示账户"一键填入 demo@ntgm.app。
+            欲先观之妙？点上方「试以客官之号」一键填入 demo@ntgm.app。
           </p>
           </div>
         </div>
