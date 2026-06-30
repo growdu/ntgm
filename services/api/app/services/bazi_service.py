@@ -259,7 +259,7 @@ class BaziService:
         day_gan, day_zhi = self._calculate_day_bazi(birth)
 
         # 时柱计算：时干 = (日干序号 * 2 + 时辰) % 10
-        hour = birth.hour if birth.hour else 12  # 默认中午12点
+        hour = birth.hour if birth.hour is not None else 12  # 默认中午12点
         # 时辰地支：0-1点=子, 1-3=丑, 3-5=寅, 5-7=卯, 7-9=辰, 9-11=巳,
         #          11-13=午, 13-15=未, 15-17=申, 17-19=酉, 19-21=戌, 21-23=亥
         hour_zhi_index = ((hour + 1) // 2) % 12

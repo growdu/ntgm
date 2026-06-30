@@ -35,12 +35,12 @@
 | 模块 | 状态 | 端点 |
 |------|------|------|
 | 用户系统（邮箱/密码） | ✅ 完成 | `POST /auth/*` |
-| 八字分析（占位算法） | ✅ 完成 | `POST /bazi/analyze` |
+| 八字分析（真实算法） | ✅ 完成 | `POST /bazi/analyze` |
 | 画像演进（版本化） | ✅ 完成 | `POST /profiles/recompute` |
 | 历史人物匹配 | ✅ 完成 | `POST /match/*` |
 | 个性化建议 | ✅ 完成 | `GET /advice/current` |
 | 成长档案 | ✅ 完成 | `GET /archive/timeline` |
-| 真实人脸提取 | 🚧 计划 | - |
+| 真实人脸提取（MediaPipe FaceMesh） | ✅ 完成 | `worker ntgm.face.analyze` |
 
 ## 🚀 快速开始
 
@@ -142,7 +142,7 @@ curl http://localhost:8001/api/v1/ready
 ```bash
 # 后端 pytest
 cd services/api && uv run pytest -q
-# .................... [100%] 20 passed
+# ............................................... [100%] 47 passed
 
 # 前端 lint + typecheck + build
 cd apps/web
