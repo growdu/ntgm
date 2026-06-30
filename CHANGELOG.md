@@ -8,9 +8,27 @@
 ## [Unreleased]
 
 ### 计划中
-- 太极主题全面重构首页/注册/套餐页
-- 真实人脸特征提取（MediaPipe）
-- 八字天文算法（替代占位实现）
+- 测试覆盖补完（后端 routes/services/repositories 当前 < 10%）
+- 用户提醒推送端到端验证（push 后端单测已通过，链路未跑通）
+
+## [0.4.0] - 2026-06-30
+
+### UI 道家化（太极主题）
+- **重构** 首页/登录/注册全套道家文言化文案 + 视觉
+- **重构** 导航条与用户菜单道家术语化
+- **重构** 12 个内页（advice/analysis/archive/create/forgot/home/match/
+  onboarding/profile/questionnaire/reset/verify）统一太极主题
+- **新增** `DaoElements` 太极/卦象装饰组件
+- **修复** pricing 页套餐命名错乱（Pro/Pro 重复"觉境" → Pro 觉境/Master 通境）
+
+### 后端真实算法实装
+- **实装** 八字四柱真实计算：年柱（公历纪年）、月柱（24 节气表）、
+  日柱（儒略日 + 60 甲子循环）、时柱（时支地支 + 五子遁起时干）
+- **实装** 五行旺衰分析 + 十神关系映射 + 日主强弱判定
+- **实装** MediaPipe FaceMesh 人脸特征提取异步任务
+  - 468 个 3D 关键点 → 脸型/眼型/眉型/鼻型/唇形分类
+  - 表情代理（嘴脸比 + 眉高）+ 置信度计算
+  - 从 MinIO 下载图片 → cv2 解析 → 写回 `image_assets.metadata_json`
 
 ## [0.3.0] - 2026-06-29
 

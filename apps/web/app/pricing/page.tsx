@@ -102,8 +102,8 @@ function PricingContent() {
           {plans.map((p, i) => {
             const isCurrent = user?.plan === p.id;
             const isHighlight = !!p.highlight;
-            // 道家三境：初（free）/ 觉（pro）/ 觉（master）
-            const daoStage = ["初境", "觉境", "觉境"][i];
+            // 道家三境：初（free）/ 觉（pro）/ 通（master）
+            const daoStage = ["初境", "觉境", "通境"][i];
             return (
               <div
                 key={p.id}
@@ -136,7 +136,22 @@ function PricingContent() {
                 <ul className="pricingFeatureList">
                   {p.features.map((f, j) => (
                     <li key={f} className="pricingFeature">
-                      <span className="pricingFeatureBullet">{["壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖", "拾"][j]}</span>
+                      <span className="pricingFeatureBullet">
+                        {
+                          [
+                            "壹",
+                            "贰",
+                            "叁",
+                            "肆",
+                            "伍",
+                            "陆",
+                            "柒",
+                            "捌",
+                            "玖",
+                            "拾",
+                          ][j]
+                        }
+                      </span>
                       {f}
                     </li>
                   ))}
