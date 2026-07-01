@@ -12,6 +12,7 @@
 - **routes 测试基础设施** + /users/me 2 用例 (test_users_route.py + conftest.py)
 - **用户提醒推送端到端验证**:test_push_e2e.py 4 用例覆盖完整链路(HTTP→route→service→3 repos→expo_client→response),4 场景:成功 / 无 device token / 用户未找到 / 部分 token 失败。CHANGELOG 计划项 -> 完成。
 - **routes 层测试覆盖 75%→92%**:再增 1 个测试文件 17 用例:test_remaining_routes_pt2 17 例(/health + /ready 完整三依赖 happy/degraded 路径;/profiles/versions/{no};questionnaire/reset+answers;advice/regenerate+feedback 3 路径;assets/upload-token + users/intake/images face+palm 分支)。questionnaire/assets 新达 **100%**;advice 59%→91%,profiles 74%→88%,health 0%→73%。328 tests 全过,3.35s,**12/14 routes 文件 ≥73%**(剩余 archive/bazi/matches/intake 边缘分支)。
+- **routes 层测试覆盖 92%→100%**:新增 test_routes_edge_cases.py 32 用例覆盖所有剩余 404/异常路径(advice 4 个 404/health 4 个 deps+fallback/profiles 6 个 404/recompute/intake 3 个/bazi+assets 各 3 个/remaining)。最终 **15/15 routes 文件 100% 行覆盖**(427 stmts, 0 miss),350 tests 3.83s 跑完。
 
 ## [0.4.0] - 2026-06-30
 
