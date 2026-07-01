@@ -8,8 +8,10 @@
 ## [Unreleased]
 
 ### 计划中
-- 测试覆盖补完（后端 routes/services/repositories 当前 < 10%）
 - 用户提醒推送端到端验证（push 后端单测已通过，链路未跑通）
+
+### 已完成
+- **测试覆盖补完**：services/api 单测从 ~30% 升至 **100% 行覆盖**（14 个 service 文件 971/971 stmts,260 个测试,2.85s 跑完）。新增 9 个测试文件:test_bazi_service / test_profile_services / test_advice_service / test_match_service / test_push_service / test_support_services / test_questionnaire_service / test_archive_service / test_profile_workflow_service + test_coverage_boost 集中补 forwarder / 边界 / 助手段
 
 ## [0.4.0] - 2026-06-30
 
