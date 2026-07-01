@@ -11,7 +11,7 @@
 - **测试覆盖补完**:services/api 单测从 ~30% 升至 **100% 行覆盖**(14 个 service 文件 971/971 stmts,260 个测试,2.85s 跑完)。新增 9 个测试文件:test_bazi_service / test_profile_services / test_advice_service / test_match_service / test_push_service / test_support_services / test_questionnaire_service / test_archive_service / test_profile_workflow_service + test_coverage_boost 集中补 forwarder / 边界 / 助手段
 - **routes 测试基础设施** + /users/me 2 用例 (test_users_route.py + conftest.py)
 - **用户提醒推送端到端验证**:test_push_e2e.py 4 用例覆盖完整链路(HTTP→route→service→3 repos→expo_client→response),4 场景:成功 / 无 device token / 用户未找到 / 部分 token 失败。CHANGELOG 计划项 -> 完成。
-- **routes 层测试覆盖 56%(从 0.1% 提到 56%)**:test_more_routes.py 8 用例(bazi/advice/profiles)+ test_remaining_routes.py 8 用例(jobs/intake/matches/questionnaire/archive/assets)。282 tests 全过,2.4s,jobs 100%/intake 93%/matches 88%/bazi 83%/users/profiles/archive 74-77%。
+- **routes 层测试覆盖 56%→75%**:再增 2 个测试文件 29 用例:test_events_push_intake_routes 14 例(events + push_tokens + users.intake_basic)+ test_reminder_routes 15 例(reminders 6 routes 全覆盖,含 2 个 async routes 通过 TestClient+anyio 跑通)。events/push_tokens/reminders/users 全部推到 **100% 行覆盖**。311 tests 全过,1.28s,jobs/events/push_tokens/reminders/users 100%,intake 93%,matches 88%,bazi 83%,profiles/archive 74%,questionnaire 73%,advice 59%,assets 58%,health 0%。
 
 ## [0.4.0] - 2026-06-30
 
